@@ -16,12 +16,21 @@
             --primary: #4f46e5;
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
-            --rarity-C: #6b7280; /* Commune */
-            --rarity-R: #10b981; /* Rare */
-            --rarity-UR: #3b82f6; /* Ultra Rare */
-            --rarity-LEG: #a855f7; /* Légendaire */
-            --rarity-COS: #f59e0b; /* Cosmic */
-            --rarity-FA: #ec4899; /* Full Art */
+            /* Raretés */
+            --rarity-C: #6b7280;
+            --rarity-R: #10b981;
+            --rarity-UR: #3b82f6;
+            --rarity-LEG: #a855f7;
+            --rarity-COS: #f59e0b;
+            --rarity-FA: #ec4899;
+            /* Couleurs des Types */
+            --type-eau: #0284c7;
+            --type-feu: #ef4444;
+            --type-plante: #22c55e;
+            --type-electrik: #eab308;
+            --type-tenebres: #64748b;
+            --type-lumiere: #f59e0b;
+            --type-cosmique: #8b5cf6;
         }
 
         * {
@@ -179,9 +188,10 @@
             width: 100%;
         }
 
+        /* --- DESIGN DE LA CARTE SUIVANT LE CROQUIS --- */
         .gacha-card {
-            width: 120px;
-            height: 160px;
+            width: 140px;
+            height: 200px;
             perspective: 1000px;
             cursor: pointer;
             transition: transform 0.3s ease;
@@ -198,7 +208,7 @@
             position: relative;
             transform-style: preserve-3d;
             transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-            border-radius: 8px;
+            border-radius: 10px;
         }
 
         .gacha-card.flipped .card-inner {
@@ -210,36 +220,142 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 6px;
-            border: 1px solid var(--panel-border);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid var(--panel-border);
         }
 
         .card-front {
             background: linear-gradient(135deg, #1e2029 0%, #121318 100%);
-            border: 2px solid #3b3f50;
+            border-color: #3b3f50;
+            display: flex;
+            align-items: center;
             justify-content: center;
         }
 
         .card-back {
             transform: rotateY(180deg);
-            background: #232630;
+            background: #181920;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Barre noire tout en haut (Croquis) */
+        .card-top-bar {
+            height: 18px;
+            background: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 6px;
+        }
+
+        /* Nom en dessous de la barre noire */
+        .card-top-header {
+            height: 26px;
+            background: #1c1e24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+        }
+
+        .card-title-text {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Trait noir de séparation retiré / ajusté pour éviter la bande noire en trop */
+        .card-divider-black {
+            display: none;
+        }
+
+        /* Zone d'image étendue */
+        .card-image-area {
+            position: relative;
+            flex: 1;
+            width: 100%;
         }
 
         .card-img {
-            width: 70px;
-            height: 70px;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border-radius: 6px;
-            background: #121318;
+            display: block;
+        }
+
+        /* Symboles de type (Bas-Gauche) */
+        .types-overlay {
+            position: absolute;
+            bottom: 6px;
+            left: 6px;
+            display: flex;
+            gap: 3px;
+            z-index: 2;
+        }
+
+        .badge-type {
+            font-size: 0.5rem;
+            font-weight: 800;
+            padding: 2px 5px;
+            border-radius: 4px;
+            color: #fff;
+            text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .type-Eau {
+            background-color: var(--type-eau);
+        }
+
+        .type-Feu {
+            background-color: var(--type-feu);
+        }
+
+        .type-Plante {
+            background-color: var(--type-plante);
+        }
+
+        .type-Électrik {
+            background-color: var(--type-electrik);
+            color: #000;
+        }
+
+        .type-Ténèbres {
+            background-color: var(--type-tenebres);
+        }
+
+        .type-Lumière {
+            background-color: var(--type-lumiere);
+            color: #000;
+        }
+
+        .type-Cosmique {
+            background-color: var(--type-cosmique);
+        }
+
+        /* Points Lumineux de Rareté (Haut dans la barre noire) */
+        .rarity-dots-overlay {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+        }
+
+        .rarity-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 5px currentColor;
         }
 
         .badge-rarity {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             font-weight: 800;
             padding: 2px 6px;
             border-radius: 4px;
@@ -291,7 +407,7 @@
 
         .collection-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 12px;
         }
 
@@ -299,28 +415,28 @@
             background: #121318;
             border: 1px solid var(--panel-border);
             border-radius: 8px;
-            padding: 10px;
+            padding: 8px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
             .item-card.locked .card-img-placeholder {
-                width: 60px;
-                height: 60px;
+                width: 100%;
+                height: 110px;
                 background: #1c1e24;
                 border-radius: 6px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 1.8rem;
+                font-size: 1.5rem;
                 font-weight: 800;
                 color: var(--text-muted);
             }
 
-        /* --- QUÊTES --- */
+        /* --- QUÊTES & SAUVEGARDE --- */
         .quests-list {
             display: flex;
             flex-direction: column;
@@ -337,23 +453,6 @@
             align-items: center;
         }
 
-        .quest-info h4 {
-            font-size: 0.95rem;
-            margin-bottom: 4px;
-        }
-
-        .quest-info p {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .quest-progress {
-            margin-top: 8px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
         .btn-claim {
             background: #f59e0b;
             color: #121318;
@@ -362,12 +461,7 @@
             border-radius: 6px;
             font-weight: 800;
             cursor: pointer;
-            transition: 0.2s;
         }
-
-            .btn-claim:hover {
-                background: #d97706;
-            }
 
             .btn-claim:disabled {
                 background: #374151;
@@ -375,7 +469,6 @@
                 cursor: not-allowed;
             }
 
-        /* --- SAUVEGARDE / IMPORT EXPORT --- */
         .save-box {
             display: flex;
             flex-direction: column;
@@ -392,13 +485,6 @@
             color: var(--text-main);
             font-family: monospace;
             font-size: 0.85rem;
-            resize: vertical;
-            user-select: text;
-        }
-
-        .save-actions {
-            display: flex;
-            gap: 10px;
         }
 
         .btn-action {
@@ -409,20 +495,11 @@
             border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
         }
-
-            .btn-action:hover {
-                background: #4b5563;
-            }
 
             .btn-action.primary {
                 background: var(--primary);
             }
-
-                .btn-action.primary:hover {
-                    background: #4338ca;
-                }
     </style>
 </head>
 <body>
@@ -469,16 +546,13 @@
             <div class="quests-list" id="quests-container"></div>
         </div>
 
-        <!-- GESTION SAUVEGARDE (IMPORT / EXPORT SÉCURISÉ) -->
+        <!-- DONNÉES -->
         <div id="tab-save" class="tab-content">
             <h2 style="margin-bottom: 15px;">Gestion de la Sauvegarde</h2>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">
-                Exportez ou importez votre progression. Le code de sauvegarde est signé numériquement : toute modification manuelle le rendra invalide.
-            </p>
             <div class="save-box">
-                <textarea id="save-data-text" class="save-textarea" placeholder="Collez votre code de sauvegarde sécurisé ici..."></textarea>
-                <div class="save-actions">
-                    <button class="btn-action primary" onclick="exportData()"><i class="fa-solid fa-download"></i> Générer / Copier Export</button>
+                <textarea id="save-data-text" class="save-textarea" placeholder="Collez votre code de sauvegarde ici..."></textarea>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn-action primary" onclick="exportData()"><i class="fa-solid fa-download"></i> Copier Export</button>
                     <button class="btn-action" onclick="importData()"><i class="fa-solid fa-upload"></i> Importer</button>
                 </div>
             </div>
@@ -486,31 +560,35 @@
     </div>
 
     <script>
-        const SECRET_KEY = "CosmicGachaSecureKey_2026!"; // Clé de signature anti-triche
+        const SECRET_KEY = "CosmicKey123";
 
         const CHARACTERS = [
-        // Communes (70%)
-        { id: 'c1', name: 'Slimico', rarity: 'Commune', image: 'https://via.placeholder.com/100/6b7280/ffffff?text=Slimico' },
-        { id: 'c2', name: 'Poussifeuille', rarity: 'Commune', image: 'https://via.placeholder.com/100/6b7280/ffffff?text=Poussifeuille' },
-        { id: 'c3', name: 'Bubulle', rarity: 'Commune', image: 'https://via.placeholder.com/100/6b7280/ffffff?text=Bubulle' },
+        // Communes
+        { id: 'c1', name: 'Gelatinoc', rarity: 'Commune', types: ['Eau'], image: 'images/gelatinoc.jpg' },
+        { id: 'c2', name: 'Feuillou', rarity: 'Commune', types: ['Plante'], image: 'images/feuillou.jpg' },
+        { id: 'c3', name: 'Etincel', rarity: 'Commune', types: ['Électrik'], image: 'images/etincel.jpg' },
 
-        // Rares (20%)
-        { id: 'r1', name: 'Pyronard', rarity: 'Rare', image: 'https://via.placeholder.com/100/10b981/ffffff?text=Pyronard' },
-        { id: 'r2', name: 'Aquagriff', rarity: 'Rare', image: 'https://via.placeholder.com/100/10b981/ffffff?text=Aquagriff' },
+        // Rares
+        { id: 'r1', name: 'Grapique', rarity: 'Rare', types: ['Plante', 'Ténèbres'], image: 'images/grapique.jpg' },
+        { id: 'r2', name: 'Pyrodile', rarity: 'Rare', types: ['Feu'], image: 'images/pyrodile.jpg' },
 
-        // Ultra Rares (7.5%)
-        { id: 'ur1', name: 'Electrak', rarity: 'UltraRare', image: 'https://via.placeholder.com/100/3b82f6/ffffff?text=Electrak' },
-        { id: 'ur2', name: 'Floramut', rarity: 'UltraRare', image: 'https://via.placeholder.com/100/3b82f6/ffffff?text=Floramut' },
+        // Ultra Rares
+        { id: 'ur1', name: 'Voltara', rarity: 'UltraRare', types: ['Électrik', 'Cosmique'], image: 'images/voltara.jpg' },
+        { id: 'ur2', name: 'Abyssor', rarity: 'UltraRare', types: ['Eau', 'Ténèbres'], image: 'images/abyssor.jpg' },
+        { id: 'ur3', name: 'Sylvandre', rarity: 'UltraRare', types: ['Plante', 'Cosmique'], image: 'images/sylvandre.jpg' },
 
-        // Légendaires (2%)
-        { id: 'leg1', name: 'Ignidrag', rarity: 'Légendaire', image: 'https://via.placeholder.com/100/a855f7/ffffff?text=Ignidrag' },
-        { id: 'leg2', name: 'Valkyria', rarity: 'Légendaire', image: 'https://via.placeholder.com/100/a855f7/ffffff?text=Valkyria' },
+        // Légendaires
+        { id: 'leg1', name: 'Aetheris', rarity: 'Légendaire', types: ['Cosmique', 'Électrik'], image: 'images/aetheris.jpg' },
+        { id: 'leg2', name: 'Obsidian', rarity: 'Légendaire', types: ['Feu', 'Ténèbres'], image: 'images/obsidian.jpg' },
 
-        // Cosmic (0.4%)
-        { id: 'cos1', name: 'Empereur Stellion', rarity: 'Cosmic', image: 'https://via.placeholder.com/100/f59e0b/ffffff?text=Stellion' },
+        // Cosmic
+        { id: 'cos1', name: 'Nébula Prince', rarity: 'Cosmic', types: ['Cosmique', 'Électrik'], image: 'images/nebula_prince.jpg' },
+        { id: 'cos2', name: 'Umbra', rarity: 'Cosmic', types: ['Cosmique', 'Ténèbres'], image: 'images/umbra.jpg' },
 
-        // Full Art (0.1%)
-        { id: 'fa1', name: 'Shrek Divin', rarity: 'FullArt', image: 'image/shrek.jpg' }
+        // Full Art
+        { id: 'fa1', name: 'Gorgone Dorée', rarity: 'FullArt', types: ['Ténèbres', 'Électrik'], image: 'images/gorgone.jpg' },
+        { id: 'fa2', name: 'Léviathan Prime', rarity: 'FullArt', types: ['Eau', 'Cosmique'], image: 'images/leviathan.jpg' },
+        { id: 'fa3', name: 'Phaéton', rarity: 'FullArt', types: ['Feu', 'Cosmique'], image: 'images/phaeton.jpg' }
         ];
 
         const CATEGORIES = ['FullArt', 'Cosmic', 'Légendaire', 'UltraRare', 'Rare', 'Commune'];
@@ -534,7 +612,6 @@
         try { state = { ...state, ...JSON.parse(localStorage.getItem('gacha_save_v5')) }; } catch(e){}
         }
 
-        // --- SÉCURITÉ ANTI-MODIFICATION (Checksum) ---
         function generateHash(text) {
         let hash = 0;
         const combined = text + SECRET_KEY;
@@ -549,71 +626,27 @@
         const rawData = JSON.stringify(state);
         const signature = generateHash(rawData);
         const payload = { data: state, sig: signature };
-
         const dataStr = btoa(JSON.stringify(payload));
         const area = document.getElementById('save-data-text');
         area.value = dataStr;
         area.select();
         navigator.clipboard.writeText(dataStr);
-        alert("Code de sauvegarde sécurisé généré et copié dans le presse-papier !");
+        alert("Code de sauvegarde copié !");
         }
 
         function importData() {
         const area = document.getElementById('save-data-text');
         const str = area.value.trim();
-        if (!str) {
-        alert("Veuillez coller un code de sauvegarde !");
-        return;
-        }
+        if (!str) return alert("Collez un code de sauvegarde !");
         try {
         const decoded = JSON.parse(atob(str));
-
-        if (!decoded.data || !decoded.sig) {
-        alert("Format de sauvegarde invalide !");
-        return;
+        if (decoded.sig !== generateHash(JSON.stringify(decoded.data))) {
+        return alert("⚠️ Sauvegarde invalide ou corrompue !");
         }
-
-        const expectedSig = generateHash(JSON.stringify(decoded.data));
-
-        if (decoded.sig !== expectedSig) {
-        alert("⚠️ Sauvegarde modifiée ou corrompue ! Importation refusée.");
-        return;
-        }
-
         state = { ...state, ...decoded.data };
         saveGame();
-        alert("Sauvegarde vérifiée et importée avec succès !");
-        } catch(e) {
-        alert("Code de sauvegarde invalide !");
-        }
-        }
-
-        // --- GÉNÉRATEUR AUDIO (Son Spécial Cosmic / Full Art) ---
-        function playSpecialSound() {
-        try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const notes = [523.25, 659.25, 783.99, 1046.50];
-        notes.forEach((freq, idx) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc.type = 'triangle';
-        osc.frequency.value = freq;
-
-        const startTime = ctx.currentTime + (idx * 0.12);
-        gain.gain.setValueAtTime(0, startTime);
-        gain.gain.linearRampToValueAtTime(0.3, startTime + 0.05);
-        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.8);
-
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc.start(startTime);
-        osc.stop(startTime + 0.8);
-        });
-        } catch(e) {
-        console.log("Audio Web non supporté ou bloqué.");
-        }
+        alert("Sauvegarde importée !");
+        } catch(e) { alert("Code invalide !"); }
         }
 
         function saveGame() {
@@ -628,28 +661,17 @@
 
         function getRandomCharacter() {
         state.pity++;
-
         if (state.pity >= 50) {
         state.pity = 0;
         return pickFromRarity('Légendaire');
         }
-
         let roll = Math.random() * 100;
-
-        if (roll < 0.1) {
-        return pickFromRarity('FullArt');
-        } else if (roll < 0.5) {
-        return pickFromRarity('Cosmic');
-        } else if (roll < 2.5) {
-        state.pity = 0;
-        return pickFromRarity('Légendaire');
-        } else if (roll < 10.0) {
-        return pickFromRarity('UltraRare');
-        } else if (roll < 30.0) {
-        return pickFromRarity('Rare');
-        } else {
+        if (roll < 0.1) return pickFromRarity('FullArt');
+        if (roll < 0.5) return pickFromRarity('Cosmic');
+        if (roll < 2.5) { state.pity = 0; return pickFromRarity('Légendaire'); }
+        if (roll < 10.0) return pickFromRarity('UltraRare');
+        if (roll < 30.0) return pickFromRarity('Rare');
         return pickFromRarity('Commune');
-        }
         }
 
         function pickFromRarity(rarity) {
@@ -658,24 +680,35 @@
         return filtered[Math.floor(Math.random() * filtered.length)];
         }
 
-        function setButtonsDisabled(disabled) {
-        document.getElementById('btn-sum-1').disabled = disabled;
-        document.getElementById('btn-sum-10').disabled = disabled;
+        // Générateur de points lumineux de rareté (pour la barre noire supérieure)
+        function renderRarityDots(rarity) {
+        const rarityConfig = {
+        'Commune': { count: 1, color: '#6b7280' },
+        'Rare': { count: 2, color: '#10b981' },
+        'UltraRare': { count: 3, color: '#3b82f6' },
+        'Légendaire': { count: 4, color: '#a855f7' },
+        'Cosmic': { count: 5, color: '#f59e0b' },
+        'FullArt': { count: 6, color: '#ec4899' }
+        };
+
+        const config = rarityConfig[rarity] || { count: 1, color: '#fff' };
+        let dotsHtml = '<div class="rarity-dots-overlay">';
+        for (let i = 0; i < config.count; i++) {
+        dotsHtml += `<span class="rarity-dot" style="background-color: ${config.color}; color: ${config.color};"></span>`;
+        }
+        dotsHtml += '</div>';
+        return dotsHtml;
         }
 
         function doSummon(count) {
         const cost = count * 100;
-        if (state.gems < cost) {
-        alert("Pas assez de gemmes !");
-        return;
-        }
+        if (state.gems < cost) return alert("Pas assez de gemmes !");
 
         state.gems -= cost;
         state.stats.totalSummons += count;
 
         const container = document.getElementById('summon-results');
         container.innerHTML = '';
-
         const createdCards = [];
 
         for (let i = 0; i < count; i++) {
@@ -691,20 +724,23 @@
         <i class="fa-solid fa-shield-halved fa-2x" style="color:#4f46e5;"></i>
         </div>
         <div class="card-back">
-        <span class="badge-rarity bg-${char.rarity}">${char.rarity}</span>
+        <div class="card-top-bar">
+        ${renderRarityDots(char.rarity)}
+        </div>
+        <div class="card-top-header">
+        <span class="card-title-text">${char.name}</span>
+        </div>
+        <div class="card-image-area">
         <img src="${char.image}" class="card-img" alt="${char.name}">
-        <strong style="font-size:0.75rem;">${char.name}</strong>
+        <div class="types-overlay">
+        ${char.types.map(t => `<span class="badge-type type-${t}">${t}</span>`).join('')}
+        </div>
+        </div>
         </div>
         </div>
         `;
 
-        cardEl.onclick = function() {
-        if (!this.classList.contains('flipped')) {
-        this.classList.add('flipped');
-        if (this.dataset.rarity === 'Cosmic' || this.dataset.rarity === 'FullArt') playSpecialSound();
-        }
-        };
-
+        cardEl.onclick = function() { this.classList.toggle('flipped'); };
         container.appendChild(cardEl);
         createdCards.push(cardEl);
         }
@@ -712,53 +748,15 @@
         saveGame();
 
         if (count > 1) {
-        setButtonsDisabled(true);
         createdCards.forEach((card, index) => {
         setTimeout(() => {
         card.classList.add('reveal-pop');
         card.classList.add('flipped');
-
-        if (card.dataset.rarity === 'Cosmic' || card.dataset.rarity === 'FullArt') {
-        playSpecialSound();
-        }
-
         setTimeout(() => card.classList.remove('reveal-pop'), 300);
-
-        if (index === createdCards.length - 1) {
-        setTimeout(() => setButtonsDisabled(false), 400);
-        }
-        }, index * 350);
+        }, index * 250);
         });
         } else {
-        if (createdCards[0].dataset.rarity === 'Cosmic' || createdCards[0].dataset.rarity === 'FullArt') {
-        playSpecialSound();
-        }
         createdCards[0].classList.add('flipped');
-        }
-        }
-
-        function getQuestCurrentProgress(quest) {
-        if (quest.type === 'total_summons') {
-        return state.stats.totalSummons;
-        }
-        if (quest.type === 'count_cosmic_fa') {
-        let specialIds = CHARACTERS.filter(c => c.rarity === 'Cosmic' || c.rarity === 'FullArt').map(c => c.id);
-        return specialIds.reduce((acc, id) => acc + (state.inventory[id] || 0), 0);
-        }
-        if (quest.type === 'unique_cards') {
-        return Object.keys(state.inventory).length;
-        }
-        return 0;
-        }
-
-        function claimQuest(questId) {
-        let quest = QUESTS_DEF.find(q => q.id === questId);
-        if (!quest) return;
-
-        if (!state.claimedQuests.includes(questId)) {
-        state.claimedQuests.push(questId);
-        state.gems += quest.reward;
-        saveGame();
         }
         }
 
@@ -788,11 +786,27 @@
         gridHtml += `
         <div class="item-card ${isUnlocked ? '' : 'locked'}">
         ${isUnlocked ?
-        `<img src="${c.image}" class="card-img" alt="${c.name}">
-        <strong style="font-size:0.8rem;">${c.name}</strong>
-        <small style="font-size:0.7rem; color:var(--text-muted);">x${count}</small>`
+        `<div class="gacha-card flipped" style="cursor:default; width:100%; height:160px;">
+        <div class="card-inner">
+        <div class="card-back">
+        <div class="card-top-bar">
+        ${renderRarityDots(c.rarity)}
+        </div>
+        <div class="card-top-header">
+        <span class="card-title-text">${c.name}</span>
+        </div>
+        <div class="card-image-area">
+        <img src="${c.image}" class="card-img" alt="${c.name}">
+        <div class="types-overlay">
+        ${c.types.map(t => `<span class="badge-type type-${t}">${t}</span>`).join('')}
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <small style="font-size:0.7rem; color:var(--text-muted); margin-top:4px;">Possédé: x${count}</small>`
         :
-        `<div class="card-img-placeholder">?</div><span class="item-name">???</span>`
+        `<div class="card-img-placeholder">?</div><span style="font-size:0.75rem; margin-top:4px;">???</span>`
         }
         </div>`;
         });
@@ -805,44 +819,45 @@
         let percent = Math.round((totalUnlocked / CHARACTERS.length) * 100);
         document.getElementById('collect-percent').innerText = `${percent}%`;
 
-        // Interface des Quêtes
+        // Quêtes
         const questsContainer = document.getElementById('quests-container');
         questsContainer.innerHTML = '';
-
-        let readyQuestsCount = 0;
+        let readyCount = 0;
 
         QUESTS_DEF.forEach(q => {
-        let current = getQuestCurrentProgress(q);
+        let current = q.type === 'total_summons' ? state.stats.totalSummons : Object.keys(state.inventory).length;
         let isCompleted = current >= q.goal;
         let isClaimed = state.claimedQuests.includes(q.id);
+        if (isCompleted && !isClaimed) readyCount++;
 
-        if (isCompleted && !isClaimed) readyQuestsCount++;
-
-        const qCard = document.createElement('div');
-        qCard.className = 'quest-card';
-        qCard.innerHTML = `
-        <div class="quest-info">
+        questsContainer.innerHTML += `
+        <div class="quest-card">
+        <div>
         <h4>${q.title} (+${q.reward} 💎)</h4>
-        <p>${q.desc}</p>
-        <div class="quest-progress">Progression : ${Math.min(current, q.goal)} / ${q.goal}</div>
+        <p style="font-size:0.8rem; color:var(--text-muted);">${q.desc}</p>
         </div>
         <button class="btn-claim" ${(!isCompleted || isClaimed) ? 'disabled' : ''} onclick="claimQuest('${q.id}')">
         ${isClaimed ? 'Réclamée' : (isCompleted ? 'Réclamer' : 'En cours')}
         </button>
-        `;
-        questsContainer.appendChild(qCard);
+        </div>`;
         });
 
-        document.getElementById('quest-badge').innerText = readyQuestsCount > 0 ? `(${readyQuestsCount})` : '';
+        document.getElementById('quest-badge').innerText = readyCount > 0 ? `(${readyCount})` : '';
+        }
+
+        function claimQuest(id) {
+        let q = QUESTS_DEF.find(x => x.id === id);
+        if (q && !state.claimedQuests.includes(id)) {
+        state.claimedQuests.push(id);
+        state.gems += q.reward;
+        saveGame();
+        }
         }
 
         function switchTab(evt, tabId) {
         document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-        if (evt && evt.currentTarget) {
-        evt.currentTarget.classList.add('active');
-        }
+        if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
         document.getElementById(`tab-${tabId}`).classList.add('active');
         }
 
