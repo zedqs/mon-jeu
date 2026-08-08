@@ -1,0 +1,852 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Summoner - Monstridex</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #121318;
+            --panel-bg: #1c1e24;
+            --panel-border: #2a2d37;
+            --primary: #4f46e5;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --rarity-C: #6b7280; /* Commune */
+            --rarity-R: #10b981; /* Rare */
+            --rarity-UR: #3b82f6; /* Ultra Rare */
+            --rarity-LEG: #a855f7; /* Légendaire */
+            --rarity-COS: #f59e0b; /* Cosmic */
+            --rarity-FA: #ec4899; /* Full Art */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        header {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .resources {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .res-badge {
+            background: #121318;
+            border: 1px solid var(--panel-border);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-add-gems {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+            .btn-add-gems:hover {
+                background: #059669;
+            }
+
+        nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            color: var(--text-muted);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+            .nav-tab.active, .nav-tab:hover {
+                color: var(--text-main);
+                background: #282b36;
+                border-color: #3b3f50;
+            }
+
+        .tab-content {
+            display: none;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 24px;
+            min-height: 450px;
+        }
+
+            .tab-content.active {
+                display: block;
+            }
+
+        /* --- INVOCATIONS --- */
+        .summon-box {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-summon {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin: 0 5px;
+        }
+
+            .btn-summon:hover {
+                background: #4338ca;
+            }
+
+            .btn-summon:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+        .cards-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .gacha-card {
+            width: 120px;
+            height: 160px;
+            perspective: 1000px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+            .gacha-card.reveal-pop {
+                transform: scale(1.15);
+                z-index: 10;
+            }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            border-radius: 8px;
+        }
+
+        .gacha-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 6px;
+            border: 1px solid var(--panel-border);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #1e2029 0%, #121318 100%);
+            border: 2px solid #3b3f50;
+            justify-content: center;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: #232630;
+        }
+
+        .card-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: #121318;
+        }
+
+        .badge-rarity {
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #fff;
+        }
+
+        .bg-Commune {
+            background: var(--rarity-C);
+        }
+
+        .bg-Rare {
+            background: var(--rarity-R);
+        }
+
+        .bg-UltraRare {
+            background: var(--rarity-UR);
+        }
+
+        .bg-Légendaire {
+            background: var(--rarity-LEG);
+            box-shadow: 0 0 8px var(--rarity-LEG);
+        }
+
+        .bg-Cosmic {
+            background: var(--rarity-COS);
+            box-shadow: 0 0 12px var(--rarity-COS);
+        }
+
+        .bg-FullArt {
+            background: var(--rarity-FA);
+            box-shadow: 0 0 14px var(--rarity-FA);
+        }
+
+        /* --- COLLECTION --- */
+        .category-section {
+            margin-bottom: 25px;
+        }
+
+        .category-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--panel-border);
+            padding-bottom: 6px;
+        }
+
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 12px;
+        }
+
+        .item-card {
+            background: #121318;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .item-card.locked .card-img-placeholder {
+                width: 60px;
+                height: 60px;
+                background: #1c1e24;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.8rem;
+                font-weight: 800;
+                color: var(--text-muted);
+            }
+
+        /* --- QUÊTES --- */
+        .quests-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quest-card {
+            background: #121318;
+            border: 1px solid var(--panel-border);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quest-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .quest-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .quest-progress {
+            margin-top: 8px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .btn-claim {
+            background: #f59e0b;
+            color: #121318;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+            .btn-claim:hover {
+                background: #d97706;
+            }
+
+            .btn-claim:disabled {
+                background: #374151;
+                color: #9ca3af;
+                cursor: not-allowed;
+            }
+
+        /* --- SAUVEGARDE / IMPORT EXPORT --- */
+        .save-box {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .save-textarea {
+            width: 100%;
+            height: 140px;
+            background: #121318;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-main);
+            font-family: monospace;
+            font-size: 0.85rem;
+            resize: vertical;
+            user-select: text;
+        }
+
+        .save-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            background: #374151;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+            .btn-action:hover {
+                background: #4b5563;
+            }
+
+            .btn-action.primary {
+                background: var(--primary);
+            }
+
+                .btn-action.primary:hover {
+                    background: #4338ca;
+                }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header>
+            <div class="brand">
+                <h1>Cosmic Collector</h1>
+            </div>
+            <div class="resources">
+                <div class="res-badge"><i class="fa-solid fa-gem" style="color:#818cf8;"></i> <span id="res-gems">1000</span></div>
+                <button class="btn-add-gems" onclick="addGems(1000000)"><i class="fa-solid fa-plus"></i> 1M 💎</button>
+            </div>
+        </header>
+
+        <nav>
+            <button class="nav-tab active" onclick="switchTab(event, 'summon')">Invocations</button>
+            <button class="nav-tab" onclick="switchTab(event, 'collection')">Livre (<span id="collect-percent">0%</span>)</button>
+            <button class="nav-tab" onclick="switchTab(event, 'quests')">Quêtes <span id="quest-badge" style="color:#f59e0b;"></span></button>
+            <button class="nav-tab" onclick="switchTab(event, 'save')"><i class="fa-solid fa-floppy-disk"></i> Données</button>
+        </nav>
+
+        <!-- INVOCATIONS -->
+        <div id="tab-summon" class="tab-content active">
+            <div class="summon-box">
+                <div> Légendaire Garantie: <span id="pity-counter" style="color:var(--rarity-LEG); font-weight:bold;">0</span>/50</div>
+                <div>
+                    <button class="btn-summon" id="btn-sum-1" onclick="doSummon(1)">Invoquer x1 (100 💎)</button>
+                    <button class="btn-summon" id="btn-sum-10" onclick="doSummon(10)">Invoquer x10 (1000 💎)</button>
+                </div>
+                <div class="cards-grid" id="summon-results"></div>
+            </div>
+        </div>
+
+        <!-- LIVRE DE COLLECTION -->
+        <div id="tab-collection" class="tab-content">
+            <h2 style="margin-bottom: 20px;">Livre de Collection</h2>
+            <div id="collection-categories"></div>
+        </div>
+
+        <!-- QUÊTES -->
+        <div id="tab-quests" class="tab-content">
+            <h2 style="margin-bottom: 20px;">Missions & Quêtes</h2>
+            <div class="quests-list" id="quests-container"></div>
+        </div>
+
+        <!-- GESTION SAUVEGARDE (IMPORT / EXPORT SÉCURISÉ) -->
+        <div id="tab-save" class="tab-content">
+            <h2 style="margin-bottom: 15px;">Gestion de la Sauvegarde</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">
+                Exportez ou importez votre progression. Le code de sauvegarde est signé numériquement : toute modification manuelle le rendra invalide.
+            </p>
+            <div class="save-box">
+                <textarea id="save-data-text" class="save-textarea" placeholder="Collez votre code de sauvegarde sécurisé ici..."></textarea>
+                <div class="save-actions">
+                    <button class="btn-action primary" onclick="exportData()"><i class="fa-solid fa-download"></i> Générer / Copier Export</button>
+                    <button class="btn-action" onclick="importData()"><i class="fa-solid fa-upload"></i> Importer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SECRET_KEY = "CosmicGachaSecureKey_2026!"; // Clé de signature anti-triche
+
+        const CHARACTERS = [
+        // Communes (70%)
+        { id: 'c1', name: 'Slimico', rarity: 'Commune', image: 'https://via.placeholder.com/100/6b7280/ffffff?text=Slimico' },
+        { id: 'c2', name: 'Poussifeuille', rarity: 'Commune', image: 'https://via.placeholder.com/100/6b7280/ffffff?text=Poussifeuille' },
+        { id: 'c3', name: 'Bubulle', rarity: 'Commune', image: 'https://via.placeholder.com/100/6b7280/ffffff?text=Bubulle' },
+
+        // Rares (20%)
+        { id: 'r1', name: 'Pyronard', rarity: 'Rare', image: 'https://via.placeholder.com/100/10b981/ffffff?text=Pyronard' },
+        { id: 'r2', name: 'Aquagriff', rarity: 'Rare', image: 'https://via.placeholder.com/100/10b981/ffffff?text=Aquagriff' },
+
+        // Ultra Rares (7.5%)
+        { id: 'ur1', name: 'Electrak', rarity: 'UltraRare', image: 'https://via.placeholder.com/100/3b82f6/ffffff?text=Electrak' },
+        { id: 'ur2', name: 'Floramut', rarity: 'UltraRare', image: 'https://via.placeholder.com/100/3b82f6/ffffff?text=Floramut' },
+
+        // Légendaires (2%)
+        { id: 'leg1', name: 'Ignidrag', rarity: 'Légendaire', image: 'https://via.placeholder.com/100/a855f7/ffffff?text=Ignidrag' },
+        { id: 'leg2', name: 'Valkyria', rarity: 'Légendaire', image: 'https://via.placeholder.com/100/a855f7/ffffff?text=Valkyria' },
+
+        // Cosmic (0.4%)
+        { id: 'cos1', name: 'Empereur Stellion', rarity: 'Cosmic', image: 'https://via.placeholder.com/100/f59e0b/ffffff?text=Stellion' },
+
+        // Full Art (0.1%)
+        { id: 'fa1', name: 'Shrek Divin', rarity: 'FullArt', image: 'image/shrek.jpg' }
+        ];
+
+        const CATEGORIES = ['FullArt', 'Cosmic', 'Légendaire', 'UltraRare', 'Rare', 'Commune'];
+
+        let QUESTS_DEF = [
+        { id: 'q_sum_5', title: 'Premières Invocations', desc: 'Effectuer 5 invocations au total', goal: 5, reward: 500, type: 'total_summons' },
+        { id: 'q_sum_50', title: 'Invocateur Aguerri', desc: 'Effectuer 50 invocations', goal: 50, reward: 2500, type: 'total_summons' },
+        { id: 'q_find_rare', title: 'Très Rare !', desc: 'Obtenir au moins 1 carte Cosmic ou Full Art', goal: 1, reward: 5000, type: 'count_cosmic_fa' },
+        { id: 'q_collect_5', title: 'Collectionneur Débutant', desc: 'Débloquer 5 cartes uniques dans le livre', goal: 5, reward: 1000, type: 'unique_cards' }
+        ];
+
+        let state = {
+        gems: 1000,
+        pity: 0,
+        inventory: {},
+        stats: { totalSummons: 0 },
+        claimedQuests: []
+        };
+
+        if (localStorage.getItem('gacha_save_v5')) {
+        try { state = { ...state, ...JSON.parse(localStorage.getItem('gacha_save_v5')) }; } catch(e){}
+        }
+
+        // --- SÉCURITÉ ANTI-MODIFICATION (Checksum) ---
+        function generateHash(text) {
+        let hash = 0;
+        const combined = text + SECRET_KEY;
+        for (let i = 0; i < combined.length; i++) {
+        hash = (hash << 5) - hash + combined.charCodeAt(i);
+        hash |= 0;
+        }
+        return hash.toString(16);
+        }
+
+        function exportData() {
+        const rawData = JSON.stringify(state);
+        const signature = generateHash(rawData);
+        const payload = { data: state, sig: signature };
+
+        const dataStr = btoa(JSON.stringify(payload));
+        const area = document.getElementById('save-data-text');
+        area.value = dataStr;
+        area.select();
+        navigator.clipboard.writeText(dataStr);
+        alert("Code de sauvegarde sécurisé généré et copié dans le presse-papier !");
+        }
+
+        function importData() {
+        const area = document.getElementById('save-data-text');
+        const str = area.value.trim();
+        if (!str) {
+        alert("Veuillez coller un code de sauvegarde !");
+        return;
+        }
+        try {
+        const decoded = JSON.parse(atob(str));
+
+        if (!decoded.data || !decoded.sig) {
+        alert("Format de sauvegarde invalide !");
+        return;
+        }
+
+        const expectedSig = generateHash(JSON.stringify(decoded.data));
+
+        if (decoded.sig !== expectedSig) {
+        alert("⚠️ Sauvegarde modifiée ou corrompue ! Importation refusée.");
+        return;
+        }
+
+        state = { ...state, ...decoded.data };
+        saveGame();
+        alert("Sauvegarde vérifiée et importée avec succès !");
+        } catch(e) {
+        alert("Code de sauvegarde invalide !");
+        }
+        }
+
+        // --- GÉNÉRATEUR AUDIO (Son Spécial Cosmic / Full Art) ---
+        function playSpecialSound() {
+        try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+
+        const startTime = ctx.currentTime + (idx * 0.12);
+        gain.gain.setValueAtTime(0, startTime);
+        gain.gain.linearRampToValueAtTime(0.3, startTime + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.8);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(startTime);
+        osc.stop(startTime + 0.8);
+        });
+        } catch(e) {
+        console.log("Audio Web non supporté ou bloqué.");
+        }
+        }
+
+        function saveGame() {
+        localStorage.setItem('gacha_save_v5', JSON.stringify(state));
+        updateUI();
+        }
+
+        function addGems(amount) {
+        state.gems += amount;
+        saveGame();
+        }
+
+        function getRandomCharacter() {
+        state.pity++;
+
+        if (state.pity >= 50) {
+        state.pity = 0;
+        return pickFromRarity('Légendaire');
+        }
+
+        let roll = Math.random() * 100;
+
+        if (roll < 0.1) {
+        return pickFromRarity('FullArt');
+        } else if (roll < 0.5) {
+        return pickFromRarity('Cosmic');
+        } else if (roll < 2.5) {
+        state.pity = 0;
+        return pickFromRarity('Légendaire');
+        } else if (roll < 10.0) {
+        return pickFromRarity('UltraRare');
+        } else if (roll < 30.0) {
+        return pickFromRarity('Rare');
+        } else {
+        return pickFromRarity('Commune');
+        }
+        }
+
+        function pickFromRarity(rarity) {
+        let filtered = CHARACTERS.filter(c => c.rarity === rarity);
+        if (filtered.length === 0) filtered = CHARACTERS.filter(c => c.rarity === 'Commune');
+        return filtered[Math.floor(Math.random() * filtered.length)];
+        }
+
+        function setButtonsDisabled(disabled) {
+        document.getElementById('btn-sum-1').disabled = disabled;
+        document.getElementById('btn-sum-10').disabled = disabled;
+        }
+
+        function doSummon(count) {
+        const cost = count * 100;
+        if (state.gems < cost) {
+        alert("Pas assez de gemmes !");
+        return;
+        }
+
+        state.gems -= cost;
+        state.stats.totalSummons += count;
+
+        const container = document.getElementById('summon-results');
+        container.innerHTML = '';
+
+        const createdCards = [];
+
+        for (let i = 0; i < count; i++) {
+        let char = getRandomCharacter();
+        state.inventory[char.id] = (state.inventory[char.id] || 0) + 1;
+
+        const cardEl = document.createElement('div');
+        cardEl.className = 'gacha-card';
+        cardEl.dataset.rarity = char.rarity;
+        cardEl.innerHTML = `
+        <div class="card-inner">
+        <div class="card-front">
+        <i class="fa-solid fa-shield-halved fa-2x" style="color:#4f46e5;"></i>
+        </div>
+        <div class="card-back">
+        <span class="badge-rarity bg-${char.rarity}">${char.rarity}</span>
+        <img src="${char.image}" class="card-img" alt="${char.name}">
+        <strong style="font-size:0.75rem;">${char.name}</strong>
+        </div>
+        </div>
+        `;
+
+        cardEl.onclick = function() {
+        if (!this.classList.contains('flipped')) {
+        this.classList.add('flipped');
+        if (this.dataset.rarity === 'Cosmic' || this.dataset.rarity === 'FullArt') playSpecialSound();
+        }
+        };
+
+        container.appendChild(cardEl);
+        createdCards.push(cardEl);
+        }
+
+        saveGame();
+
+        if (count > 1) {
+        setButtonsDisabled(true);
+        createdCards.forEach((card, index) => {
+        setTimeout(() => {
+        card.classList.add('reveal-pop');
+        card.classList.add('flipped');
+
+        if (card.dataset.rarity === 'Cosmic' || card.dataset.rarity === 'FullArt') {
+        playSpecialSound();
+        }
+
+        setTimeout(() => card.classList.remove('reveal-pop'), 300);
+
+        if (index === createdCards.length - 1) {
+        setTimeout(() => setButtonsDisabled(false), 400);
+        }
+        }, index * 350);
+        });
+        } else {
+        if (createdCards[0].dataset.rarity === 'Cosmic' || createdCards[0].dataset.rarity === 'FullArt') {
+        playSpecialSound();
+        }
+        createdCards[0].classList.add('flipped');
+        }
+        }
+
+        function getQuestCurrentProgress(quest) {
+        if (quest.type === 'total_summons') {
+        return state.stats.totalSummons;
+        }
+        if (quest.type === 'count_cosmic_fa') {
+        let specialIds = CHARACTERS.filter(c => c.rarity === 'Cosmic' || c.rarity === 'FullArt').map(c => c.id);
+        return specialIds.reduce((acc, id) => acc + (state.inventory[id] || 0), 0);
+        }
+        if (quest.type === 'unique_cards') {
+        return Object.keys(state.inventory).length;
+        }
+        return 0;
+        }
+
+        function claimQuest(questId) {
+        let quest = QUESTS_DEF.find(q => q.id === questId);
+        if (!quest) return;
+
+        if (!state.claimedQuests.includes(questId)) {
+        state.claimedQuests.push(questId);
+        state.gems += quest.reward;
+        saveGame();
+        }
+        }
+
+        function updateUI() {
+        document.getElementById('res-gems').innerText = state.gems.toLocaleString('fr-FR');
+        document.getElementById('pity-counter').innerText = state.pity;
+
+        // Livre de collection
+        const catContainer = document.getElementById('collection-categories');
+        catContainer.innerHTML = '';
+        let totalUnlocked = 0;
+
+        CATEGORIES.forEach(cat => {
+        const catChars = CHARACTERS.filter(c => c.rarity === cat);
+        if (catChars.length === 0) return;
+
+        const section = document.createElement('div');
+        section.className = 'category-section';
+
+        let gridHtml = `<div class="category-title"><span class="badge-rarity bg-${cat}">${cat}</span> Rareté ${cat}</div><div class="collection-grid">`;
+
+        catChars.forEach(c => {
+        const count = state.inventory[c.id] || 0;
+        const isUnlocked = count > 0;
+        if (isUnlocked) totalUnlocked++;
+
+        gridHtml += `
+        <div class="item-card ${isUnlocked ? '' : 'locked'}">
+        ${isUnlocked ?
+        `<img src="${c.image}" class="card-img" alt="${c.name}">
+        <strong style="font-size:0.8rem;">${c.name}</strong>
+        <small style="font-size:0.7rem; color:var(--text-muted);">x${count}</small>`
+        :
+        `<div class="card-img-placeholder">?</div><span class="item-name">???</span>`
+        }
+        </div>`;
+        });
+
+        gridHtml += `</div>`;
+        section.innerHTML = gridHtml;
+        catContainer.appendChild(section);
+        });
+
+        let percent = Math.round((totalUnlocked / CHARACTERS.length) * 100);
+        document.getElementById('collect-percent').innerText = `${percent}%`;
+
+        // Interface des Quêtes
+        const questsContainer = document.getElementById('quests-container');
+        questsContainer.innerHTML = '';
+
+        let readyQuestsCount = 0;
+
+        QUESTS_DEF.forEach(q => {
+        let current = getQuestCurrentProgress(q);
+        let isCompleted = current >= q.goal;
+        let isClaimed = state.claimedQuests.includes(q.id);
+
+        if (isCompleted && !isClaimed) readyQuestsCount++;
+
+        const qCard = document.createElement('div');
+        qCard.className = 'quest-card';
+        qCard.innerHTML = `
+        <div class="quest-info">
+        <h4>${q.title} (+${q.reward} 💎)</h4>
+        <p>${q.desc}</p>
+        <div class="quest-progress">Progression : ${Math.min(current, q.goal)} / ${q.goal}</div>
+        </div>
+        <button class="btn-claim" ${(!isCompleted || isClaimed) ? 'disabled' : ''} onclick="claimQuest('${q.id}')">
+        ${isClaimed ? 'Réclamée' : (isCompleted ? 'Réclamer' : 'En cours')}
+        </button>
+        `;
+        questsContainer.appendChild(qCard);
+        });
+
+        document.getElementById('quest-badge').innerText = readyQuestsCount > 0 ? `(${readyQuestsCount})` : '';
+        }
+
+        function switchTab(evt, tabId) {
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+        if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add('active');
+        }
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+        }
+
+        updateUI();
+    </script>
+</body>
+</html>
