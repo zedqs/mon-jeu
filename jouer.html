@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jouer — ZedJeux</title>
+<meta name="description" content="Joue gratuitement aux meilleurs jeux sur ZedJeux, directement dans ton navigateur !">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+<link rel="stylesheet" href="assets/game.css">
+<style>
+  .panel{max-width:980px}
+  .topbar{max-width:980px}
+  .frame-wrap{
+    position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:16px;overflow:hidden;
+    box-shadow:0 18px 44px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.15);
+  }
+  .frame-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .frame-wrap:fullscreen{border-radius:0;aspect-ratio:auto}
+  #loading{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+    background:linear-gradient(150deg,#14152e,#251b4d);z-index:3;text-align:center;padding:20px;
+  }
+  #loading .big{font-size:64px}
+  .spin{width:44px;height:44px;border-radius:50%;border:5px solid rgba(255,255,255,.2);border-top-color:#a855f7;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;width:100%}
+  .toolbar .sp{flex:1}
+  .fav-btn{font-size:15px}
+  .fav-btn.on{background:linear-gradient(135deg,#ec4899,#f43f5e);box-shadow:0 6px 18px rgba(244,63,94,.45)}
+  .info{width:100%;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px 18px;line-height:1.6}
+  .info h2{font-size:20px;margin-bottom:6px}
+  .info .controls{color:#c7cdf0;font-size:14px;margin-top:8px}
+  .info .controls b{color:#fbbf24}
+  .stars{color:#f5a623;letter-spacing:2px}
+  .sugg-title{align-self:flex-start;font-size:19px;font-weight:800;margin-top:6px}
+  .sugg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;width:100%}
+  .sugg a{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;overflow:hidden;text-decoration:none;color:#fff;transition:transform .15s}
+  .sugg a:hover{transform:translateY(-4px)}
+  .sugg .th{position:relative;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center}
+  .sugg .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .sugg .th span{font-size:40px}
+  .sugg p{padding:8px 10px 10px;font-weight:700;font-size:13.5px}
+  .credit{color:#8b93b8;font-size:12px;text-align:center}
+  .credit a{color:#a5b4fc}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back-btn" href="index.html">← Tous les jeux</a>
+  <h1 id="gameTitle">🎮 Chargement…</h1><div class="spacer"></div>
+</div>
+
+<div class="panel">
+  <div class="frame-wrap" id="frameWrap">
+    <div id="loading">
+      <div class="big" id="loadEmoji">🎮</div>
+      <div class="spin"></div>
+      <div><b id="loadName">Chargement du jeu…</b><br><span style="color:#9aa3c7;font-size:14px">Cela peut prendre quelques secondes, prépare-toi !</span></div>
+      <button class="btn" id="playBtn" style="display:none">▶ Cliquez pour jouer</button>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn" id="fsBtn">⛶ Plein écran</button>
+    <button class="btn ghost" id="reloadBtn">🔄 Recharger le jeu</button>
+    <button class="btn ghost fav-btn" id="favBtn">🤍 Favori</button>
+    <div class="sp"></div>
+    <a class="btn ghost" id="extLink" href="#" target="_blank" rel="noopener" style="text-decoration:none">⚠️ Bloqué ? Ouvrir l’original ↗</a>
+  </div>
+
+  <div class="info">
+    <h2 id="infoName"></h2>
+    <div><span class="stars" id="infoStars"></span> · <span id="infoMeta"></span></div>
+    <p id="infoDesc" style="margin-top:8px"></p>
+    <p class="controls">🎮 <b>Comment jouer :</b> <span id="infoControls"></span></p>
+  </div>
+
+  <div class="sugg-title">🔥 Tu vas aussi aimer</div>
+  <div class="sugg" id="sugg"></div>
+
+  <p class="credit">Jeu fourni via le programme d’intégration officiel de <a href="https://www.crazygames.com" target="_blank" rel="noopener">CrazyGames</a> — tous droits réservés à leurs créateurs respectifs. Joue gratuitement sur ZedJeux !</p>
+</div>
+
+<script src="assets/catalogue.js"></script>
+<script>
+const slug = new URLSearchParams(location.search).get('jeu') || '';
+const game = (window.REAL_GAMES || []).find(g => g.slug === slug);
+
+const titleEl = document.getElementById('gameTitle');
+if (!game) {
+  titleEl.textContent = '😢 Jeu introuvable';
+  document.getElementById('loading').innerHTML = '<div class="big">🕹️</div><p><b>Oups, ce jeu n’existe pas (encore) !</b><br><br><a class="btn" href="index.html" style="text-decoration:none">← Retour à l’accueil</a></p>';
+} else {
+  document.title = game.name + ' — Joue gratuitement sur ZedJeux';
+  titleEl.textContent = game.emoji + ' ' + game.name;
+  document.getElementById('loadEmoji').textContent = game.emoji;
+  document.getElementById('loadName').textContent = 'Chargement de ' + game.name + '…';
+  document.getElementById('infoName').textContent = game.emoji + ' ' + game.name;
+  document.getElementById('infoStars').textContent = '★★★★★'.slice(0, game.rating) + '☆☆☆☆☆'.slice(0, 5 - game.rating);
+  document.getElementById('infoMeta').textContent = 'Catégorie : ' + game.cat + ' · ▶ ' + game.plays + ' parties';
+  document.getElementById('infoDesc').textContent = game.desc;
+  document.getElementById('infoControls').textContent = game.controls;
+  document.getElementById('extLink').href = 'https://www.crazygames.com/game/' + game.slug;
+
+  // --- Iframe du jeu (chargée au clic pour aller plus vite + autoriser le son) ---
+  const wrap = document.getElementById('frameWrap');
+  const loading = document.getElementById('loading');
+  const playBtn = document.getElementById('playBtn');
+  playBtn.style.display = '';
+  let iframe = null;
+
+  function loadGame() {
+    playBtn.style.display = 'none';
+    if (iframe) iframe.remove();
+    iframe = document.createElement('iframe');
+    iframe.src = 'https://www.crazygames.com/embed/' + game.slug;
+    iframe.title = game.name;
+    iframe.allow = 'autoplay; fullscreen; gamepad; keyboard; xr-spatial-tracking; clipboard-write; web-share; accelerometer; gyroscope;';
+    iframe.allowFullscreen = true;
+    iframe.setAttribute('loading', 'eager');
+    iframe.addEventListener('load', () => setTimeout(() => { loading.style.display = 'none'; }, 600));
+    wrap.appendChild(iframe);
+    // Sécurité : masquer l'écran de chargement au bout de 6 s même sans événement load
+    setTimeout(() => { loading.style.display = 'none'; }, 6000);
+  }
+  playBtn.onclick = loadGame;
+  document.getElementById('reloadBtn').onclick = () => { loading.style.display = ''; loadGame(); };
+  document.getElementById('fsBtn').onclick = () => {
+    if (!iframe) loadGame();
+    if (wrap.requestFullscreen) wrap.requestFullscreen().catch(() => {});
+    else if (iframe && iframe.requestFullscreen) iframe.requestFullscreen().catch(() => {});
+  };
+
+  // --- Favoris (même stockage que l'accueil) ---
+  const favBtn = document.getElementById('favBtn');
+  const favId = 'cg-' + game.slug;
+  let favs = new Set(JSON.parse(localStorage.getItem('zedjeux-favs') || '[]'));
+  function paintFav() {
+    const on = favs.has(favId);
+    favBtn.textContent = on ? '❤️ Favori !' : '🤍 Favori';
+    favBtn.classList.toggle('on', on);
+  }
+  favBtn.onclick = () => {
+    favs.has(favId) ? favs.delete(favId) : favs.add(favId);
+    localStorage.setItem('zedjeux-favs', JSON.stringify([...favs]));
+    paintFav();
+  };
+  paintFav();
+
+  // --- Suggestions : même catégorie d'abord, puis les autres ---
+  const others = window.REAL_GAMES.filter(g => g.slug !== game.slug);
+  const sugg = [...others.filter(g => g.cat === game.cat), ...others.filter(g => g.cat !== game.cat).sort(() => Math.random() - .5)].slice(0, 10);
+  document.getElementById('sugg').innerHTML = sugg.map(g =>
+    `<a href="jouer.html?jeu=${g.slug}">
+       <div class="th" style="background:${g.grad}"><span>${g.emoji}</span>${g.cover ? `<img src="${g.cover}" alt="${g.name}" loading="lazy" onerror="this.remove()">` : ''}</div>
+       <p>${g.emoji} ${g.name}</p>
+     </a>`).join('');
+}
+</script>
+</body>
+</html>
