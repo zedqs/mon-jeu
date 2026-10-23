@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-adsense-account" content="ca-pub-8649470289187025">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8649470289187025" crossorigin="anonymous"></script>
-<title>ZedJeux — Jeux gratuits en ligne : Moto X3M, Tank Stars, WorldGuessr…</title>
-<meta name="description" content="Plus de 50 jeux gratuits à jouer dans ton navigateur : course, action, arcade, réflexion. Sans téléchargement, sur ordinateur et mobile.">
+<title>ZedJeux — Jeux gratuits en ligne : Nitro Racing Gear, Hazmob.io, Drift Boss…</title>
+<meta name="description" content="Plus de 40 jeux gratuits à jouer dans ton navigateur : course, tir multijoueur, arcade, réflexion et 15 classiques faits maison. Sans téléchargement, sur ordinateur et mobile.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230097a7'><path d='M7.5 6h9a5.5 5.5 0 0 1 5.4 6.6l-.7 3A3 3 0 0 1 18.3 18h-.5a3 3 0 0 1-2.2-1L14 15.5H10L8.4 17a3 3 0 0 1-2.2 1h-.5a3 3 0 0 1-2.9-2.4l-.7-3A5.5 5.5 0 0 1 7.5 6Z'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -41,14 +41,14 @@
 <div class="wrap">
   <div class="cats-bar" id="catsBar"></div>
 
-  <a class="hero" id="hero" href="jouer.html?jeu=moto-x3m-spooky-land">
+  <a class="hero" id="hero" href="jouer.html?jeu=nitro-racing-gear">
     <div class="txt">
       <span class="kicker">Jeu de la semaine</span>
-      <h1>Moto X3M Spooky Land</h1>
-      <p>Le jeu de moto culte, en version Halloween : 22 parcours remplis de rampes, de loopings et de pièges. Boucle tes saltos pour gagner des secondes et décrocher les 3 étoiles.</p>
+      <h1>Nitro Racing Gear</h1>
+      <p>40 courses dans 8 décors — ville néon, neige, volcan… — entre sprints, drifts et duels de dragster. Améliore tes bolides au garage et vise le podium.</p>
       <span class="playbtn">Jouer maintenant</span>
     </div>
-    <div class="vis"><img src="https://img.gamedistribution.com/b8a342904608470a9f3382337aca3558-1280x720.jpeg" alt="Moto X3M Spooky Land" onerror="this.onerror=null;this.src='https://img.gamedistribution.com/b8a342904608470a9f3382337aca3558-512x384.jpeg'"></div>
+    <div class="vis"><img src="https://img.gamemonetize.com/dol1mcx04iu3c75ct96uv6vx4o5cwypn/512x384.jpg" alt="Nitro Racing Gear" onerror="this.remove()"></div>
   </a>
 
   <section class="blk" id="secHistory" hidden>
@@ -97,18 +97,17 @@
       <a href="index.html?cat=Course">Jeux de course</a>
       <a href="index.html?cat=Action">Jeux d’action</a>
       <a href="index.html?cat=Arcade">Jeux d’arcade</a>
-      <a href="index.html?cat=Sport">Jeux de sport</a>
       <a href="index.html?cat=Réflexion">Réflexion &amp; puzzle</a>
       <a href="index.html?cat=Faits+maison">Faits maison</a>
     </div>
     <div>
       <h4>Jeux populaires</h4>
-      <a href="jouer.html?jeu=moto-x3m-spooky-land">Moto X3M Spooky Land</a>
-      <a href="jouer.html?jeu=tank-stars">Tank Stars</a>
-      <a href="jouer.html?jeu=worldguessr">WorldGuessr</a>
-      <a href="jouer.html?jeu=cursed-treasure">Cursed Treasure 1.5</a>
-      <a href="jouer.html?jeu=wacky-strike">Wacky Strike</a>
-      <a href="jouer.html?jeu=sink-hole">Sink Hole</a>
+      <a href="jouer.html?jeu=nitro-racing-gear">Nitro Racing Gear</a>
+      <a href="jouer.html?jeu=stunt-cars-pro">Stunt Cars Pro</a>
+      <a href="jouer.html?jeu=hazmob-io">Hazmob.io</a>
+      <a href="jouer.html?jeu=drift-boss">Drift Boss</a>
+      <a href="jouer.html?jeu=flow-board-parkour-runner">Flow Board : Parkour Runner</a>
+      <a href="jouer.html?jeu=sink-hole">Sinkhole City</a>
     </div>
     <div>
       <h4>ZedJeux</h4>
@@ -153,7 +152,7 @@ const REAL = (window.REAL_GAMES || []).map(g => ({
 }));
 const ALL = [...REAL, ...HOME_GAMES];
 const byId = id => ALL.find(g => g.id === id);
-const popOrder = ['moto-x3m-spooky-land','tank-stars','worldguessr','sink-hole','vex-x3m-3','cursed-treasure','wacky-strike','car-eats-car-underwater','muscle-rush-3d','battalion-commander-2','nitro-racing-gear','storm-dash'];
+const popOrder = ['nitro-racing-gear','stunt-cars-pro','hazmob-io','flow-board-parkour-runner','drift-boss','warfare-1942-online-shooter','sink-hole','run-3-space','muscle-rush-3d','magline-moto','world-of-wartanks','splash-rivals'];
 
 const CATS = ['Tous','Favoris', ...['Course','Action','Arcade','Sport','Réflexion','Plateau','Cartes','Classiques'].filter(c => ALL.some(g => g.cat === c)), 'Faits maison'];
 let curCat = new URLSearchParams(location.search).get('cat') || 'Tous';

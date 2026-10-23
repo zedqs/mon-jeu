@@ -112,8 +112,8 @@
 <footer class="site-footer">
   <div class="in">
     <div><div class="brand">Zed<em>Jeux</em></div><p>Des jeux gratuits à jouer dans le navigateur, sans rien installer.</p></div>
-    <div><h4>Catégories</h4><a href="index.html?cat=Course">Jeux de course</a><a href="index.html?cat=Action">Jeux d’action</a><a href="index.html?cat=Arcade">Jeux d’arcade</a><a href="index.html?cat=Sport">Jeux de sport</a></div>
-    <div><h4>Jeux populaires</h4><a href="jouer.html?jeu=moto-x3m-spooky-land">Moto X3M Spooky Land</a><a href="jouer.html?jeu=tank-stars">Tank Stars</a><a href="jouer.html?jeu=worldguessr">WorldGuessr</a><a href="jouer.html?jeu=cursed-treasure">Cursed Treasure 1.5</a></div>
+    <div><h4>Catégories</h4><a href="index.html?cat=Course">Jeux de course</a><a href="index.html?cat=Action">Jeux d’action</a><a href="index.html?cat=Arcade">Jeux d’arcade</a><a href="index.html?cat=Réflexion">Réflexion &amp; puzzle</a></div>
+    <div><h4>Jeux populaires</h4><a href="jouer.html?jeu=nitro-racing-gear">Nitro Racing Gear</a><a href="jouer.html?jeu=stunt-cars-pro">Stunt Cars Pro</a><a href="jouer.html?jeu=hazmob-io">Hazmob.io</a><a href="jouer.html?jeu=drift-boss">Drift Boss</a></div>
     <div><h4>ZedJeux</h4><a href="infos.html#apropos">À propos</a><a href="infos.html#confidentialite">Confidentialité</a><a href="infos.html#conditions">Conditions</a><a href="infos.html#contact">Contact</a></div>
   </div>
   <div class="footer-bottom">© 2026 ZedJeux</div>
@@ -174,11 +174,10 @@ function render(){
   document.getElementById('favEmpty').hidden = favs.length > 0;
   document.querySelectorAll('[data-fav]').forEach(b => b.onclick = e => { e.preventDefault(); ZJ.toggleFav(b.dataset.fav); render(); });
 
-  const hist = ZJ.getHistory();
+  const hist = ZJ.getHistory().map(h => ({ h, g: byId(h.id) })).filter(x => x.g);
   document.getElementById('histEmpty').hidden = hist.length > 0;
   document.getElementById('histList').style.display = hist.length ? '' : 'none';
-  document.getElementById('histList').innerHTML = hist.slice(0, 15).map(h => {
-    const g = byId(h.id); if (!g) return '';
+  document.getElementById('histList').innerHTML = hist.slice(0, 15).map(({ h, g }) => {
     return `<a class="hist-item" href="${g.href}">
       <div class="th"><span>${g.emoji}</span>${g.img?`<img src="${g.img}" alt="" loading="lazy" onerror="this.remove()">`:''}</div>
       <div><b>${g.name}</b><small>${h.plays} partie${h.plays>1?'s':''} · dernière le ${fmtDate(h.ts)}</small></div>

@@ -2,11 +2,15 @@
 
 Un site de jeux gratuits façon portail, 100 % HTML/CSS/JS — aucun téléchargement, tout se joue dans le navigateur (ordinateur, tablette et téléphone).
 
-## ⭐ Les jeux intégrés (37)
+## ⭐ Les jeux intégrés (27)
 
-Des jeux de studios connus, intégrés légalement via les flux officiels de partenaires de distribution destinés aux éditeurs de sites (ils sont conçus pour être joués dans une page tierce). Page lecteur : `jouer.html?jeu=<slug>`, catalogue : `assets/catalogue.js`.
+Des jeux de studios indépendants, intégrés légalement via des programmes d'intégration qui **n'exigent pas l'inscription du domaine** : le flux public pour éditeurs de GameMonetize et l'intégration « self-serve » anonyme de WGPlayground. Page lecteur : `jouer.html?jeu=<slug>`, catalogue : `assets/catalogue.js`.
 
-🏍️ Moto X3M Spooky Land · 🪖 Tank Stars · 🌍 WorldGuessr · 💎 Cursed Treasure 1.5 · 🎯 Wacky Strike · 🚙 Car Eats Car · 🕳️ Sink Hole · 🏍️ Vex X3M 3 · 🎖️ Battalion Commander · 🌀 Zuma (Zumble Ocean, Zumbo Mania) · 🏎️ Nitro Racing Gear · 💪 Muscle Rush 3D · et bien plus !
+🏎️ Nitro Racing Gear · 🚗 Stunt Cars Pro · 🏁 Drift Boss · 🛣️ Highway Traffic · 🎯 Hazmob.io · 🪖 Warfare 1942 · 🛡️ World of WarTanks · 🐔 Chicken Strike · 🏄 Flow Board : Parkour Runner · 🕳️ Sinkhole City · 🚀 Run 3 Space · 💪 Muscle Rush 3D · 🌀 Zumba Mania · 🚌 Bus Escape · 🃏 Solitaire The Collection · et bien plus !
+
+Le lecteur (`jouer.html`) affiche chaque jeu dans une iframe **sandboxée sans `allow-top-navigation` ni `allow-popups`** : un jeu — ou ses publicités — ne peut ni rediriger la page ZedJeux ni ouvrir un nouvel onglet. Certains jeux partenaires affichent d'abord un bouton « Play game » (courte pub possible) dans le cadre : c'est normal, tout se joue sur place.
+
+> ⚠️ Les anciens jeux GameDistribution ont été retirés : leur lecteur affiche « not available here » (`blocked.html?unregistered=true`) sur tout domaine qui n'est pas enregistré comme partenaire chez eux. Pour les réintégrer un jour, il faudrait créer un compte publisher GameDistribution, y déclarer le domaine du site et attendre sa validation.
 
 > ℹ️ Subway Surfers officiel est une exclusivité Poki (contrat SYBO) : il ne peut pas être intégré légalement, vérifié chez les distributeurs qui autorisent l'intégration. Voir la FAQ dans `infos.html`.
 
@@ -31,6 +35,7 @@ assets/main.css       → style principal du site
 assets/game.css       → style des pages des mini-jeux faits maison
 games/                → un fichier HTML par mini-jeu fait maison
 images/               → illustrations des monstres de Cosmic Summoner
+ads.txt               → vendeurs publicitaires autorisés (AdSense + partenaire jeux)
 ```
 
 Ouvre simplement `index.html` dans un navigateur, ou sers le dossier avec `python3 -m http.server`.
