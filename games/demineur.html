@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Démineur — ZedJeux</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💣</text></svg>">
+<link rel="stylesheet" href="../assets/game.css">
+<style>
+  #board{display:grid;gap:3px;background:#334155;padding:8px;border-radius:14px;max-width:96vw;overflow:auto}
+  .cell{width:32px;height:32px;border-radius:7px;border:none;font-weight:900;font-size:16px;cursor:pointer;
+    background:linear-gradient(145deg,#7dd3fc,#38bdf8);color:#0c2d48;display:flex;align-items:center;justify-content:center;padding:0}
+  .cell:hover:not(.open){filter:brightness(1.15)}
+  .cell.open{background:#e2e8f0;cursor:default}
+  .cell.boom{background:#ef4444}
+  .n1{color:#2563eb}.n2{color:#16a34a}.n3{color:#dc2626}.n4{color:#1e3a8a}
+  .n5{color:#7f1d1d}.n6{color:#0e7490}.n7{color:#111}.n8{color:#666}
+  #face{font-size:30px;background:none;border:none;cursor:pointer}
+  .mode-on{outline:3px solid #fbbf24}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Tous les jeux</a>
+  <h1>💣 Démineur</h1><div class="spacer"></div>
+</div>
+<div class="panel">
+  <div class="hud">
+    <div class="stat"><small>💣 Restantes</small><span id="minesLeft">10</span></div>
+    <button id="face" title="Nouvelle partie">🙂</button>
+    <div class="stat"><small>⏱ Temps</small><span id="time">0</span>s</div>
+    <select class="sel" id="diff">
+      <option value="easy">😊 Facile (9×9 · 10)</option>
+      <option value="medium">😎 Moyen (16×16 · 40)</option>
+      <option value="hard">😈 Difficile (16×30 · 99)</option>
+    </select>
+    <button class="btn ghost" id="flagMode">🚩 Mode drapeau : NON</button>
+  </div>
+  <div id="board"></div>
+  <div class="msg" id="msg">Clique sur une case pour commencer. Bonne chance !</div>
+  <p class="hint">🖱️ Clic gauche : révéler · Clic droit : poser un drapeau 🚩<br>📱 Sur téléphone : active le « Mode drapeau » ou appuie longuement sur une case.<br>Les chiffres indiquent combien de mines touchent la case.</p>
+</div>
+<script>
+const DIFFS={easy:{r:9,c:9,m:10},medium:{r:16,c:16,m:40},hard:{r:16,c:30,m:99}};
+let R,C,M,cells,started,over,won,flags,timer,seconds,flagMode=false;
+const boardEl=document.getElementById('board');
+
+function neighbors(r,c){
+  const out=[];
+  for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){
+    if(!dr&&!dc)continue;const nr=r+dr,nc=c+dc;
+    if(nr>=0&&nr<R&&nc>=0&&nc<C)out.push([nr,nc]);
+  }return out;
+}
+function newGame(){
+  const d=DIFFS[document.getElementById('diff').value];
+  R=d.r;C=d.c;M=d.m;
+  cells=Array.from({length:R},()=>Array.from({length:C},()=>({mine:false,open:false,flag:false,n:0})));
+  started=false;over=false;won=false;flags=0;seconds=0;
+  clearInterval(timer);
+  document.getElementById('time').textContent=0;
+  document.getElementById('minesLeft').textContent=M;
+  document.getElementById('face').textContent='🙂';
+  document.getElementById('msg').textContent='Clique sur une case pour commencer. Bonne chance !';
+  boardEl.style.gridTemplateColumns=`repeat(${C},32px)`;
+  render();
+}
+function placeMines(safeR,safeC){
+  let placed=0;
+  while(placed<M){
+    const r=Math.floor(Math.random()*R),c=Math.floor(Math.random()*C);
+    if(cells[r][c].mine)continue;
+    if(Math.abs(r-safeR)<=1&&Math.abs(c-safeC)<=1)continue;
+    cells[r][c].mine=true;placed++;
+  }
+  for(let r=0;r<R;r++)for(let c=0;c<C;c++)
+    cells[r][c].n=neighbors(r,c).filter(([nr,nc])=>cells[nr][nc].mine).length;
+}
+function render(){
+  boardEl.innerHTML='';
+  for(let r=0;r<R;r++)for(let c=0;c<C;c++){
+    const cell=cells[r][c],b=document.createElement('button');
+    b.className='cell';
+    if(cell.open){
+      b.classList.add('open');
+      if(cell.mine){b.textContent='💣';b.classList.add('boom');}
+      else if(cell.n>0){b.textContent=cell.n;b.classList.add('n'+cell.n);}
+    }else if(cell.flag)b.textContent='🚩';
+    else if(over&&cell.mine)b.textContent='💣';
+    b.addEventListener('click',()=>flagMode?toggleFlag(r,c):reveal(r,c));
+    b.addEventListener('contextmenu',e=>{e.preventDefault();toggleFlag(r,c);});
+    let pressT;
+    b.addEventListener('pointerdown',()=>{pressT=setTimeout(()=>toggleFlag(r,c),450);});
+    b.addEventListener('pointerup',()=>clearTimeout(pressT));
+    b.addEventListener('pointerleave',()=>clearTimeout(pressT));
+    boardEl.appendChild(b);
+  }
+}
+function reveal(r,c){
+  if(over||won)return;
+  const cell=cells[r][c];
+  if(cell.open)return chord(r,c);
+  if(cell.flag)return;
+  if(!started){placeMines(r,c);started=true;timer=setInterval(()=>{seconds++;document.getElementById('time').textContent=seconds;},1000);}
+  if(cell.mine){
+    cell.open=true;over=true;clearInterval(timer);
+    document.getElementById('face').textContent='😵';
+    document.getElementById('msg').textContent='💥 BOUM ! Tu as marché sur une mine. Clique sur le visage pour rejouer.';
+    render();return;
+  }
+  flood(r,c);checkWin();render();
+}
+function flood(r,c){
+  const stack=[[r,c]];
+  while(stack.length){
+    const[cr,cc]=stack.pop(),cell=cells[cr][cc];
+    if(cell.open||cell.flag)continue;
+    cell.open=true;
+    if(cell.n===0&&!cell.mine)neighbors(cr,cc).forEach(p=>stack.push(p));
+  }
+}
+function chord(r,c){ // clic sur un chiffre déjà ouvert : révèle les voisins si assez de drapeaux
+  const cell=cells[r][c];
+  const ns=neighbors(r,c);
+  if(ns.filter(([nr,nc])=>cells[nr][nc].flag).length!==cell.n)return;
+  ns.forEach(([nr,nc])=>{if(!cells[nr][nc].flag&&!cells[nr][nc].open)reveal(nr,nc);});
+}
+function toggleFlag(r,c){
+  if(over||won)return;
+  const cell=cells[r][c];
+  if(cell.open)return;
+  cell.flag=!cell.flag;flags+=cell.flag?1:-1;
+  document.getElementById('minesLeft').textContent=M-flags;
+  render();
+}
+function checkWin(){
+  let ok=true;
+  for(let r=0;r<R;r++)for(let c=0;c<C;c++)
+    if(!cells[r][c].mine&&!cells[r][c].open)ok=false;
+  if(ok){won=true;clearInterval(timer);
+    document.getElementById('face').textContent='😎';
+    document.getElementById('msg').textContent=`🏆 GAGNÉ en ${seconds} secondes ! Tu es un vrai démineur !`;
+  }
+}
+document.getElementById('face').onclick=newGame;
+document.getElementById('diff').onchange=newGame;
+document.getElementById('flagMode').onclick=function(){
+  flagMode=!flagMode;
+  this.textContent='🚩 Mode drapeau : '+(flagMode?'OUI':'NON');
+  this.classList.toggle('mode-on',flagMode);
+};
+newGame();
+</script>
+</body>
+</html>

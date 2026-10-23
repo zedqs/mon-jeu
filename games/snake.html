@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snake — ZedJeux</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>">
+<link rel="stylesheet" href="../assets/game.css">
+<style>
+  canvas{background:#0d1f12;border:2px solid #2f7d46;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Tous les jeux</a>
+  <h1>🐍 Snake</h1><div class="spacer"></div>
+</div>
+<div class="panel">
+  <div class="hud">
+    <div class="stat"><small>Score</small><span id="score">0</span></div>
+    <div class="stat"><small>Record</small><span id="best">0</span></div>
+    <select class="sel" id="speed">
+      <option value="170">🐢 Lent</option>
+      <option value="120" selected>🐍 Normal</option>
+      <option value="75">🚀 Rapide</option>
+    </select>
+    <button class="btn" id="startBtn">▶ Jouer</button>
+  </div>
+  <canvas class="game" id="cv" width="420" height="420"></canvas>
+  <div class="msg" id="msg">Appuie sur « Jouer » ou sur une flèche pour commencer !</div>
+  <div class="dpad">
+    <button class="up" data-dir="up">⬆️</button><button class="left" data-dir="left">⬅️</button>
+    <button class="right" data-dir="right">➡️</button><button class="down" data-dir="down">⬇️</button>
+  </div>
+  <p class="hint">⌨️ Flèches ou ZQSD pour diriger le serpent · 📱 Glisse ton doigt sur l'écran ou utilise le pavé tactile.<br>Mange les pommes 🍎 pour grandir, et ne te mords pas la queue !</p>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const N=21,CELL=cv.width/N;
+let snake,dir,nextDir,food,bonus,score,timer=null,running=false;
+let best=+localStorage.getItem('snake-best')||0;
+document.getElementById('best').textContent=best;
+
+function randCell(){
+  while(true){
+    const p={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)};
+    if(!snake.some(s=>s.x===p.x&&s.y===p.y)&&!(food&&food.x===p.x&&food.y===p.y))return p;
+  }
+}
+function reset(){
+  snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];
+  dir={x:1,y:0};nextDir=dir;food=null;food=randCell();bonus=null;score=0;
+  document.getElementById('score').textContent=0;draw();
+}
+function draw(){
+  ctx.fillStyle='#0d1f12';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.strokeStyle='rgba(255,255,255,.05)';
+  for(let i=1;i<N;i++){ctx.beginPath();ctx.moveTo(i*CELL,0);ctx.lineTo(i*CELL,cv.height);ctx.stroke();ctx.beginPath();ctx.moveTo(0,i*CELL);ctx.lineTo(cv.width,i*CELL);ctx.stroke();}
+  ctx.font=(CELL-2)+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('🍎',food.x*CELL+CELL/2,food.y*CELL+CELL/2+1);
+  if(bonus)ctx.fillText('⭐',bonus.x*CELL+CELL/2,bonus.y*CELL+CELL/2+1);
+  snake.forEach((s,i)=>{
+    const g=ctx.createRadialGradient(s.x*CELL+8,s.y*CELL+8,2,s.x*CELL+CELL/2,s.y*CELL+CELL/2,CELL/2);
+    if(i===0){g.addColorStop(0,'#bbf7d0');g.addColorStop(1,'#22c55e');}
+    else{g.addColorStop(0,'#86efac');g.addColorStop(1,'#16a34a');}
+    ctx.fillStyle=g;
+    ctx.beginPath();ctx.roundRect(s.x*CELL+1.5,s.y*CELL+1.5,CELL-3,CELL-3,i===0?8:6);ctx.fill();
+    if(i===0){ // yeux
+      ctx.fillStyle='#052e16';
+      const ex=dir.x*3,ey=dir.y*3,px=dir.y*4,py=dir.x*4;
+      ctx.beginPath();ctx.arc(s.x*CELL+CELL/2+ex+px,s.y*CELL+CELL/2+ey+py,2,0,7);ctx.fill();
+      ctx.beginPath();ctx.arc(s.x*CELL+CELL/2+ex-px,s.y*CELL+CELL/2+ey-py,2,0,7);ctx.fill();
+    }
+  });
+}
+function step(){
+  dir=nextDir;
+  const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+  if(head.x<0||head.y<0||head.x>=N||head.y>=N||snake.some(s=>s.x===head.x&&s.y===head.y))return gameOver();
+  snake.unshift(head);
+  if(head.x===food.x&&head.y===food.y){
+    score+=10;food=randCell();
+    if(Math.random()<0.22&&!bonus){bonus=randCell();setTimeout(()=>{bonus=null;},5000);}
+  }else if(bonus&&head.x===bonus.x&&head.y===bonus.y){
+    score+=50;bonus=null;
+  }else snake.pop();
+  document.getElementById('score').textContent=score;
+  draw();
+}
+function gameOver(){
+  stop();
+  if(score>best){best=score;localStorage.setItem('snake-best',best);document.getElementById('best').textContent=best;}
+  document.getElementById('msg').textContent=`💥 Perdu ! Score : ${score} — appuie sur « Jouer » pour réessayer.`;
+  document.getElementById('startBtn').textContent='↻ Rejouer';
+  draw();
+  ctx.fillStyle='rgba(0,0,0,.55)';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.fillStyle='#fff';ctx.font='bold 40px sans-serif';ctx.textAlign='center';
+  ctx.fillText('GAME OVER',cv.width/2,cv.height/2);
+}
+function start(){
+  reset();stop();
+  timer=setInterval(step,+document.getElementById('speed').value);
+  running=true;
+  document.getElementById('msg').textContent='Bonne chance ! 🍎';
+  document.getElementById('startBtn').textContent='↻ Recommencer';
+}
+function stop(){if(timer)clearInterval(timer);timer=null;running=false;}
+function setDir(x,y){ if(dir.x===-x&&dir.y===-y)return; if(x===dir.x&&y===dir.y)return; nextDir={x,y}; if(!running)start(); }
+
+document.getElementById('startBtn').onclick=start;
+document.getElementById('speed').onchange=()=>{if(running)start();};
+addEventListener('keydown',e=>{
+  const k=e.key.toLowerCase();
+  const map={arrowup:[0,-1],z:[0,-1],w:[0,-1],arrowdown:[0,1],s:[0,1],arrowleft:[-1,0],q:[-1,0],a:[-1,0],arrowright:[1,0],d:[1,0]};
+  if(map[k]){e.preventDefault();setDir(...map[k]);}
+});
+document.querySelectorAll('.dpad button').forEach(b=>b.addEventListener('pointerdown',()=>{
+  const m={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[b.dataset.dir];setDir(...m);
+}));
+let tx,ty;
+cv.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+cv.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+  if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;
+  Math.abs(dx)>Math.abs(dy)?setDir(Math.sign(dx),0):setDir(0,Math.sign(dy));
+},{passive:true});
+reset();
+</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vise les Cibles — ZedJeux</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+<link rel="stylesheet" href="../assets/game.css">
+<style>
+  #zone{position:relative;width:min(640px,94vw);height:400px;background:radial-gradient(circle at 50% 40%,#1e293b,#0f172a);border:2px solid rgba(255,255,255,.15);border-radius:18px;overflow:hidden;cursor:crosshair;touch-action:manipulation}
+  .target{position:absolute;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle,#fff 0 22%,#ef4444 23% 45%,#fff 46% 68%,#ef4444 69% 100%);
+    box-shadow:0 6px 18px rgba(0,0,0,.5);animation:appear .18s ease;padding:0}
+  .target.gold{background:radial-gradient(circle,#fff7cc 0 22%,#f59e0b 23% 45%,#fde68a 46% 68%,#f59e0b 69% 100%)}
+  .target.bomb{background:#1f2937;font-size:30px;box-shadow:0 6px 18px rgba(0,0,0,.6)}
+  @keyframes appear{from{transform:scale(0)}to{transform:scale(1)}}
+  .target.hit{animation:hitAnim .22s ease forwards;pointer-events:none}
+  @keyframes hitAnim{to{transform:scale(1.7) rotate(30deg);opacity:0}}
+  .floater{position:absolute;font-weight:900;font-size:19px;pointer-events:none;animation:floatUp .7s ease forwards;text-shadow:0 2px 6px #000;z-index:5}
+  @keyframes floatUp{to{transform:translateY(-46px);opacity:0}}
+  #timerBar{height:12px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;width:min(640px,94vw)}
+  #timerFill{height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#eab308,#ef4444);background-size:640px 100%;transition:width .2s linear}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Tous les jeux</a>
+  <h1>🎯 Vise les Cibles</h1><div class="spacer"></div>
+</div>
+<div class="panel">
+  <div class="hud">
+    <div class="stat"><small>Score</small><span id="score">0</span></div>
+    <div class="stat"><small>🎯 Touchées</small><span id="hits">0</span></div>
+    <div class="stat"><small>Record</small><span id="best">0</span></div>
+    <div class="stat"><small>⏱ Temps</small><span id="time">30</span>s</div>
+    <button class="btn" id="startBtn">▶ Jouer (30 s)</button>
+  </div>
+  <div id="timerBar"><div id="timerFill"></div></div>
+  <div id="zone"></div>
+  <div class="msg" id="msg">Clique sur un maximum de cibles en 30 secondes !</div>
+  <p class="hint">🎯 Cible normale : +10 · ⭐ Cible dorée : +50 · 💣 Bombe : −30 (ne clique pas dessus !)<br>Les cibles rapetissent et disparaissent de plus en plus vite…</p>
+</div>
+<script>
+const zone=document.getElementById('zone');
+let score,hits,timeLeft,playing=false,spawnTimer,countTimer,spawnDelay;
+let best=+localStorage.getItem('cibles-best')||0;
+document.getElementById('best').textContent=best;
+
+function floater(x,y,txt,color){
+  const f=document.createElement('div');
+  f.className='floater';f.textContent=txt;f.style.color=color;
+  f.style.left=x+'px';f.style.top=y+'px';
+  zone.appendChild(f);setTimeout(()=>f.remove(),700);
+}
+function spawn(){
+  if(!playing)return;
+  const t=document.createElement('button');
+  const roll=Math.random();
+  const type=roll<0.12?'bomb':roll<0.24?'gold':'normal';
+  const size=type==='gold'?46:52+Math.random()*26-hits*0.25;
+  const s=Math.max(36,size);
+  t.className='target'+(type==='bomb'?' bomb':type==='gold'?' gold':'');
+  if(type==='bomb')t.textContent='💣';
+  t.style.width=t.style.height=s+'px';
+  t.style.left=Math.random()*(zone.clientWidth-s-6)+'px';
+  t.style.top=Math.random()*(zone.clientHeight-s-6)+'px';
+  const life=Math.max(650,1500-hits*22);
+  const timeout=setTimeout(()=>{if(!t.classList.contains('hit'))t.remove();},life);
+  t.addEventListener('pointerdown',e=>{
+    e.stopPropagation();
+    clearTimeout(timeout);
+    t.classList.add('hit');setTimeout(()=>t.remove(),220);
+    const x=t.offsetLeft,y=t.offsetTop;
+    if(type==='bomb'){score=Math.max(0,score-30);floater(x,y,'−30 💥','#f87171');
+      zone.animate([{transform:'translateX(-7px)'},{transform:'translateX(7px)'},{transform:'translateX(0)'}],{duration:200,iterations:2});}
+    else if(type==='gold'){score+=50;hits++;floater(x,y,'+50 ⭐','#fbbf24');}
+    else{score+=10;hits++;floater(x,y,'+10','#4ade80');}
+    updateHud();
+  });
+  zone.appendChild(t);
+  spawnDelay=Math.max(380,950-hits*14);
+  spawnTimer=setTimeout(spawn,spawnDelay*(0.6+Math.random()*0.7));
+}
+function updateHud(){
+  document.getElementById('score').textContent=score;
+  document.getElementById('hits').textContent=hits;
+  document.getElementById('time').textContent=Math.max(0,Math.ceil(timeLeft));
+  document.getElementById('timerFill').style.width=(timeLeft/30*100)+'%';
+}
+function start(){
+  zone.innerHTML='';score=0;hits=0;timeLeft=30;playing=true;
+  clearTimeout(spawnTimer);clearInterval(countTimer);
+  updateHud();
+  document.getElementById('startBtn').textContent='↻ Recommencer';
+  document.getElementById('msg').textContent='🎯 GO ! Clique les cibles, évite les bombes !';
+  spawn();
+  countTimer=setInterval(()=>{
+    timeLeft-=0.1;updateHud();
+    if(timeLeft<=0)endGame();
+  },100);
+}
+function endGame(){
+  playing=false;clearInterval(countTimer);clearTimeout(spawnTimer);
+  zone.querySelectorAll('.target').forEach(t=>t.remove());
+  const isRecord=score>best;
+  if(isRecord){best=score;localStorage.setItem('cibles-best',best);document.getElementById('best').textContent=best;}
+  const note=score>=700?'🏆 Tireur d’élite !':score>=450?'🥇 Excellent !':score>=280?'🥈 Très bien !':score>=150?'🥉 Pas mal !':'💪 Continue de t’entraîner !';
+  document.getElementById('msg').textContent=`⏰ Temps écoulé ! Score : ${score} (${hits} cibles) ${isRecord?'— NOUVEAU RECORD ! ':''}${note}`;
+}
+zone.addEventListener('pointerdown',()=>{if(playing)score=Math.max(0,score-2),updateHud();});
+document.getElementById('startBtn').onclick=start;
+</script>
+</body>
+</html>

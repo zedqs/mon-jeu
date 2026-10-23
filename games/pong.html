@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pong — ZedJeux</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏓</text></svg>">
+<link rel="stylesheet" href="../assets/game.css">
+<style>canvas{background:#0a0f1e;box-shadow:0 12px 32px rgba(0,0,0,.5);cursor:none}</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Tous les jeux</a>
+  <h1>🏓 Pong</h1><div class="spacer"></div>
+</div>
+<div class="panel">
+  <div class="hud">
+    <div class="stat"><small>🟦 Toi</small><span id="sPlayer">0</span></div>
+    <div class="stat"><small>🟥 Ordi</small><span id="sAi">0</span></div>
+    <select class="sel" id="diff">
+      <option value="0.055">😊 Facile</option>
+      <option value="0.085" selected>😎 Normal</option>
+      <option value="0.12">😈 Difficile</option>
+    </select>
+    <select class="sel" id="target">
+      <option value="5">🏆 Premier à 5</option>
+      <option value="10" selected>🏆 Premier à 10</option>
+      <option value="21">🏆 Premier à 21</option>
+    </select>
+    <button class="btn" id="startBtn">▶ Jouer</button>
+  </div>
+  <canvas class="game" id="cv" width="640" height="400"></canvas>
+  <div class="msg" id="msg">Bouge ta raquette avec la souris, ton doigt ou les flèches ↑ ↓ !</div>
+  <p class="hint">Le premier à atteindre le score cible gagne le match. La balle accélère à chaque échange !</p>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const W=cv.width,H=cv.height,PH=84,PW=12;
+let player,ai,ball,state='idle',keys={},countdown=0;
+
+function reset(full,dirx){
+  if(full){player={y:H/2-PH/2,score:0};ai={y:H/2-PH/2,score:0};}
+  const ang=(Math.random()*50-25)*Math.PI/180,sp=5.2;
+  ball={x:W/2,y:H/2,vx:(dirx||(Math.random()<.5?-1:1))*sp*Math.cos(ang),vy:sp*Math.sin(ang),r:9,speed:sp};
+  countdown=55;
+}
+function draw(){
+  ctx.fillStyle='#0a0f1e';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(255,255,255,.25)';ctx.setLineDash([10,14]);ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(W/2,0);ctx.lineTo(W/2,H);ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.arc(W/2,H/2,60,0,7);ctx.stroke();
+  ctx.font='900 52px sans-serif';ctx.textAlign='center';
+  ctx.fillStyle='rgba(96,165,250,.5)';ctx.fillText(player.score,W/2-90,66);
+  ctx.fillStyle='rgba(248,113,113,.5)';ctx.fillText(ai.score,W/2+90,66);
+  ctx.fillStyle='#60a5fa';ctx.beginPath();ctx.roundRect(14,player.y,PW,PH,6);ctx.fill();
+  ctx.fillStyle='#f87171';ctx.beginPath();ctx.roundRect(W-14-PW,ai.y,PW,PH,6);ctx.fill();
+  const g=ctx.createRadialGradient(ball.x-3,ball.y-3,1,ball.x,ball.y,ball.r);
+  g.addColorStop(0,'#fff');g.addColorStop(1,'#fbbf24');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,7);ctx.fill();
+  if(state==='idle'){
+    ctx.fillStyle='rgba(0,0,0,.55)';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#fff';ctx.font='900 42px sans-serif';ctx.fillText('🏓 PONG',W/2,H/2-14);
+    ctx.font='600 18px sans-serif';ctx.fillText('Clique sur ▶ Jouer pour commencer !',W/2,H/2+24);
+  }
+  if(state==='over'){
+    ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#fff';ctx.font='900 36px sans-serif';
+    ctx.fillText(player.score>ai.score?'🏆 VICTOIRE !':'😵 DÉFAITE',W/2,H/2-10);
+    ctx.font='700 20px sans-serif';ctx.fillText(player.score+' — '+ai.score,W/2,H/2+28);
+  }
+}
+function point(who){
+  who==='player'?player.score++:ai.score++;
+  document.getElementById('sPlayer').textContent=player.score;
+  document.getElementById('sAi').textContent=ai.score;
+  const target=+document.getElementById('target').value;
+  if(player.score>=target||ai.score>=target){
+    state='over';
+    document.getElementById('msg').textContent=player.score>ai.score?'🏆 Tu gagnes le match ! Champion de Pong !':'🤖 L’ordinateur gagne cette fois. Revanche ?';
+    document.getElementById('startBtn').textContent='↻ Rejouer le match';
+  }else{
+    document.getElementById('msg').textContent=who==='player'?'✅ Point pour toi !':'❌ Point pour l’ordi…';
+    reset(false,who==='player'?1:-1);
+  }
+}
+function loop(){
+  if(keys.up)player.y-=7.5;
+  if(keys.down)player.y+=7.5;
+  player.y=Math.max(0,Math.min(H-PH,player.y));
+  if(state==='play'){
+    // IA suit la balle avec une erreur selon difficulté
+    const speedF=+document.getElementById('diff').value;
+    const center=ai.y+PH/2;
+    if(ball.vx>0)ai.y+=(ball.y-center)*speedF*2.2;
+    else ai.y+=(H/2-center)*0.03;
+    ai.y=Math.max(0,Math.min(H-PH,ai.y));
+    if(countdown>0)countdown--;
+    else{
+      ball.x+=ball.vx;ball.y+=ball.vy;
+      if(ball.y<ball.r){ball.y=ball.r;ball.vy*=-1;}
+      if(ball.y>H-ball.r){ball.y=H-ball.r;ball.vy*=-1;}
+      const hit=(py)=>ball.y+ball.r>py&&ball.y-ball.r<py+PH;
+      if(ball.vx<0&&ball.x-ball.r<=14+PW&&ball.x>0&&hit(player.y)){
+        const rel=(ball.y-(player.y+PH/2))/(PH/2);
+        ball.speed=Math.min(13,ball.speed*1.05);
+        const ang=rel*1.05;
+        ball.vx=ball.speed*Math.cos(ang);ball.vy=ball.speed*Math.sin(ang);
+        ball.x=14+PW+ball.r;
+      }
+      if(ball.vx>0&&ball.x+ball.r>=W-14-PW&&ball.x<W&&hit(ai.y)){
+        const rel=(ball.y-(ai.y+PH/2))/(PH/2);
+        ball.speed=Math.min(13,ball.speed*1.05);
+        const ang=rel*1.05;
+        ball.vx=-ball.speed*Math.cos(ang);ball.vy=ball.speed*Math.sin(ang);
+        ball.x=W-14-PW-ball.r;
+      }
+      if(ball.x<-24)point('ai');
+      else if(ball.x>W+24)point('player');
+    }
+  }
+  draw();
+  requestAnimationFrame(loop);
+}
+cv.addEventListener('mousemove',e=>{
+  const r=cv.getBoundingClientRect();
+  player.y=(e.clientY-r.top)*(H/r.height)-PH/2;
+});
+cv.addEventListener('pointermove',e=>{
+  if(e.pointerType==='touch'){const r=cv.getBoundingClientRect();player.y=(e.clientY-r.top)*(H/r.height)-PH/2;}
+});
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowUp'){keys.up=true;e.preventDefault();}
+  if(e.key==='ArrowDown'){keys.down=true;e.preventDefault();}
+});
+addEventListener('keyup',e=>{if(e.key==='ArrowUp')keys.up=false;if(e.key==='ArrowDown')keys.down=false;});
+document.getElementById('startBtn').onclick=function(){
+  reset(true);
+  document.getElementById('sPlayer').textContent='0';
+  document.getElementById('sAi').textContent='0';
+  state='play';this.textContent='↻ Recommencer le match';
+  document.getElementById('msg').textContent='Que le meilleur gagne ! 🏓';
+};
+reset(true);loop();
+</script>
+</body>
+</html>

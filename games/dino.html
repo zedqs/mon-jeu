@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dino Run — ZedJeux</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦖</text></svg>">
+<link rel="stylesheet" href="../assets/game.css">
+<style>canvas{box-shadow:0 12px 32px rgba(0,0,0,.45);cursor:pointer;background:#fdf6e3}</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Tous les jeux</a>
+  <h1>🦖 Dino Run</h1><div class="spacer"></div>
+</div>
+<div class="panel">
+  <div class="hud">
+    <div class="stat"><small>Score</small><span id="score">0</span></div>
+    <div class="stat"><small>Record</small><span id="best">0</span></div>
+    <button class="btn" id="startBtn">▶ Jouer</button>
+  </div>
+  <canvas class="game" id="cv" width="680" height="260"></canvas>
+  <div class="msg" id="msg">ESPACE / ↑ ou touche l'écran pour sauter · ↓ pour te baisser !</div>
+  <p class="hint">Saute par-dessus les cactus 🌵 et baisse-toi sous les oiseaux 🦅. Plus tu vas loin, plus c'est rapide !</p>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const W=cv.width,H=cv.height,GROUND=H-42;
+let dino,obs,score,speed,frame,state='idle',dist;
+let best=+localStorage.getItem('dino-best')||0;
+document.getElementById('best').textContent=best;
+let clouds=Array.from({length:5},()=>({x:Math.random()*W,y:18+Math.random()*50,s:.5+Math.random()}));
+
+function reset(){
+  dino={x:56,y:GROUND,v:0,w:44,h:48,duck:false};
+  obs=[];score=0;dist=0;speed=5.2;frame=0;
+  document.getElementById('score').textContent='0';
+}
+function jump(){
+  if(state==='idle'){state='play';document.getElementById('startBtn').textContent='↻ Recommencer';document.getElementById('msg').textContent='Cours, Dino, cours ! 🦖💨';}
+  if(state==='play'&&dino.y>=GROUND)dino.v=-13.4;
+}
+function die(){
+  state='dead';
+  if(score>best){best=score;localStorage.setItem('dino-best',best);document.getElementById('best').textContent=best;}
+  document.getElementById('msg').textContent=`💥 Aïe ! Score : ${score}${score>=best&&score>0?' — nouveau record ! 🏆':''} Appuie sur ESPACE pour rejouer.`;
+}
+function spawnObs(){
+  const bird=score>250&&Math.random()<0.28;
+  if(bird)obs.push({type:'bird',x:W+30,y:GROUND-58-Math.random()*26,w:40,h:26,flap:0});
+  else{
+    const n=1+Math.floor(Math.random()*3);
+    const big=Math.random()<0.4;
+    obs.push({type:'cactus',x:W+30,w:(big?30:20)*n,h:big?48:34,n,big});
+  }
+}
+function draw(){
+  ctx.fillStyle='#fdf6e3';ctx.fillRect(0,0,W,H);
+  // soleil
+  ctx.fillStyle='#ffd93b';ctx.beginPath();ctx.arc(W-70,48,26,0,7);ctx.fill();
+  ctx.fillStyle='rgba(255,217,59,.3)';ctx.beginPath();ctx.arc(W-70,48,38,0,7);ctx.fill();
+  // nuages
+  ctx.fillStyle='#fff';
+  clouds.forEach(c=>{ctx.beginPath();ctx.arc(c.x,c.y,15,0,7);ctx.arc(c.x+16,c.y+4,11,0,7);ctx.arc(c.x-16,c.y+4,10,0,7);ctx.fill();});
+  // sol
+  ctx.fillStyle='#e8d5a3';ctx.fillRect(0,GROUND+2,W,H-GROUND);
+  ctx.strokeStyle='#b89b5e';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(0,GROUND+2);ctx.lineTo(W,GROUND+2);ctx.stroke();
+  ctx.fillStyle='#d9c184';
+  for(let i=0;i<14;i++){const x=((i*97-dist*1)%(W+40)+W+40)%(W+40)-20;ctx.fillRect(x,GROUND+16+(i%3)*8,7,3);}
+  // obstacles
+  obs.forEach(o=>{
+    ctx.textAlign='left';ctx.textBaseline='alphabetic';
+    if(o.type==='cactus'){
+      ctx.font=(o.big?44:32)+'px serif';
+      for(let i=0;i<o.n;i++)ctx.fillText('🌵',o.x+i*(o.big?30:20)-4,GROUND+4);
+    }else{
+      ctx.font='30px serif';
+      ctx.fillText(o.flap%20<10?'🦅':'🐦',o.x,o.y+24);
+    }
+  });
+  // dino
+  ctx.save();
+  ctx.translate(dino.x+Dino.w,GROUND);
+  ctx.scale(-1,1); // regarder vers la droite
+  ctx.font=(dino.duck?40:48)+'px serif';
+  ctx.textAlign='right';
+  ctx.fillText(state==='dead'?'😵':'🦖',0,-(GROUND-dino.y)+2+(dino.duck?10:0));
+  ctx.restore();
+  if(state!=='play'){
+    // pattes animées quand au sol
+  }
+  // score
+  ctx.fillStyle='#6b5d3f';ctx.font='900 20px monospace';ctx.textAlign='right';
+  ctx.fillText(String(score).padStart(5,'0'),W-16,30);
+  ctx.font='700 14px monospace';ctx.fillStyle='#a08c5f';
+  ctx.fillText('HI '+String(best).padStart(5,'0'),W-110,30);
+  if(state==='idle'){
+    ctx.fillStyle='rgba(90,70,30,.85)';ctx.textAlign='center';
+    ctx.font='900 30px sans-serif';ctx.fillText('🦖 DINO RUN',W/2,100);
+    ctx.font='600 17px sans-serif';ctx.fillText('ESPACE ou touche l’écran pour sauter !',W/2,132);
+  }
+  if(state==='dead'){
+    ctx.fillStyle='rgba(90,70,30,.9)';ctx.textAlign='center';
+    ctx.font='900 30px sans-serif';ctx.fillText('GAME OVER',W/2,100);
+    ctx.font='700 18px sans-serif';ctx.fillText('Score : '+score+' · Record : '+best,W/2,132);
+  }
+}
+function loop(){
+  clouds.forEach(c=>{c.x-=c.s;if(c.x<-40){c.x=W+30;c.y=18+Math.random()*50;}});
+  if(state==='play'){
+    frame++;dist+=speed;
+    score=Math.floor(dist/12);
+    document.getElementById('score').textContent=score;
+    speed=5.2+score/260;
+    if(frame%Math.max(52,86-score/30|0)===0&&(!obs.length||obs[obs.length-1].x<W-170))spawnObs();
+    dino.v+=0.62;dino.y+=dino.v;
+    if(dino.y>GROUND){dino.y=GROUND;dino.v=0;}
+    obs.forEach(o=>{o.x-=speed;if(o.type==='bird')o.flap++;});
+    obs=obs.filter(o=>o.x+o.w>-20);
+    const dh=dino.duck?30:44,dy=dino.y-dh;
+    for(const o of obs){
+      const oy=o.type==='cactus'?GROUND-o.h:o.y,oh=o.h;
+      if(dino.x+8<o.x+o.w-6&&dino.x+Dino.w-8>o.x+6&&dy+6<oy+oh&&dino.y>oy+8){die();break;}
+    }
+  }
+  draw();
+  requestAnimationFrame(loop);
+}
+document.getElementById('startBtn').onclick=()=>{reset();jump();};
+cv.addEventListener('pointerdown',e=>{e.preventDefault();state==='dead'?(reset(),jump()):jump();});
+addEventListener('keydown',e=>{
+  if(e.code==='Space'||e.key==='ArrowUp'){e.preventDefault();if(!e.repeat)state==='dead'?(reset(),jump()):jump();}
+  if(e.key==='ArrowDown'){e.preventDefault();if(state==='play'){dino.duck=true;if(dino.y<GROUND)dino.v=Math.max(dino.v,10);}}
+});
+addEventListener('keyup',e=>{if(e.key==='ArrowDown')dino.duck=false;});
+reset();loop();
+</script>
+</body>
+</html>
