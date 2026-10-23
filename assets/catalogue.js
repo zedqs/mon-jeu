@@ -1,386 +1,314 @@
 /* ============================================================
-   ZedJeux — Catalogue des VRAIS jeux (intégrés légalement via
-   le programme d'embedding officiel de CrazyGames).
+   ZedJeux — Catalogue des jeux intégrés.
+   Tous les jeux proviennent de flux officiels destinés aux
+   éditeurs de sites : ils sont conçus pour être joués dans
+   une page tierce, sans blocage.
    Chaque jeu se joue dans jouer.html?jeu=<slug>
+   embed = adresse du jeu (le lecteur ajoute les paramètres
+   requis par le distributeur, comme l'URL de la page).
    ============================================================ */
 window.REAL_GAMES = [
+  /* ---------------- Course ---------------- */
   {
-    slug: 'bus-and-subway-runner', name: 'Bus & Subway Runner', cat: 'Arcade', emoji: '🚇',
-    cover: 'https://imgs.crazygames.com/busandsubwayrunner.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#f97316,#db2777)', rating: 4, plays: '210 k', badge: 'hot', badgeTxt: 'Style Subway Surfers',
-    desc: 'Le fameux runner dans le métro : cours sur les rails, esquive les trains et ramasse les pièces, comme dans Subway Surfers !',
-    controls: '← → : changer de voie · ↑ : sauter · ↓ : glisser · Tactile : glisse ton doigt'
+    slug: 'moto-x3m-spooky-land', name: 'Moto X3M Spooky Land', cat: 'Course', emoji: '🏍️',
+    embed: 'https://html5.gamedistribution.com/b8a342904608470a9f3382337aca3558/',
+    cover: 'https://img.gamedistribution.com/b8a342904608470a9f3382337aca3558-512x384.jpeg',
+    grad: 'linear-gradient(135deg,#0ea5e9,#6366f1)', rating: 5, plays: '510 k',
+    desc: 'La version Halloween du célèbre jeu de moto : 22 parcours remplis de rampes, de scies et de pièges, à boucler le plus vite possible en enchaînant les saltos.',
+    controls: '↑ accélérer · ↓ freiner · ← → pencher la moto en l’air'
   },
   {
-    slug: 'moto-x3m', name: 'Moto X3M', cat: 'Course', emoji: '🏍️',
-    cover: 'https://imgs.crazygames.com/games/moto-x3m/cover_16x9-1700625476572.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#0ea5e9,#6366f1)', rating: 5, plays: '510 k', badge: 'hot', badgeTxt: 'Populaire',
-    desc: 'Le jeu de moto culte ! 22 niveaux déjantés, saltos, loopings et pièges explosifs à franchir le plus vite possible.',
-    controls: '↑ : accélérer · ↓ : freiner · ← → : pencher la moto en l’air'
+    slug: 'vex-x3m-3', name: 'Vex X3M 3', cat: 'Course', emoji: '🏁', fresh: true,
+    embed: 'https://html5.gamedistribution.com/ce1b2e5eabe44debb11bf77cd04c0f85/',
+    cover: 'https://img.gamedistribution.com/ce1b2e5eabe44debb11bf77cd04c0f85-512x384.jpg',
+    grad: 'linear-gradient(135deg,#334155,#0f172a)', rating: 4, plays: '180 k',
+    desc: 'Le stickman de Vex enfourche une moto : parcours d’obstacles au cordeau, checkpoints serrés et chronomètre qui ne pardonne pas.',
+    controls: 'Flèches ou ZQSD : conduire et gérer l’équilibre'
   },
   {
-    slug: 'smash-karts', name: 'Smash Karts', cat: 'Action', emoji: '🏎️',
-    cover: 'https://imgs.crazygames.com/smash-karts_16x9/20261016091223/smash-karts_16x9-cover.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#dc2626,#f59e0b)', rating: 5, plays: '480 k', badge: 'hot', badgeTxt: 'Multijoueur',
-    desc: 'Mario Kart version bataille en ligne ! Ramasse des armes et explose les karts des autres joueurs en temps réel.',
-    controls: 'Flèches / ZQSD : conduire · ESPACE : utiliser l’arme'
+    slug: 'moto-traffic-rider', name: 'Moto Traffic Rider', cat: 'Course', emoji: '🛣️', fresh: true,
+    embed: 'https://html5.gamedistribution.com/9bde41f232834eff9ea81554ecee8279/',
+    cover: 'https://img.gamedistribution.com/9bde41f232834eff9ea81554ecee8279-512x384.jpg',
+    grad: 'linear-gradient(135deg,#f59e0b,#dc2626)', rating: 4, plays: '145 k',
+    desc: 'À moto dans le trafic, en vue subjective : double les voitures au plus près pour engranger les points, sans toucher.',
+    controls: '← → slalomer · ↑ accélérer · ↓ freiner'
   },
   {
-    slug: 'moto-x3m-pool-party', name: 'Moto X3M Pool Party', cat: 'Course', emoji: '🏖️',
-    cover: 'https://imgs.crazygames.com/moto-x3m-pool-party_16x9/20241128073648/moto-x3m-pool-party_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#06b6d4,#22c55e)', rating: 5, plays: '260 k',
-    desc: 'La version été de Moto X3M : piscines, bouées et toboggans géants pour des cascades encore plus folles !',
-    controls: '↑ : accélérer · ↓ : freiner · ← → : pencher la moto en l’air'
+    slug: 'two-rx7-drifters', name: 'Two RX7 Drifters', cat: 'Course', emoji: '🚗', fresh: true,
+    embed: 'https://html5.gamedistribution.com/f85eee6b515c4aecb0ef6c6563d05e39/',
+    cover: 'https://img.gamedistribution.com/f85eee6b515c4aecb0ef6c6563d05e39-512x384.jpg',
+    grad: 'linear-gradient(135deg,#7c2d12,#431407)', rating: 4, plays: '96 k',
+    desc: 'Du drift en 3D au volant d’une RX7 : enchaîne les virages en glisse pour faire grimper le compteur de points. Jouable aussi à deux.',
+    controls: 'ZQSD / flèches : conduire · ESPACE : frein à main pour drifter'
   },
   {
-    slug: 'polytrack', name: 'PolyTrack', cat: 'Course', emoji: '🚗',
-    cover: 'https://imgs.crazygames.com/polytrack_16x9/20260310095956/polytrack_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#7c3aed,#06b6d4)', rating: 5, plays: '390 k', badge: 'new', badgeTxt: 'Populaire',
-    desc: 'Le Trackmania du navigateur ! Circuits vertigineux, loopings et éditeur de pistes pour créer tes propres courses.',
-    controls: 'Flèches / ZQSD : conduire · R : recommencer · ENTRÉE : respawn'
+    slug: 'car-eats-car-underwater', name: 'Car Eats Car : Underwater', cat: 'Course', emoji: '🚙',
+    embed: 'https://html5.gamedistribution.com/16de13074932401f9f65f4023e586ab4/',
+    cover: 'https://img.gamedistribution.com/16de13074932401f9f65f4023e586ab4-512x384.jpeg',
+    grad: 'linear-gradient(135deg,#0369a1,#164e63)', rating: 4, plays: '230 k',
+    desc: 'Des voitures carnivores sous l’océan : écrase tes poursuivants, collecte les rubis et améliore ton bolide entre chaque niveau.',
+    controls: 'Flèches : conduire et équilibrer · X : turbo'
   },
   {
-    slug: 'traffic-rider-vvq', name: 'Traffic Rider', cat: 'Course', emoji: '🛣️',
-    cover: 'https://imgs.crazygames.com/traffic-rider-vvq_16x9/20250526021507/traffic-rider-vvq_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#f59e0b,#dc2626)', rating: 4, plays: '175 k',
-    desc: 'À moto sur l’autoroute en vue subjective : double les voitures au ras des pare-chocs pour marquer des points !',
-    controls: '↑ : accélérer · ↓ : freiner · ← → : slalomer entre les voitures'
+    slug: 'car-eats-car-volcanic', name: 'Car Eats Car : Volcanic', cat: 'Course', emoji: '🌋',
+    embed: 'https://html5.gamedistribution.com/2889b8c611d84c00a3e077ee5bd21bf0/',
+    cover: 'https://img.gamedistribution.com/2889b8c611d84c00a3e077ee5bd21bf0-512x384.jpeg',
+    grad: 'linear-gradient(135deg,#b91c1c,#7f1d1d)', rating: 4, plays: '205 k',
+    desc: 'Même recette, décor volcanique : échappe aux voitures-mangeuses lancées à tes trousses sur des pistes accidentées.',
+    controls: 'Flèches : conduire et équilibrer · X : turbo'
   },
   {
-    slug: 'racing-limits', name: 'Racing Limits', cat: 'Course', emoji: '🏁',
-    cover: 'https://imgs.crazygames.com/racing-limits_16x9/20250711091800/racing-limits_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#111827,#374151)', rating: 4, plays: '140 k',
-    desc: 'Course de rue réaliste : fonce dans le trafic, évite les accidents et améliore ta voiture au fil des victoires.',
-    controls: 'Flèches / ZQSD : conduire · F : nitro · C : changer de caméra'
+    slug: 'nitro-racing-gear', name: 'Nitro Racing Gear', cat: 'Course', emoji: '🏎️', fresh: true,
+    embed: 'https://html5.gamemonetize.co/dol1mcx04iu3c75ct96uv6vx4o5cwypn/',
+    cover: 'https://img.gamemonetize.com/dol1mcx04iu3c75ct96uv6vx4o5cwypn/512x384.jpg',
+    grad: 'linear-gradient(135deg,#111827,#374151)', rating: 4, plays: '88 k',
+    desc: '40 courses dans 8 décors (ville néon, neige, volcan…) : sprints, drifts et duels de dragster, avec garage pour améliorer tes voitures.',
+    controls: 'Flèches : conduire · MAJ / N : nitro · ÉCHAP : pause'
   },
   {
-    slug: 'sky-riders-buk', name: 'Sky Riders', cat: 'Course', emoji: '☁️',
-    cover: 'https://imgs.crazygames.com/sky-riders-buk_16x9/20240206045724/sky-riders-buk_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#38bdf8,#818cf8)', rating: 4, plays: '95 k',
-    desc: 'Des circuits suspendus dans le ciel ! Roule sur des pistes étroites au-dessus du vide… sans tomber.',
-    controls: 'Flèches / ZQSD : conduire · ESPACE : freiner fort'
+    slug: 'magline-moto', name: 'Magline Moto', cat: 'Course', emoji: '🔆', fresh: true,
+    embed: 'https://html5.gamemonetize.co/qvkmkrxo0p6g0zyftqz834mvmavrzosk/',
+    cover: 'https://img.gamemonetize.com/qvkmkrxo0p6g0zyftqz834mvmavrzosk/512x384.jpg',
+    grad: 'linear-gradient(135deg,#4c1d95,#0ea5e9)', rating: 4, plays: '41 k',
+    desc: 'Une moto futuriste sur roues d’énergie : 30 niveaux néon, des saltos qui rapportent du temps et un laser frontal pour dégager la route.',
+    controls: 'Flèches / ZQSD : rouler et pencher · ESPACE : laser · MAJ : nitro'
   },
   {
-    slug: 'demolition-derby-2', name: 'Demolition Derby 2', cat: 'Course', emoji: '💥',
-    cover: 'https://imgs.crazygames.com/demolition-derby-2_16x9/20250421035535/demolition-derby-2_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#b45309,#7f1d1d)', rating: 4, plays: '88 k',
-    desc: 'Ici, le but c’est de DÉTRUIRE les autres voitures dans l’arène. Le dernier bolide en état de rouler gagne !',
-    controls: 'Flèches / ZQSD : conduire et foncer dans les adversaires'
+    slug: 'speed-evolution', name: 'Speed Evolution', cat: 'Course', emoji: '🦖', fresh: true,
+    embed: 'https://html5.gamemonetize.co/x4megppwmr3kkxgodm87rquwayflrbvc/',
+    cover: 'https://img.gamemonetize.com/x4megppwmr3kkxgodm87rquwayflrbvc/512x384.jpg',
+    grad: 'linear-gradient(135deg,#38bdf8,#818cf8)', rating: 4, plays: '36 k',
+    desc: 'Tu démarres en skateboard sur une piste céleste, et ton véhicule évolue au fil des mètres : caddie, monster truck, puis vaisseau spatial.',
+    controls: 'Flèches / ZQSD : conduire · ESPACE : sauter'
   },
   {
-    slug: 'crazy-roll-3d', name: 'Crazy Roll 3D', cat: 'Arcade', emoji: '🎱',
-    cover: 'https://imgs.crazygames.com/games/crazy-roll-3d/cover_16x9-1709124312204.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#22d3ee,#0e7490)', rating: 4, plays: '120 k',
-    desc: 'Contrôle une bille lancée à toute vitesse sur une piste 3D et évite les obstacles. Simple… et ultra addictif !',
-    controls: '← → ou souris : guider la bille'
+    slug: 'midnight-valet', name: 'Midnight Valet', cat: 'Course', emoji: '🅿️', fresh: true,
+    embed: 'https://html5.gamemonetize.co/857i4wbmlrdkk761mgidh84z0wuejyw1/',
+    cover: 'https://img.gamemonetize.com/857i4wbmlrdkk761mgidh84z0wuejyw1/512x384.jpg',
+    grad: 'linear-gradient(135deg,#1e293b,#0f172a)', rating: 4, plays: '29 k',
+    desc: 'Tu es voiturier de nuit devant un club : récupère les clés des clients, gare leurs voitures sans les rayer (surtout celle du mafieux) et ramène-les à la sortie.',
+    controls: 'ZQSD / flèches : marcher et conduire · ESPACE : clés / monter / descendre · MAJ : courir ou frein à main'
   },
   {
-    slug: 'space-waves', name: 'Space Waves', cat: 'Arcade', emoji: '🚀',
-    cover: 'https://imgs.crazygames.com/space-waves_16x9/20260805094726/space-waves_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#312e81,#0ea5e9)', rating: 4, plays: '230 k', badge: 'new', badgeTxt: 'Tendance',
-    desc: 'Pilote une flèche dans des tunnels spatiaux façon Geometry Dash Wave. Réflexes de ninja exigés !',
-    controls: 'Maintenir clic / ESPACE : monter · Relâcher : descendre'
+    slug: 'crazy-bike-stunts-pvp', name: 'Crazy Bike Stunts PvP', cat: 'Course', emoji: '🚴', fresh: true,
+    embed: 'https://html5.gamedistribution.com/0c89181b9cfe4897afa41b0f94385da9/',
+    cover: 'https://img.gamedistribution.com/0c89181b9cfe4897afa41b0f94385da9-512x384.jpg',
+    grad: 'linear-gradient(135deg,#ea580c,#9a3412)', rating: 3, plays: '57 k',
+    desc: 'Des cascades à vélo sur des rampes géantes, en solo ou contre un second joueur sur le même écran.',
+    controls: 'Flèches : pédaler et équilibrer (joueur 2 : ZQSD)'
+  },
+
+  /* ---------------- Action ---------------- */
+  {
+    slug: 'tank-stars', name: 'Tank Stars', cat: 'Action', emoji: '🪖',
+    embed: 'https://html5.gamedistribution.com/659090e00bfc4650899550d63f8a130d/',
+    cover: 'https://img.gamedistribution.com/659090e00bfc4650899550d63f8a130d-512x384.jpg',
+    grad: 'linear-gradient(135deg,#365314,#1a2e05)', rating: 5, plays: '420 k',
+    desc: 'Le duel de tanks phénomène : règle l’angle et la puissance, tiens compte du terrain, et pulvérise le char adverse. À deux sur le même écran, c’est encore meilleur.',
+    controls: 'Souris : viser · Maintenir pour charger la puissance, relâcher pour tirer'
   },
   {
-    slug: 'tunnel-runner', name: 'Tunnel Runner', cat: 'Arcade', emoji: '🌀',
-    cover: 'https://imgs.crazygames.com/tunnel-runner/20210820114051/tunnel-runner-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#a855f7,#ec4899)', rating: 4, plays: '160 k',
-    desc: 'File à travers un tunnel psychédélique qui tourne dans tous les sens et évite les obstacles au dernier moment.',
-    controls: '← → ou souris : tourner dans le tunnel'
-  },
-  {
-    slug: 'cubefield', name: 'Cubefield', cat: 'Arcade', emoji: '🔺',
-    cover: 'https://imgs.crazygames.com/cubefield.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#16a34a,#065f46)', rating: 4, plays: '300 k',
-    desc: 'Le classique des salles informatiques ! Slalome entre les cubes infinis le plus longtemps possible.',
-    controls: '← → : zigzaguer entre les cubes'
-  },
-  {
-    slug: 'snow-rider-3d', name: 'Snow Rider 3D', cat: 'Arcade', emoji: '🛷',
-    cover: '', grad: 'linear-gradient(135deg,#7dd3fc,#e0f2fe)', rating: 5, plays: '410 k', badge: 'hot', badgeTxt: 'Populaire',
-    desc: 'Dévale la montagne en luge, saute par-dessus les rochers et ramasse les cadeaux dans ce runner 3D culte !',
-    controls: '← → : tourner · ↑ / ESPACE : sauter les obstacles'
-  },
-  {
-    slug: 'bloxdhop-io', name: 'BloxdHop.io', cat: 'Action', emoji: '🧱',
-    cover: 'https://imgs.crazygames.com/bloxdhop-io_16x9/20260907141432/bloxdhop-io_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#f59e0b,#84cc16)', rating: 4, plays: '350 k', badge: 'new', badgeTxt: 'Multijoueur',
-    desc: 'Du parkour façon Minecraft en multijoueur ! Enchaîne les sauts de bloc en bloc et finis le parcours en premier.',
-    controls: 'ZQSD : courir · ESPACE : sauter · Souris : regarder autour'
-  },
-  {
-    slug: 'skillwarz', name: 'SkillWarz', cat: 'Action', emoji: '🔫',
-    cover: 'https://imgs.crazygames.com/skillwarz_16x9/20260318145302/skillwarz_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#1f2937,#dc2626)', rating: 4, plays: '190 k', badge: 'new', badgeTxt: 'FPS en ligne',
-    desc: 'Un vrai jeu de tir à la première personne en ligne : fusils d’assaut, snipers et cartes variées contre de vrais joueurs.',
-    controls: 'ZQSD : bouger · Souris : viser · Clic : tirer · ESPACE : sauter'
-  },
-  {
-    slug: 'subway-clash-remastered', name: 'Subway Clash Remastered', cat: 'Action', emoji: '🎯',
-    cover: 'https://imgs.crazygames.com/subway-clash-remastered/20210429120753/subway-clash-remastered-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#0f766e,#134e4a)', rating: 4, plays: '210 k',
-    desc: 'Affrontement armé dans une station de métro abandonnée. Élimine l’équipe ennemie round après round !',
+    slug: 'wacky-strike', name: 'Wacky Strike', cat: 'Action', emoji: '🎯',
+    embed: 'https://html5.gamedistribution.com/6c30cfc235744ec89ffd1d6658e07b22/',
+    cover: 'https://img.gamedistribution.com/6c30cfc235744ec89ffd1d6658e07b22-512x384.jpeg',
+    grad: 'linear-gradient(135deg,#0f766e,#134e4a)', rating: 4, plays: '260 k',
+    desc: 'Un jeu de tir en ligne au style cartoon : des cartes variées, des armes déjantées et des parties rapides contre de vrais joueurs.',
     controls: 'ZQSD : bouger · Souris : viser · Clic : tirer · R : recharger'
   },
   {
-    slug: 'ragdoll-archers', name: 'Ragdoll Archers', cat: 'Action', emoji: '🏹',
-    cover: 'https://imgs.crazygames.com/ragdoll-archers_16x9/20250926080758/ragdoll-archers_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#78350f,#b91c1c)', rating: 5, plays: '280 k', badge: 'hot', badgeTxt: 'Populaire',
-    desc: 'Des archers en chiffon qui s’affrontent à coups de flèches : vise la tête pour des éliminations hilarantes !',
-    controls: 'Souris : viser (maintenir pour bander l’arc) · Relâcher : tirer'
+    slug: 'battalion-commander-2', name: 'Battalion Commander 2', cat: 'Action', emoji: '🎖️',
+    embed: 'https://html5.gamedistribution.com/75ab86d2ec924182a511b342a09011ac/',
+    cover: 'https://img.gamedistribution.com/75ab86d2ec924182a511b342a09011ac-512x384.jpeg',
+    grad: 'linear-gradient(135deg,#3f3f46,#18181b)', rating: 4, plays: '310 k',
+    desc: 'Mène ton escouade vers le haut de l’écran dans ce jeu de tir vertical : libère des soldats pour grossir ton bataillon et débloque des armes toujours plus lourdes.',
+    controls: 'Souris : diriger l’escouade · Le tir est automatique'
   },
   {
-    slug: 'stickman-bullet-warriors', name: 'Stickman Bullet Warriors', cat: 'Action', emoji: '🥷',
-    cover: 'https://imgs.crazygames.com/stickman-bullet-warriors/20220125104107/stickman-bullet-warriors-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#111827,#6d28d9)', rating: 4, plays: '76 k',
-    desc: 'Des combats de stickmans survoltés : esquive les balles au ralenti et deviens le dernier guerrier debout.',
-    controls: 'Souris : viser et tirer · Flèches : se déplacer'
+    slug: 'battalion-commander-1917', name: 'Battalion Commander 1917', cat: 'Action', emoji: '⚔️',
+    embed: 'https://html5.gamedistribution.com/71cbc5e6851846f9b9b4319a070a61ae/',
+    cover: 'https://img.gamedistribution.com/71cbc5e6851846f9b9b4319a070a61ae-512x384.jpeg',
+    grad: 'linear-gradient(135deg,#57534e,#292524)', rating: 4, plays: '190 k',
+    desc: 'La même formule pendant la Première Guerre mondiale : avance de tranchée en tranchée avec ton escouade et tiens bon face aux vagues ennemies.',
+    controls: 'Souris : diriger l’escouade · Le tir est automatique'
   },
   {
-    slug: 'snake-clash-io', name: 'Snake Clash.io', cat: 'Action', emoji: '🐍',
-    cover: 'https://imgs.crazygames.com/snake-clash-io_16x9/20250203091302/snake-clash-io_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#15803d,#65a30d)', rating: 4, plays: '145 k', badge: 'new', badgeTxt: 'Multijoueur',
-    desc: 'Le serpent géant en ligne : mange pour grandir, piège les autres serpents et deviens le roi de l’arène !',
-    controls: 'Souris : diriger · Clic maintenu : accélérer'
+    slug: 'stickman-warriors', name: 'Stickman Warriors Fight', cat: 'Action', emoji: '🥷',
+    embed: 'https://html5.gamedistribution.com/6f55b32ecd294adb8fc7bd117e091d07/',
+    cover: 'https://img.gamedistribution.com/6f55b32ecd294adb8fc7bd117e091d07-512x384.jpg',
+    grad: 'linear-gradient(135deg,#111827,#6d28d9)', rating: 4, plays: '340 k',
+    desc: 'Des combats de stickmans aux pouvoirs de super-héros : enchaîne les adversaires dans des arènes spectaculaires à coups d’attaques spéciales.',
+    controls: 'Touches affichées dans le jeu : déplacer, sauter, attaquer, pouvoir spécial'
   },
   {
-    slug: '8-ball-pool-billiards-multiplayer', name: '8 Ball Pool Billard', cat: 'Sport', emoji: '🎱',
-    cover: 'https://imgs.crazygames.com/8-ball-pool-billiards-multiplayer_16x9/20260722044342/8-ball-pool-billiards-multiplayer_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#065f46,#064e3b)', rating: 5, plays: '320 k', badge: 'hot', badgeTxt: 'Multijoueur',
-    desc: 'Le billard 8 américain contre de vrais joueurs : empocher tes billes puis la noire pour remporter la partie.',
-    controls: 'Souris : viser · Maintenir + relâcher : tirer avec la puissance choisie'
+    slug: 'kingdom-wars', name: 'Kingdom Wars', cat: 'Action', emoji: '🏰',
+    embed: 'https://html5.gamedistribution.com/bdcc1af7f5cb4044a969d54826fe0a4d/',
+    cover: 'https://img.gamedistribution.com/bdcc1af7f5cb4044a969d54826fe0a4d-512x384.jpg',
+    grad: 'linear-gradient(135deg,#78350f,#451a03)', rating: 4, plays: '120 k',
+    desc: 'Stratégie médiévale en temps réel : produis des troupes, gère tes ressources et renverse le château d’en face avant qu’il ne renverse le tien.',
+    controls: 'Souris : recruter et lancer les unités'
   },
   {
-    slug: 'basketball-superstars', name: 'Basketball Superstars', cat: 'Sport', emoji: '🏀',
-    cover: 'https://imgs.crazygames.com/basketball-superstars_16x9/20250117063641/basketball-superstars_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#ea580c,#7c2d12)', rating: 4, plays: '96 k',
-    desc: 'Des duels de basket spectaculaires : dribbles, dunks et tirs à 3 points pour devenir la superstar du terrain.',
-    controls: 'Flèches : se déplacer · Touches affichées à l’écran pour tirer et dunker'
+    slug: 'dogs-vs-aliens', name: 'Dogs vs Aliens', cat: 'Action', emoji: '🐶',
+    embed: 'https://html5.gamedistribution.com/966d94f902de491eb224711f51d7a92e/',
+    cover: 'https://img.gamedistribution.com/966d94f902de491eb224711f51d7a92e-512x384.jpg',
+    grad: 'linear-gradient(135deg,#16a34a,#14532d)', rating: 4, plays: '67 k',
+    desc: 'Les extraterrestres envahissent la Terre et seuls les chiens peuvent la sauver. Un tower defense décalé où tu déploies ta meute par vagues.',
+    controls: 'Souris : placer et améliorer les défenseurs'
   },
-  {
-    slug: 'table-tennis-world-tour', name: 'Ping-Pong World Tour', cat: 'Sport', emoji: '🏓',
-    cover: 'https://imgs.crazygames.com/table-tennis-world-tour_16x9/20230908041108/table-tennis-world-tour_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#2563eb,#1e3a8a)', rating: 4, plays: '84 k',
-    desc: 'Parcours le monde et bats les champions de tennis de table de chaque pays avec des effets de balle de pro.',
-    controls: 'Souris : déplacer la raquette · Balayer pour donner de l’effet'
-  },
-  {
-    slug: 'friday-night-funkin', name: 'Friday Night Funkin’', cat: 'Arcade', emoji: '🎤',
-    cover: 'https://imgs.crazygames.com/games/friday-night-funkin/cover-1614085803807.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#db2777,#7c3aed)', rating: 5, plays: '600 k', badge: 'hot', badgeTxt: 'Culte',
-    desc: 'LE jeu de rythme phénomène ! Affronte tes adversaires en battles musicales en appuyant sur les flèches en rythme.',
-    controls: 'Flèches ↑ ↓ ← → (ou ZQSD) au rythme des notes · ENTRÉE : valider'
-  },
-  {
-    slug: 'uno-online', name: 'Uno Online', cat: 'Cartes', emoji: '🃏',
-    cover: 'https://imgs.crazygames.com/games/uno-online/cover-1679068977831.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#dc2626,#eab308)', rating: 5, plays: '440 k', badge: 'hot', badgeTxt: 'Multijoueur',
-    desc: 'Le célèbre jeu de cartes Uno, jouable en ligne contre d’autres joueurs ou contre l’ordinateur. N’oublie pas de crier UNO !',
-    controls: 'Souris : cliquer sur la carte à jouer'
-  },
-  {
-    slug: 'ludo-king', name: 'Ludo King', cat: 'Plateau', emoji: '🎲',
-    cover: 'https://imgs.crazygames.com/ludo-king_16x9/20240229043328/ludo-king_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#0ea5e9,#f43f5e)', rating: 4, plays: '380 k',
-    desc: 'Le jeu des petits chevaux mondialement connu, de 2 à 4 joueurs. Ramène tes 4 pions à la maison en premier !',
-    controls: 'Souris : lancer le dé et choisir le pion à avancer'
-  },
-  {
-    slug: 'mahjongg-solitaire', name: 'Mahjong Solitaire', cat: 'Réflexion', emoji: '🀄',
-    cover: 'https://imgs.crazygames.com/games/mahjongg-solitaire/cover_16x9-1707829450935.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#166534,#14532d)', rating: 4, plays: '290 k',
-    desc: 'Le mahjong classique : associe les tuiles identiques libres pour vider entièrement la pyramide.',
-    controls: 'Souris : cliquer sur deux tuiles identiques libres'
-  },
-  {
-    slug: 'words-of-wonders', name: 'Words of Wonders', cat: 'Réflexion', emoji: '🔤',
-    cover: 'https://imgs.crazygames.com/words-of-wonders_16x9/20231019163757/words-of-wonders_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#0891b2,#155e75)', rating: 4, plays: '150 k',
-    desc: 'Relie les lettres pour former les mots de la grille et voyage devant les plus belles merveilles du monde.',
-    controls: 'Souris / doigt : relier les lettres dans le bon ordre'
-  },
-  {
-    slug: 'jacksmith', name: 'Jacksmith', cat: 'Arcade', emoji: '⚔️',
-    cover: 'https://imgs.crazygames.com/games/jacksmith/cover-1684221283970.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#92400e,#451a03)', rating: 5, plays: '205 k',
-    desc: 'Deviens forgeron : fonds le métal, forge épées et boucliers, puis regarde les héros combattre avec tes armes !',
-    controls: 'Souris : toutes les étapes de la forge se font à la souris'
-  },
-  {
-    slug: 'airport-security', name: 'Airport Security', cat: 'Réflexion', emoji: '✈️',
-    cover: 'https://imgs.crazygames.com/airport-security_16x9/20231010102631/airport-security_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#64748b,#1e293b)', rating: 4, plays: '110 k',
-    desc: 'Tu es l’agent de sécurité de l’aéroport : vérifie les passeports, scanne les bagages et repère les passagers suspects !',
-    controls: 'Souris : inspecter les documents, accepter ✅ ou refuser ❌'
-  }
-,
-  {
-    slug: 'om-nom-run', name: 'Om Nom Run', cat: 'Arcade', emoji: '🍬', fresh: true,
-    cover: 'https://imgs.crazygames.com/games/om-nom-run/cover_16x9-1707829613214.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#22c55e,#15803d)', rating: 4, plays: '240 k',
-    desc: 'Om Nom, le petit monstre de Cut the Rope, part courir en ville. Même principe que Subway Surfers : trois voies, des obstacles, et des bonus à attraper en route.',
-    controls: 'Flèches : changer de voie, sauter et glisser · Tactile : balayages'
-  },
-  {
-    slug: 'jetpack-joyride-pcp', name: 'Jetpack Joyride', cat: 'Arcade', emoji: '🎒', fresh: true,
-    cover: 'https://imgs.crazygames.com/jetpack-joyride-pcp_16x9/20250121090354/jetpack-joyride-pcp_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#f59e0b,#b45309)', rating: 5, plays: '390 k',
-    desc: 'Le classique des jeux mobiles. Tu voles un jetpack dans un labo et tu dois aller le plus loin possible entre les lasers et les missiles.',
-    controls: 'Clic ou ESPACE maintenu : monter · Relâcher : descendre'
-  },
-  {
-    slug: 'rooftop-run', name: 'Rooftop Run', cat: 'Arcade', emoji: '🏙️', fresh: true,
-    cover: 'https://imgs.crazygames.com/rooftop-run_16x9/20240415041518/rooftop-run_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#64748b,#0f172a)', rating: 4, plays: '85 k',
-    desc: 'Du parkour sur les toits : cours, saute d’immeuble en immeuble et glisse sous les obstacles sans perdre ton élan.',
-    controls: 'ESPACE : sauter · ↓ : glisser'
-  },
-  {
-    slug: 'chrome-dino', name: 'Chrome Dino', cat: 'Arcade', emoji: '🦖', fresh: true,
-    cover: 'https://imgs.crazygames.com/games/chrome-dino/cover-1669113832091.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#9ca3af,#4b5563)', rating: 4, plays: '520 k',
-    desc: 'Le vrai dinosaure de Google Chrome, celui qui apparaît quand tu n’as plus internet. Saute les cactus, baisse-toi sous les oiseaux.',
-    controls: 'ESPACE / ↑ : sauter · ↓ : se baisser'
-  },
-  {
-    slug: 'draw-climber', name: 'Draw Climber', cat: 'Arcade', emoji: '✏️', fresh: true,
-    cover: 'https://imgs.crazygames.com/draw-climber_16x9/20250327042947/draw-climber_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#eab308,#ca8a04)', rating: 4, plays: '130 k',
-    desc: 'Dessine les jambes de ton petit véhicule pour qu’il grimpe les pentes et franchisse les crevasses. À toi de trouver la bonne forme à chaque niveau.',
-    controls: 'Souris : dessiner la forme des jambes'
-  },
-  {
-    slug: 'count-masters-stickman-games', name: 'Count Masters', cat: 'Arcade', emoji: '👥', fresh: true,
-    cover: 'https://imgs.crazygames.com/count-masters-stickman-games_16x9/20260318145715/count-masters-stickman-games_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#2563eb,#1d4ed8)', rating: 4, plays: '210 k',
-    desc: 'Choisis les bonnes portes (+20, ×3…) pour agrandir ton armée de stickmans, puis affronte la foule adverse à l’arrivée.',
-    controls: 'Souris : glisser à gauche / droite pour guider la foule'
-  },
-  {
-    slug: 'wave-dash-geometry-arrow', name: 'Wave Dash', cat: 'Arcade', emoji: '〰️', fresh: true,
-    cover: 'https://imgs.crazygames.com/wave-dash-geometry-arrow_16x9/20260317093038/wave-dash-geometry-arrow_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#111827,#7c3aed)', rating: 4, plays: '64 k',
-    desc: 'Un mode « wave » façon Geometry Dash : ta flèche monte et descend en diagonale, à toi d’éviter les pics. Court, dur, et on recommence.',
-    controls: 'Clic / ESPACE maintenu : monter · Relâcher : descendre'
-  },
-  {
-    slug: 'bubble-trouble-cpy', name: 'Bubble Trouble', cat: 'Arcade', emoji: '🫧', fresh: true,
-    cover: 'https://imgs.crazygames.com/bubble-trouble-cpy_16x9/20250925061651/bubble-trouble-cpy_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#dc2626,#991b1b)', rating: 5, plays: '310 k',
-    desc: 'Le jeu culte des années 2000. Éclate les balles rebondissantes avec ton harpon, attention : les grosses se divisent en plus petites. Jouable aussi à deux sur le même clavier.',
-    controls: '← → : bouger · ESPACE : harpon · Joueur 2 : A/D + tir'
-  },
-  {
-    slug: 'stone-grass-mowing-simulator', name: 'Stone Grass', cat: 'Arcade', emoji: '🌿', fresh: true,
-    cover: 'https://imgs.crazygames.com/stone-grass-mowing-simulator_16x9/20260318150935/stone-grass-mowing-simulator_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#4d7c0f,#365314)', rating: 4, plays: '175 k',
-    desc: 'Tondre une pelouse n’a jamais été aussi satisfaisant. Coupe l’herbe, vends ta récolte et améliore ton équipement pour raser des champs entiers.',
-    controls: 'Souris / doigt : déplacer la tondeuse'
-  },
-  {
-    slug: 'trial-mania', name: 'Trial Mania', cat: 'Course', emoji: '🏍️', fresh: true,
-    cover: 'https://imgs.crazygames.com/trial-mania_16x9/20250121045401/trial-mania_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#b45309,#78350f)', rating: 4, plays: '47 k',
-    desc: 'Du trial moto basé sur l’équilibre : franchis rochers, troncs et rampes sans poser le pied à terre. La physique ne pardonne pas.',
-    controls: 'Flèches : gaz, frein et équilibre avant / arrière'
-  },
-  {
-    slug: 'jump-master-car-racing-peo', name: 'Jump Master Car Racing', cat: 'Course', emoji: '🚙', fresh: true,
-    cover: 'https://imgs.crazygames.com/jump-master-car-racing-peo_16x9/20260630103600/jump-master-car-racing-peo_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#0ea5e9,#075985)', rating: 3, plays: '31 k',
-    desc: 'Des pistes perchées au-dessus de la mer avec des tremplins dans tous les sens. Le plus dur n’est pas d’aller vite, c’est d’atterrir.',
-    controls: 'Flèches / ZQSD : conduire et orienter la voiture en l’air'
-  },
-  {
-    slug: 'openfront-gsw', name: 'OpenFront', cat: 'Action', emoji: '🌍', fresh: true,
-    cover: 'https://imgs.crazygames.com/openfront-gsw_16x9/20260515051210/openfront-gsw_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#1e3a8a,#0c4a6e)', rating: 4, plays: '270 k',
-    desc: 'Un jeu de conquête de territoires en ligne : pars d’un petit bout de carte et grignote le territoire des autres joueurs jusqu’à dominer la partie.',
-    controls: 'Souris : sélectionner un territoire pour l’attaquer'
-  },
-  {
-    slug: 'mini-golf-club', name: 'Mini Golf Club', cat: 'Sport', emoji: '⛳', fresh: true,
-    cover: 'https://imgs.crazygames.com/mini-golf-club_16x9/20260609101725/mini-golf-club_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#16a34a,#166534)', rating: 4, plays: '92 k',
-    desc: 'Du mini-golf en 3D avec des parcours tordus et un mode multijoueur en temps réel. La trajectoire affichée aide, mais la puissance, c’est toi qui la doses.',
-    controls: 'Souris : viser, tirer en arrière pour charger, relâcher pour frapper'
-  },
-  {
-    slug: 'pool-club', name: 'Pool Club', cat: 'Sport', emoji: '🎱', fresh: true,
-    cover: 'https://imgs.crazygames.com/games/pool-club/cover-1624014574246.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#14532d,#052e16)', rating: 4, plays: '140 k',
-    desc: 'Version solo et détente du billard : enchaîne les tables contre la montre, chaque bille empochée te redonne quelques secondes.',
-    controls: 'Souris : viser · Maintenir pour ajuster la puissance'
-  },
-  {
-    slug: 'super-bowling-mania', name: 'Super Bowling Mania', cat: 'Sport', emoji: '🎳', fresh: true,
-    cover: 'https://imgs.crazygames.com/super-bowling-mania_16x9/20260122070303/super-bowling-mania_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#7c2d12,#431407)', rating: 3, plays: '28 k',
-    desc: 'Du bowling tout simple : positionne-toi, vise entre les flèches et lance. La gestion de l’effet fait la différence entre spare et strike.',
-    controls: 'Souris : position, visée puis lancer au bon moment'
-  },
-  {
-    slug: 'chess-free', name: 'Échecs en ligne', cat: 'Plateau', emoji: '♟️', fresh: true,
-    cover: 'https://imgs.crazygames.com/chess-free_16x9/20260508084105/chess-free_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#44403c,#1c1917)', rating: 4, plays: '160 k',
-    desc: 'Les échecs classiques, contre l’ordinateur avec plusieurs niveaux ou contre un adversaire. Rien de superflu, juste l’échiquier.',
-    controls: 'Souris : cliquer une pièce puis sa case d’arrivée'
-  },
-  {
-    slug: '4-in-a-row-connected-multiplayer-online', name: 'Puissance 4 en ligne', cat: 'Plateau', emoji: '🔴', fresh: true,
-    cover: 'https://imgs.crazygames.com/games/4-in-a-row-connected-multiplayer-online/cover_16x9-1739759253546.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#1d4ed8,#172554)', rating: 4, plays: '115 k',
-    desc: 'Le Puissance 4 en multijoueur : aligne quatre jetons avant l’autre joueur, en ligne ou sur le même écran.',
-    controls: 'Souris : cliquer la colonne où lâcher le jeton'
-  },
-  {
-    slug: 'checkers-draughts-multiplayer', name: 'Jeu de dames', cat: 'Plateau', emoji: '⚫', fresh: true,
-    cover: 'https://imgs.crazygames.com/checkers-draughts-multiplayer_16x9/20260323095303/checkers-draughts-multiplayer_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#57534e,#292524)', rating: 4, plays: '74 k',
-    desc: 'Les dames traditionnelles, prises obligatoires et rafles comprises. Contre l’IA ou contre un joueur en ligne.',
-    controls: 'Souris : sélectionner un pion puis sa destination'
-  },
-  {
-    slug: 'snakes-and-ladders', name: 'Serpents et Échelles', cat: 'Plateau', emoji: '🪜', fresh: true,
-    cover: 'https://imgs.crazygames.com/snakes-and-ladders_16x9/20260506080214/snakes-and-ladders_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#ca8a04,#854d0e)', rating: 3, plays: '52 k',
-    desc: 'Le jeu de plateau de quand on était petits : les échelles te font grimper, la tête des serpents te fait redescendre. Le premier à la case 100 gagne.',
-    controls: 'Souris : lancer le dé'
-  },
-  {
-    slug: 'cursed-treasure-2', name: 'Cursed Treasure 2', cat: 'Réflexion', emoji: '💎', fresh: true,
-    cover: 'https://imgs.crazygames.com/cursed-treasure-2_16x9/20250403072105/cursed-treasure-2_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#581c87,#3b0764)', rating: 5, plays: '185 k',
-    desc: 'Un tower defense où tu joues les méchants : place tes tours pour empêcher les héros de voler tes gemmes. Un classique du genre, très complet.',
-    controls: 'Souris : construire et améliorer les tours de défense'
-  },
-  {
-    slug: 'screw-out-bolts-and-nuts', name: 'Screw Out : Vis et Écrous', cat: 'Réflexion', emoji: '🔩', fresh: true,
-    cover: 'https://imgs.crazygames.com/screw-out-bolts-and-nuts_16x9/20250711094331/screw-out-bolts-and-nuts_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#78716c,#44403c)', rating: 4, plays: '99 k',
-    desc: 'Dévisse les plaques métalliques dans le bon ordre pour les faire tomber. Ça commence tout doux, puis certains niveaux demandent vraiment de réfléchir.',
-    controls: 'Souris : dévisser et revisser aux emplacements libres'
-  },
-  {
-    slug: 'goods-triple-match-3d', name: 'Goods Triple Match 3D', cat: 'Réflexion', emoji: '🧺', fresh: true,
-    cover: 'https://imgs.crazygames.com/goods-triple-match-3d_16x9/20260923024852/goods-triple-match-3d_16x9-cover.png?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#db2777,#9d174d)', rating: 4, plays: '143 k',
-    desc: 'Range les étagères en regroupant les objets par trois identiques. Le genre de jeu « encore un niveau et j’arrête ».',
-    controls: 'Souris : déplacer les objets d’une étagère à l’autre'
-  },
-  {
-    slug: 'farm-merge-valley', name: 'Farm Merge Valley', cat: 'Réflexion', emoji: '🚜', fresh: true,
-    cover: 'https://imgs.crazygames.com/farm-merge-valley_16x9/20260909072453/farm-merge-valley_16x9-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#65a30d,#3f6212)', rating: 4, plays: '88 k',
-    desc: 'Fusionne plants, animaux et bâtiments pour faire grandir ta ferme et débloquer de nouvelles zones. Calme, et très prenant sur la durée.',
-    controls: 'Souris : faire glisser les éléments identiques pour les fusionner'
-  },
-  {
-    slug: 'cityidle', name: 'City Idle', cat: 'Réflexion', emoji: '🏗️', fresh: true,
-    cover: 'https://imgs.crazygames.com/cityidle/20230329134547/cityidle-cover?metadata=none&quality=85&width=546&fit=crop',
-    grad: 'linear-gradient(135deg,#0369a1,#0c4a6e)', rating: 3, plays: '41 k',
-    desc: 'Construis une ville qui tourne toute seule : place des bâtiments, gère tes ressources et reviens voir ce qu’elle a produit en ton absence.',
-    controls: 'Souris : construire et améliorer les bâtiments'
-  }
 
+  /* ---------------- Arcade ---------------- */
+  {
+    slug: 'sink-hole', name: 'Sink Hole', cat: 'Arcade', emoji: '🕳️', fresh: true,
+    embed: 'https://html5.gamemonetize.co/9q8wg1qah81wrucv2e8knmnxpbqbex4z/',
+    cover: 'https://img.gamemonetize.com/9q8wg1qah81wrucv2e8knmnxpbqbex4z/512x384.jpg',
+    grad: 'linear-gradient(135deg,#1f2937,#111827)', rating: 4, plays: '73 k',
+    desc: 'Tu es un trou noir affamé en pleine ville : avale voitures, lampadaires puis immeubles entiers pour grandir, en évitant les trous plus gros que toi.',
+    controls: 'Souris ou flèches : se déplacer · ÉCHAP : pause'
+  },
+  {
+    slug: 'muscle-rush-3d', name: 'Muscle Rush 3D', cat: 'Arcade', emoji: '💪', fresh: true,
+    embed: 'https://html5.gamemonetize.co/tpj7kvupr0rlgkdtbj8lm9ge6cxxrvno/',
+    cover: 'https://img.gamemonetize.com/tpj7kvupr0rlgkdtbj8lm9ge6cxxrvno/512x384.jpg',
+    grad: 'linear-gradient(135deg,#f97316,#c2410c)', rating: 4, plays: '58 k',
+    desc: 'Un runner où tes choix te rendent plus fort ou plus faible : choisis les bonnes portes, avale les protéines, évite la malbouffe et boxe tes rivaux.',
+    controls: 'Glisser la souris ou ← → : se diriger · Clic / ESPACE : frapper'
+  },
+  {
+    slug: 'storm-dash', name: 'Storm Dash', cat: 'Arcade', emoji: '🌩️', fresh: true,
+    embed: 'https://html5.gamemonetize.co/lpvw2669qu46qr82kwg363sackyftudv/',
+    cover: 'https://img.gamemonetize.com/lpvw2669qu46qr82kwg363sackyftudv/512x384.jpg',
+    grad: 'linear-gradient(135deg,#312e81,#1e1b4b)', rating: 4, plays: '44 k',
+    desc: 'Cours, saute et dashe pour échapper à la tempête qui te colle aux talons. Ramasse les pièces pour améliorer tes capacités et battre ton record de distance.',
+    controls: '← → ou Q/D : courir · ↑ : sauter · ↓ : dasher'
+  },
+  {
+    slug: 'cake-stack', name: 'Cake Stack', cat: 'Arcade', emoji: '🍰', fresh: true,
+    embed: 'https://html5.gamemonetize.co/as1m0vqqgd469nkymknac70ki6k8icgq/',
+    cover: 'https://img.gamemonetize.com/as1m0vqqgd469nkymknac70ki6k8icgq/512x384.jpg',
+    grad: 'linear-gradient(135deg,#f9a8d4,#db2777)', rating: 3, plays: '37 k',
+    desc: 'Cours en empilant les parts de gâteau sur ton passage : plus ta tour est haute à l’arrivée, plus tu marques de points. Simple et très prenant.',
+    controls: 'Souris : glisser à gauche / droite'
+  },
+  {
+    slug: 'jelly-mob-rush', name: 'Jelly Mob Rush', cat: 'Arcade', emoji: '🍬', fresh: true,
+    embed: 'https://html5.gamemonetize.co/qmp9f6s9yny9jhhcwi9iul8vvyxnax2w/',
+    cover: 'https://img.gamemonetize.com/qmp9f6s9yny9jhhcwi9iul8vvyxnax2w/512x384.jpg',
+    grad: 'linear-gradient(135deg,#e879f9,#a21caf)', rating: 3, plays: '25 k',
+    desc: 'Guide ta foule de bonhommes en gelée : choisis les portes qui la multiplient, esquive les rouleaux de cuisine et écrase l’armée rouge à l’arrivée.',
+    controls: 'Glisser la souris ou Q/D : diriger la foule'
+  },
+  {
+    slug: 'zumble-ocean', name: 'Zumble Ocean', cat: 'Arcade', emoji: '🐠',
+    embed: 'https://html5.gamedistribution.com/daff15f24e0b4ffd8fdd1f1da106e570/',
+    cover: 'https://img.gamedistribution.com/daff15f24e0b4ffd8fdd1f1da106e570-512x384.jpeg',
+    grad: 'linear-gradient(135deg,#0e7490,#155e75)', rating: 4, plays: '150 k',
+    desc: 'Le principe de Zuma sous l’eau : tire des billes colorées dans la file qui avance pour former des groupes de trois avant qu’elle n’atteigne le bout.',
+    controls: 'Souris : viser · Clic : tirer la bille'
+  },
+  {
+    slug: 'zumbo-mania', name: 'Zumbo Mania', cat: 'Arcade', emoji: '🌀',
+    embed: 'https://html5.gamedistribution.com/1d9078d79d6c410d879f456d658d63fa/',
+    cover: 'https://img.gamedistribution.com/1d9078d79d6c410d879f456d658d63fa-512x384.jpeg',
+    grad: 'linear-gradient(135deg,#b45309,#78350f)', rating: 4, plays: '135 k',
+    desc: 'Même famille que Zuma et Luxor : une grenouille de pierre, une spirale de billes, et des combos à déclencher en visant juste.',
+    controls: 'Souris : viser · Clic : tirer · ESPACE : échanger la bille'
+  },
+
+  /* ---------------- Réflexion ---------------- */
+  {
+    slug: 'cursed-treasure', name: 'Cursed Treasure 1.5', cat: 'Réflexion', emoji: '💎',
+    embed: 'https://html5.gamedistribution.com/5d0c9c0ceeb54f4d9c238e82d35dea96/',
+    cover: 'https://img.gamedistribution.com/5d0c9c0ceeb54f4d9c238e82d35dea96-512x384.jpg',
+    grad: 'linear-gradient(135deg,#581c87,#3b0764)', rating: 5, plays: '380 k',
+    desc: 'Un tower defense où tu joues les méchants : dresse tes tours pour empêcher les héros de repartir avec tes gemmes. Un classique du genre, très complet.',
+    controls: 'Souris : construire, améliorer et lancer des sorts'
+  },
+  {
+    slug: 'ultimate-tower-defense', name: 'Ultimate Tower Defense', cat: 'Réflexion', emoji: '🗼',
+    embed: 'https://html5.gamedistribution.com/508663e69fe74b97a9192c779c3ff71f/',
+    cover: 'https://img.gamedistribution.com/508663e69fe74b97a9192c779c3ff71f-512x384.jpg',
+    grad: 'linear-gradient(135deg,#14532d,#052e16)', rating: 4, plays: '175 k',
+    desc: 'Des vagues d’ennemis, un chemin à défendre et tout un arsenal de tourelles à combiner. Les dernières vagues demandent une vraie stratégie.',
+    controls: 'Souris : placer et améliorer les tourelles'
+  },
+  {
+    slug: 'worldguessr', name: 'WorldGuessr', cat: 'Réflexion', emoji: '🌍',
+    embed: 'https://html5.gamedistribution.com/fef00656129743768437b7589b7c48b1/',
+    cover: 'https://img.gamedistribution.com/fef00656129743768437b7589b7c48b1-512x384.jpg',
+    grad: 'linear-gradient(135deg,#0284c7,#0c4a6e)', rating: 5, plays: '290 k',
+    desc: 'On te lâche quelque part sur la planète en vue rue : à toi de deviner où en observant les panneaux, les plaques et la végétation. Plus tu es précis, plus tu marques.',
+    controls: 'Souris : regarder autour, zoomer, puis placer ton épingle sur la carte'
+  },
+  {
+    slug: 'number-match', name: 'Number Match', cat: 'Réflexion', emoji: '🔢',
+    embed: 'https://html5.gamedistribution.com/dab0bbeebecf4025bbd0da9425ec2b65/',
+    cover: 'https://img.gamedistribution.com/dab0bbeebecf4025bbd0da9425ec2b65-512x384.jpeg',
+    grad: 'linear-gradient(135deg,#0d9488,#134e4a)', rating: 4, plays: '210 k',
+    desc: 'Associe les chiffres identiques ou qui totalisent 10 pour vider la grille. Calme en apparence, redoutable quand il ne reste que quelques cases.',
+    controls: 'Souris : sélectionner deux chiffres à associer'
+  },
+  {
+    slug: 'mahjong-seasons-2', name: 'Mahjong Seasons 2', cat: 'Réflexion', emoji: '🀄',
+    embed: 'https://html5.gamedistribution.com/9136c087a5ff4823a1bebcfeab8460b9/',
+    cover: 'https://img.gamedistribution.com/9136c087a5ff4823a1bebcfeab8460b9-512x384.jpg',
+    grad: 'linear-gradient(135deg,#166534,#14532d)', rating: 4, plays: '165 k',
+    desc: 'Le mahjong solitaire aux couleurs de l’automne et de l’hiver : libère les tuiles par paires identiques jusqu’à vider la pyramide.',
+    controls: 'Souris : cliquer deux tuiles libres identiques'
+  },
+  {
+    slug: 'merge-lagoon', name: 'Merge Lagoon', cat: 'Réflexion', emoji: '🏝️',
+    embed: 'https://html5.gamedistribution.com/7e7b6107748646f2b18f69bf535663b6/',
+    cover: 'https://img.gamedistribution.com/7e7b6107748646f2b18f69bf535663b6-512x384.jpg',
+    grad: 'linear-gradient(135deg,#0891b2,#155e75)', rating: 4, plays: '118 k',
+    desc: 'Fusionne les objets échoués sur ton île pour en créer de nouveaux, remplir les commandes et débloquer des zones. Le jeu « encore une partie » par excellence.',
+    controls: 'Souris : glisser-déposer les objets identiques pour les fusionner'
+  },
+  {
+    slug: 'wake-up-the-box', name: 'Wake Up the Box', cat: 'Réflexion', emoji: '📦',
+    embed: 'https://html5.gamedistribution.com/88d7078602364cfd845f7c2796c456c7/',
+    cover: 'https://img.gamedistribution.com/88d7078602364cfd845f7c2796c456c7-512x384.jpeg',
+    grad: 'linear-gradient(135deg,#a16207,#713f12)', rating: 4, plays: '240 k',
+    desc: 'Monsieur Boîte dort profondément : dessine des formes en bois et laisse la physique faire le reste pour le réveiller. Un classique des jeux de physique.',
+    controls: 'Souris : dessiner des formes en maintenant le clic'
+  },
+  {
+    slug: '2048-merge-world', name: '2048 Merge World', cat: 'Réflexion', emoji: '🌍', fresh: true,
+    embed: 'https://html5.gamedistribution.com/a8ecea31288d4f6581ae36db798ce9ac/',
+    cover: 'https://img.gamedistribution.com/a8ecea31288d4f6581ae36db798ce9ac-512x384.jpg',
+    grad: 'linear-gradient(135deg,#d97706,#92400e)', rating: 4, plays: '92 k',
+    desc: 'Le principe du 2048 en version « fusion de planètes » : lâche les sphères au bon endroit pour les faire évoluer sans déborder.',
+    controls: 'Souris : déplacer et lâcher les sphères'
+  },
+  {
+    slug: 'ocean-bubble-sort', name: 'Ocean Bubble Sort', cat: 'Réflexion', emoji: '🧪', fresh: true,
+    embed: 'https://html5.gamedistribution.com/7da7b762ca9e4ac1a7fa139feae0568d/',
+    cover: 'https://img.gamedistribution.com/7da7b762ca9e4ac1a7fa139feae0568d-512x384.jpg',
+    grad: 'linear-gradient(135deg,#2563eb,#1e40af)', rating: 3, plays: '64 k',
+    desc: 'Trie les liquides colorés d’éprouvette en éprouvette jusqu’à ce que chaque tube soit unicolore. On se bloque plus vite qu’on ne croit.',
+    controls: 'Souris : choisir le tube de départ puis celui d’arrivée'
+  },
+  {
+    slug: 'arrow-tap-puzzle', name: 'Arrow Tap Puzzle', cat: 'Réflexion', emoji: '➡️', fresh: true,
+    embed: 'https://html5.gamedistribution.com/0b2abc29bd9c400cb7a7dce4a8a79d44/',
+    cover: 'https://img.gamedistribution.com/0b2abc29bd9c400cb7a7dce4a8a79d44-512x384.jpg',
+    grad: 'linear-gradient(135deg,#475569,#1e293b)', rating: 3, plays: '48 k',
+    desc: 'Chaque flèche ne peut sortir que dans sa direction : trouve le bon ordre pour vider la grille sans tout bloquer.',
+    controls: 'Souris : cliquer les flèches dans le bon ordre'
+  },
+  {
+    slug: 'sophies-farm', name: 'Sophie’s Farm', cat: 'Réflexion', emoji: '🚜', fresh: true,
+    embed: 'https://html5.gamedistribution.com/df725a3a7e6143529417611af41098cb/',
+    cover: 'https://img.gamedistribution.com/df725a3a7e6143529417611af41098cb-512x384.jpg',
+    grad: 'linear-gradient(135deg,#65a30d,#3f6212)', rating: 4, plays: '77 k',
+    desc: 'Reprends la ferme de Sophie : plante, récolte, nourris les animaux et développe tes bâtiments saison après saison.',
+    controls: 'Souris : tout se gère au clic'
+  },
+  {
+    slug: 'gas-station-tycoon', name: 'Gas Station : Junkyard Tycoon', cat: 'Réflexion', emoji: '⛽', fresh: true,
+    embed: 'https://html5.gamedistribution.com/53f75279264b4a6484601a99be7aef87/',
+    cover: 'https://img.gamedistribution.com/53f75279264b4a6484601a99be7aef87-512x384.jpg',
+    grad: 'linear-gradient(135deg,#57534e,#292524)', rating: 4, plays: '83 k',
+    desc: 'Transforme une casse et sa vieille station-service en affaire rentable : répare, revends et réinvestis dans de nouvelles pompes.',
+    controls: 'Souris : cliquer pour gérer et améliorer'
+  }
 ];
