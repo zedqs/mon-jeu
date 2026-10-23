@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morpion — ZedJeux</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⭕</text></svg>">
+<link rel="stylesheet" href="../assets/game.css">
+<style>
+  #board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(360px,90vw)}
+  .cell{aspect-ratio:1;border:none;border-radius:16px;background:rgba(255,255,255,.1);font-size:56px;font-weight:900;cursor:pointer;color:#fff;transition:background .15s,transform .15s}
+  .cell:hover:not(:disabled){background:rgba(255,255,255,.22);transform:scale(1.04)}
+  .cell:disabled{cursor:default}
+  .cell.x{color:#38bdf8}.cell.o{color:#fb7185}
+  .cell.win{background:#22c55e!important;color:#fff;animation:winPulse .5s ease infinite alternate}
+  @keyframes winPulse{from{transform:scale(1)}to{transform:scale(1.08)}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Tous les jeux</a>
+  <h1>⭕ Morpion</h1><div class="spacer"></div>
+</div>
+<div class="panel">
+  <div class="hud">
+    <div class="stat"><small>🔵 X</small><span id="sx">0</span></div>
+    <div class="stat"><small>🤝 Nuls</small><span id="sn">0</span></div>
+    <div class="stat"><small>🔴 O</small><span id="so">0</span></div>
+    <select class="sel" id="mode">
+      <option value="easy">🤖 IA facile</option>
+      <option value="hard" selected>🧠 IA imbattable</option>
+      <option value="2p">👥 2 joueurs</option>
+    </select>
+    <button class="btn" id="newBtn">↻ Recommencer</button>
+  </div>
+  <div id="board"></div>
+  <div class="msg" id="msg">Au tour de ❌ !</div>
+  <p class="hint">Aligne 3 symboles (ligne, colonne ou diagonale) pour gagner. En mode solo, tu joues les ❌.</p>
+</div>
+<script>
+const LINES=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+let board,turn,over,scores={X:0,O:0,N:0};
+const boardEl=document.getElementById('board'),msg=document.getElementById('msg');
+
+function winner(b){
+  for(const L of LINES)if(b[L[0]]&&b[L[0]]===b[L[1]]&&b[L[1]]===b[L[2]])return{w:b[L[0]],line:L};
+  return b.every(v=>v)?{w:'N'}:null;
+}
+function render(winLine){
+  boardEl.innerHTML='';
+  board.forEach((v,i)=>{
+    const b=document.createElement('button');
+    b.className='cell'+(v?' '+v.toLowerCase():'')+(winLine&&winLine.includes(i)?' win':'');
+    b.textContent=v==='X'?'❌':v==='O'?'⭕':'';
+    b.disabled=!!v||over;
+    b.onclick=()=>play(i);
+    boardEl.appendChild(b);
+  });
+  document.getElementById('sx').textContent=scores.X;
+  document.getElementById('so').textContent=scores.O;
+  document.getElementById('sn').textContent=scores.N;
+}
+function play(i){
+  if(over||board[i])return;
+  board[i]=turn;
+  const res=winner(board);
+  if(res)return end(res);
+  turn=turn==='X'?'O':'X';
+  render();
+  msg.textContent='Au tour de '+(turn==='X'?'❌':'⭕')+' !';
+  const mode=document.getElementById('mode').value;
+  if(mode!=='2p'&&turn==='O'){lockBoard(true);setTimeout(()=>{aiMove(mode);},420);}
+}
+function lockBoard(v){boardEl.querySelectorAll('.cell').forEach(b=>b.disabled=v||b.textContent!=='');}
+function minimax(b,isMax){
+  const res=winner(b);
+  if(res)return res.w==='O'?10:res.w==='X'?-10:0;
+  let best=isMax?-Infinity:Infinity;
+  b.forEach((v,i)=>{if(!v){b[i]=isMax?'O':'X';const s=minimax(b,!isMax);b[i]='';best=isMax?Math.max(best,s):Math.min(best,s);}});
+  return best;
+}
+function aiMove(mode){
+  const empty=board.map((v,i)=>v?'':i).filter(v=>v!=='');
+  let choice;
+  if(mode==='easy'&&Math.random()<0.55)choice=empty[Math.floor(Math.random()*empty.length)];
+  else{
+    let best=-Infinity;choice=empty[0];
+    empty.forEach(i=>{board[i]='O';const s=minimax(board,false);board[i]='';if(s>best){best=s;choice=i;}});
+  }
+  board[choice]='O';
+  const res=winner(board);
+  if(res)return end(res);
+  turn='X';render();msg.textContent='À toi de jouer ❌ !';
+}
+function end(res){
+  over=true;scores[res.w]++;render(res.line);
+  msg.textContent=res.w==='N'?'🤝 Match nul !':(res.w==='X'?'🎉 ❌ gagne la partie !':'🎉 ⭕ gagne la partie !');
+}
+function newGame(){
+  board=Array(9).fill('');turn='X';over=false;render();
+  msg.textContent=document.getElementById('mode').value==='2p'?'Au tour de ❌ !':'À toi de jouer ❌ !';
+}
+document.getElementById('newBtn').onclick=newGame;
+document.getElementById('mode').onchange=()=>{scores={X:0,O:0,N:0};newGame();};
+newGame();
+</script>
+</body>
+</html>

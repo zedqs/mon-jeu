@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2048 — ZedJeux</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔢</text></svg>">
+<link rel="stylesheet" href="../assets/game.css">
+<style>
+  #board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:#bbada0;padding:12px;border-radius:16px;width:min(440px,92vw);touch-action:none}
+  .cell{aspect-ratio:1;border-radius:10px;background:#cdc1b4;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:clamp(20px,6vw,32px);color:#776e65;transition:background .1s}
+  .cell.pop{animation:pop .15s ease}
+  @keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+  .v2{background:#eee4da}.v4{background:#ede0c8}.v8{background:#f2b179;color:#fff}.v16{background:#f59563;color:#fff}
+  .v32{background:#f67c5f;color:#fff}.v64{background:#f65e3b;color:#fff}.v128{background:#edcf72;color:#fff;font-size:clamp(17px,5vw,27px)}
+  .v256{background:#edcc61;color:#fff;font-size:clamp(17px,5vw,27px)}.v512{background:#edc850;color:#fff;font-size:clamp(17px,5vw,27px)}
+  .v1024{background:#edc53f;color:#fff;font-size:clamp(14px,4vw,22px)}.v2048{background:#edc22e;color:#fff;font-size:clamp(14px,4vw,22px);box-shadow:0 0 22px #edc22e}
+  .vbig{background:#3c3a32;color:#f9f6f2;font-size:clamp(14px,4vw,22px)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Tous les jeux</a>
+  <h1>🔢 2048</h1><div class="spacer"></div>
+</div>
+<div class="panel">
+  <div class="hud">
+    <div class="stat"><small>Score</small><span id="score">0</span></div>
+    <div class="stat"><small>Record</small><span id="best">0</span></div>
+    <button class="btn" id="newBtn">↻ Nouvelle partie</button>
+  </div>
+  <div id="board"></div>
+  <div class="msg" id="msg">Fusionne les tuiles pour atteindre 2048 !</div>
+  <div class="dpad">
+    <button class="up" data-d="up">⬆️</button><button class="left" data-d="left">⬅️</button>
+    <button class="right" data-d="right">➡️</button><button class="down" data-d="down">⬇️</button>
+  </div>
+  <p class="hint">⌨️ Flèches ou ZQSD · 📱 Glisse ton doigt sur la grille.<br>Deux tuiles identiques qui se touchent fusionnent en leur double !</p>
+</div>
+<script>
+const boardEl=document.getElementById('board');
+let grid,score,won,over,lastNew=-1;
+let best=+localStorage.getItem('2048-best')||0;
+document.getElementById('best').textContent=best;
+
+function emptyCells(){const r=[];grid.forEach((v,i)=>v===0&&r.push(i));return r;}
+function addTile(){const e=emptyCells();if(!e.length)return;const i=e[Math.floor(Math.random()*e.length)];grid[i]=Math.random()<0.9?2:4;lastNew=i;}
+function render(){
+  boardEl.innerHTML='';
+  grid.forEach((v,i)=>{
+    const d=document.createElement('div');
+    d.className='cell '+(v===0?'':(v<=2048?'v'+v:'vbig'))+(i===lastNew?' pop':'');
+    d.textContent=v||'';boardEl.appendChild(d);
+  });
+  document.getElementById('score').textContent=score;
+}
+function slide(row){
+  let a=row.filter(v=>v),gained=0;
+  for(let i=0;i<a.length-1;i++){if(a[i]===a[i+1]){a[i]*=2;gained+=a[i];a.splice(i+1,1);}}
+  while(a.length<4)a.push(0);
+  return{row:a,gained};
+}
+function move(dir){
+  if(over)return;
+  const before=grid.join(',');
+  const idx=(r,c)=>r*4+c;let gained=0;
+  const get=(line,i)=>{ // ligne = ensemble de 4 index dans l'ordre du déplacement
+    if(dir==='left')return idx(line,i); if(dir==='right')return idx(line,3-i);
+    if(dir==='up')return idx(i,line); return idx(3-i,line);
+  };
+  for(let line=0;line<4;line++){
+    const vals=[0,1,2,3].map(i=>grid[get(line,i)]);
+    const{row,gained:g}=slide(vals);gained+=g;
+    row.forEach((v,i)=>grid[get(line,i)]=v);
+  }
+  if(grid.join(',')===before)return;
+  score+=gained;lastNew=-1;addTile();render();
+  if(score>best){best=score;localStorage.setItem('2048-best',best);document.getElementById('best').textContent=best;}
+  if(!won&&grid.includes(2048)){won=true;document.getElementById('msg').textContent='🏆 2048 atteint, bravo ! Tu peux continuer pour battre ton record.';}
+  if(!canMove()){over=true;document.getElementById('msg').textContent=`😵 Plus aucun coup possible ! Score final : ${score}`;}
+}
+function canMove(){
+  if(emptyCells().length)return true;
+  for(let r=0;r<4;r++)for(let c=0;c<4;c++){
+    const v=grid[r*4+c];
+    if(c<3&&grid[r*4+c+1]===v)return true;
+    if(r<3&&grid[(r+1)*4+c]===v)return true;
+  }return false;
+}
+function newGame(){
+  grid=Array(16).fill(0);score=0;won=false;over=false;
+  addTile();addTile();render();
+  document.getElementById('msg').textContent='Fusionne les tuiles pour atteindre 2048 !';
+}
+document.getElementById('newBtn').onclick=newGame;
+addEventListener('keydown',e=>{
+  const k=e.key.toLowerCase();
+  const m={arrowup:'up',z:'up',w:'up',arrowdown:'down',s:'down',arrowleft:'left',q:'left',a:'left',arrowright:'right',d:'right'};
+  if(m[k]){e.preventDefault();move(m[k]);}
+});
+document.querySelectorAll('.dpad button').forEach(b=>b.addEventListener('pointerdown',()=>move(b.dataset.d)));
+let tx,ty;
+boardEl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+boardEl.addEventListener('touchend',e=>{
+  e.preventDefault();
+  const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+  if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;
+  move(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'));
+});
+newGame();
+</script>
+</body>
+</html>

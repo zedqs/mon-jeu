@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attrape-Fruits — ZedJeux</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍎</text></svg>">
+<link rel="stylesheet" href="../assets/game.css">
+<style>canvas{box-shadow:0 12px 32px rgba(0,0,0,.45);cursor:none}</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Tous les jeux</a>
+  <h1>🍎 Attrape-Fruits</h1><div class="spacer"></div>
+</div>
+<div class="panel">
+  <div class="hud">
+    <div class="stat"><small>Score</small><span id="score">0</span></div>
+    <div class="stat"><small>Vies</small><span id="lives">❤️❤️❤️</span></div>
+    <div class="stat"><small>Record</small><span id="best">0</span></div>
+    <button class="btn" id="startBtn">▶ Jouer</button>
+  </div>
+  <canvas class="game" id="cv" width="560" height="440"></canvas>
+  <div class="msg" id="msg">Déplace le panier pour attraper les fruits… et évite les bombes !</div>
+  <p class="hint">🖱️ Souris · 📱 Doigt · ⌨️ Flèches ← →<br>🍎🍌🍇 = +10 · ⭐ = +50 · 💣 = −1 vie · Fruit manqué = −1 vie</p>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const W=cv.width,H=cv.height;
+const FRUITS=['🍎','🍌','🍇','🍓','🍊','🍉','🍒','🥝','🍑'];
+let basket,items,score,lives,frame,spawnEvery,fallSpeed,state='idle',keys={};
+let best=+localStorage.getItem('fruits-best')||0;
+document.getElementById('best').textContent=best;
+
+function reset(){
+  basket={x:W/2-38,w:76,h:52};
+  items=[];score=0;lives=3;frame=0;spawnEvery=52;fallSpeed=2.1;
+  updateHud();
+}
+function updateHud(){
+  document.getElementById('score').textContent=score;
+  document.getElementById('lives').textContent='❤️'.repeat(Math.max(0,lives))||'—';
+}
+function spawn(){
+  const roll=Math.random();
+  const type=roll<0.13?'bomb':roll<0.2?'star':'fruit';
+  items.push({
+    x:24+Math.random()*(W-48),y:-26,vy:fallSpeed*(0.85+Math.random()*0.5),
+    rot:0,vr:(Math.random()-.5)*0.06,type,
+    emoji:type==='bomb'?'💣':type==='star'?'⭐':FRUITS[Math.floor(Math.random()*FRUITS.length)],
+    caughtAnim:0
+  });
+}
+function draw(){
+  const sky=ctx.createLinearGradient(0,0,0,H);
+  sky.addColorStop(0,'#7dd3fc');sky.addColorStop(.7,'#e0f2fe');sky.addColorStop(1,'#bbf7d0');
+  ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#4ade80';ctx.fillRect(0,H-30,W,30);
+  ctx.fillStyle='#22c55e';ctx.fillRect(0,H-30,W,7);
+  // arbre décoratif
+  ctx.font='64px serif';ctx.textAlign='left';
+  ctx.fillText('🌳',6,H-34);ctx.fillText('🌳',W-72,H-34);
+  // objets
+  items.forEach(it=>{
+    ctx.save();ctx.translate(it.x,it.y);ctx.rotate(it.rot);
+    ctx.font='36px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(it.emoji,0,0);ctx.restore();
+  });
+  // panier
+  ctx.font='58px serif';ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  ctx.fillText('🧺',basket.x+basket.w/2,H-32);
+  if(state==='idle'){
+    ctx.fillStyle='rgba(10,40,20,.55)';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#fff';ctx.font='900 32px sans-serif';ctx.textAlign='center';
+    ctx.fillText('🍎 ATTRAPE-FRUITS',W/2,H/2-16);
+    ctx.font='600 17px sans-serif';ctx.fillText('Clique sur ▶ Jouer et bouge le panier !',W/2,H/2+20);
+  }
+  if(state==='over'){
+    ctx.fillStyle='rgba(10,20,40,.6)';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#fff';ctx.font='900 34px sans-serif';ctx.textAlign='center';
+    ctx.fillText('GAME OVER',W/2,H/2-12);
+    ctx.font='700 19px sans-serif';ctx.fillText('Score : '+score+' · Record : '+best,W/2,H/2+24);
+  }
+}
+function loseLife(raison){
+  vies--;updateHud();
+  if(vies<=0){
+    state='over';
+    if(score>best){best=score;localStorage.setItem('fruits-best',best);document.getElementById('best').textContent=best;}
+    document.getElementById('msg').textContent=`😵 Partie terminée ! Score : ${score}${score>=best&&score>0?' — nouveau record ! 🏆':''}`;
+    document.getElementById('startBtn').textContent='↻ Rejouer';
+  }else document.getElementById('msg').textContent=raison+` Plus que ${lives} vie(s) !`;
+}
+function loop(){
+  if(keys.left)basket.x-=7;
+  if(keys.right)basket.x+=7;
+  basket.x=Math.max(0,Math.min(W-basket.w,basket.x));
+  if(state==='play'){
+    frame++;
+    fallSpeed=2.1+score/450;
+    spawnEvery=Math.max(24,52-score/60);
+    if(frame%Math.round(spawnEvery)===0)spawn();
+    items.forEach(it=>{it.y+=it.vy;it.rot+=it.vr;});
+    const topY=H-30-44;
+    items=items.filter(it=>{
+      const inBasket=it.y>topY&&it.y<H-16&&it.x>basket.x-4&&it.x<basket.x+basket.w+4;
+      if(inBasket){
+        if(it.type==='bomb'){loseLife('💥 BOUM ! Une bombe dans le panier !');}
+        else{score+=it.type==='star'?50:10;updateHud();}
+        return false;
+      }
+      if(it.y>H-24){
+        if(it.type==='fruit')loseLife('🍎 Fruit écrasé par terre !');
+        return false;
+      }
+      return true;
+    });
+  }
+  draw();
+  requestAnimationFrame(loop);
+}
+function moveTo(clientX){
+  const r=cv.getBoundingClientRect();
+  basket.x=(clientX-r.left)*(W/r.width)-basket.w/2;
+}
+cv.addEventListener('mousemove',e=>moveTo(e.clientX));
+cv.addEventListener('pointermove',e=>moveTo(e.clientX));
+cv.addEventListener('pointerdown',e=>moveTo(e.clientX));
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft'){keys.left=true;e.preventDefault();}
+  if(e.key==='ArrowRight'){keys.right=true;e.preventDefault();}
+});
+addEventListener('keyup',e=>{if(e.key==='ArrowLeft')keys.left=false;if(e.key==='ArrowRight')keys.right=false;});
+let vies=3;
+Object.defineProperty(window,'lives',{get:()=>vies,set:v=>vies=v});
+document.getElementById('startBtn').onclick=function(){
+  reset();state='play';this.textContent='↻ Recommencer';
+  document.getElementById('msg').textContent='Attrape un maximum de fruits ! 🍓🍌🍇';
+};
+reset();loop();
+</script>
+</body>
+</html>

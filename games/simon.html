@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simon — ZedJeux</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+<link rel="stylesheet" href="../assets/game.css">
+<style>
+  #simon{position:relative;width:min(360px,88vw);aspect-ratio:1;border-radius:50%;background:#14151f;padding:14px;box-shadow:0 16px 40px rgba(0,0,0,.55)}
+  .pad{position:absolute;width:calc(50% - 20px);height:calc(50% - 20px);border:none;cursor:pointer;opacity:.45;transition:opacity .12s, filter .12s, transform .12s}
+  .pad:active{transform:scale(.98)}
+  .pad.lit{opacity:1;filter:brightness(1.5) saturate(1.4)}
+  .pad:disabled{cursor:default}
+  #p0{top:14px;left:14px;background:#22c55e;border-radius:100% 14px 14px 14px}
+  #p1{top:14px;right:14px;background:#ef4444;border-radius:14px 100% 14px 14px}
+  #p2{bottom:14px;left:14px;background:#eab308;border-radius:14px 14px 14px 100%}
+  #p3{bottom:14px;right:14px;background:#3b82f6;border-radius:14px 14px 100% 14px}
+  .center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34%;aspect-ratio:1;border-radius:50%;
+    background:#1f2130;border:3px solid #33364d;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;text-align:center}
+  .center b{font-size:20px;letter-spacing:1px}
+  .center span{font-size:12px;color:#9aa3c7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back-btn" href="../index.html">← Tous les jeux</a>
+  <h1>🎵 Simon</h1><div class="spacer"></div>
+</div>
+<div class="panel">
+  <div class="hud">
+    <div class="stat"><small>Niveau</small><span id="level">0</span></div>
+    <div class="stat"><small>Record</small><span id="best">0</span></div>
+    <button class="btn" id="startBtn">▶ Commencer</button>
+  </div>
+  <div id="simon">
+    <button class="pad" id="p0" data-i="0"></button>
+    <button class="pad" id="p1" data-i="1"></button>
+    <button class="pad" id="p2" data-i="2"></button>
+    <button class="pad" id="p3" data-i="3"></button>
+    <div class="center"><b>SIMON</b><span id="centerTxt">prêt ?</span></div>
+  </div>
+  <div class="msg" id="msg">Regarde la séquence, puis répète-la en cliquant sur les couleurs !</div>
+  <p class="hint">À chaque niveau, la séquence s'allonge d'une couleur… et va de plus en plus vite ! 🔊 Mets le son !</p>
+</div>
+<script>
+const FREQS=[329.63,261.63,392.0,220.0]; // Mi, Do, Sol, La
+let ctxAudio,seq=[],playerIdx=0,accepting=false,playing=false;
+let best=+localStorage.getItem('simon-best')||0;
+document.getElementById('best').textContent=best;
+const pads=[...document.querySelectorAll('.pad')];
+const msg=document.getElementById('msg'),center=document.getElementById('centerTxt');
+
+function beep(i,dur=0.32){
+  try{
+    ctxAudio=ctxAudio||new(window.AudioContext||window.webkitAudioContext)();
+    const o=ctxAudio.createOscillator(),g=ctxAudio.createGain();
+    o.type='sine';o.frequency.value=FREQS[i];
+    g.gain.setValueAtTime(0.001,ctxAudio.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.35,ctxAudio.currentTime+0.02);
+    g.gain.exponentialRampToValueAtTime(0.001,ctxAudio.currentTime+dur);
+    o.connect(g).connect(ctxAudio.destination);
+    o.start();o.stop(ctxAudio.currentTime+dur);
+  }catch(e){}
+}
+function light(i,dur=340){
+  pads[i].classList.add('lit');beep(i,dur/1000);
+  setTimeout(()=>pads[i].classList.remove('lit'),dur);
+}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function playSequence(){
+  accepting=false;setPads(false);
+  msg.textContent='👀 Regarde bien la séquence…';center.textContent='écoute…';
+  await sleep(650);
+  const speed=Math.max(210,480-seq.length*22);
+  for(const i of seq){light(i,speed*0.75);await sleep(speed);}
+  playerIdx=0;accepting=true;setPads(true);
+  msg.textContent='🎯 À toi ! Répète la séquence ('+seq.length+' couleurs)';
+  center.textContent='à toi !';
+}
+function setPads(v){pads.forEach(p=>p.disabled=!v);}
+async function nextLevel(){
+  seq.push(Math.floor(Math.random()*4));
+  document.getElementById('level').textContent=seq.length;
+  await playSequence();
+}
+function start(){
+  seq=[];playing=true;
+  document.getElementById('startBtn').textContent='↻ Recommencer';
+  nextLevel();
+}
+pads.forEach(p=>p.addEventListener('click',async()=>{
+  if(!accepting||!playing)return;
+  const i=+p.dataset.i;
+  light(i);
+  if(i!==seq[playerIdx]){
+    accepting=false;playing=false;setPads(false);
+    beep(1,0.6);
+    const lvl=seq.length-1;
+    if(lvl>best){best=lvl;localStorage.setItem('simon-best',best);document.getElementById('best').textContent=best;}
+    msg.textContent=`💥 Faux ! Tu as atteint le niveau ${lvl}. ${lvl>=best&&lvl>0?'Nouveau record ! 🏆':''} Clique sur Recommencer.`;
+    center.textContent='perdu !';
+    document.getElementById('simon').animate([{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}],{duration:280,iterations:2});
+    return;
+  }
+  playerIdx++;
+  if(playerIdx===seq.length){
+    accepting=false;setPads(false);
+    msg.textContent='✅ Parfait ! Niveau suivant…';center.textContent='bravo !';
+    await sleep(900);nextLevel();
+  }
+}));
+document.getElementById('startBtn').onclick=start;
+setPads(false);
+</script>
+</body>
+</html>
