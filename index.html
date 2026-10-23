@@ -6,7 +6,7 @@
 <meta name="google-adsense-account" content="ca-pub-8649470289187025">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8649470289187025" crossorigin="anonymous"></script>
 <title>ZedJeux — Joue à plein de jeux gratuits !</title>
-<meta name="description" content="ZedJeux : des dizaines de mini-jeux gratuits à jouer directement dans ton navigateur. Snake, 2048, Tetris, Flappy, Démineur et bien plus !">
+<meta name="description" content="ZedJeux : joue gratuitement à Moto X3M, Smash Karts, Subway Runner, Friday Night Funkin' et plein d'autres jeux directement dans ton navigateur !">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
 <style>
   :root{
@@ -56,6 +56,15 @@
   }
   .btn-random:hover{transform:translateY(-2px) rotate(-1deg);filter:brightness(1.07)}
   .btn-random:active{transform:scale(.96)}
+  /* ---------- Bandeau ---------- */
+  .banner{
+    max-width:1240px;margin:16px auto 0;padding:0 16px;position:relative;z-index:1;
+  }
+  .banner div{
+    background:linear-gradient(90deg,#7c5cff,#ff5d8f);color:#fff;font-weight:800;
+    padding:12px 20px;border-radius:16px;text-align:center;font-size:16px;
+    box-shadow:0 10px 24px rgba(80,40,160,.35);
+  }
   /* ---------- Catégories ---------- */
   .cats{max-width:1240px;margin:18px auto 4px;padding:0 16px;display:flex;gap:9px;flex-wrap:wrap}
   .cat{
@@ -69,16 +78,17 @@
   .hero{max-width:1240px;margin:18px auto 6px;padding:0 16px}
   .hero-card{
     position:relative; border-radius:24px; overflow:hidden; display:block; text-decoration:none;
-    min-height:250px; box-shadow:0 18px 40px rgba(0,50,60,.35);
-    background:#14152e url('images/Nebula_Prince.jpg') center 30%/cover no-repeat;
+    min-height:260px; box-shadow:0 18px 40px rgba(0,50,60,.35);
+    background:linear-gradient(135deg,#f97316,#db2777) center/cover no-repeat;
     transition:transform .2s;
   }
   .hero-card:hover{transform:scale(1.008)}
-  .hero-card::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,8,30,.85) 0%,rgba(8,8,30,.45) 55%,transparent 100%)}
-  .hero-txt{position:relative;z-index:2;padding:34px 30px;color:#fff;max-width:560px}
+  .hero-card img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .hero-card::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,8,40,.88) 0%,rgba(20,8,40,.5) 55%,transparent 100%)}
+  .hero-txt{position:relative;z-index:2;padding:34px 30px;color:#fff;max-width:580px}
   .hero-txt .tag{display:inline-block;background:var(--accent);color:#5b4300;font-weight:900;font-size:12px;padding:5px 12px;border-radius:999px;letter-spacing:1px;text-transform:uppercase}
   .hero-txt h2{font-size:clamp(28px,5vw,44px);font-weight:900;margin:12px 0 8px;text-shadow:0 3px 14px rgba(0,0,0,.6)}
-  .hero-txt p{font-size:16px;line-height:1.55;color:#e8e9ff}
+  .hero-txt p{font-size:16px;line-height:1.55;color:#ffe9f4}
   .hero-txt .play{
     display:inline-flex;align-items:center;gap:8px;margin-top:18px;
     background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-weight:900;font-size:18px;
@@ -87,7 +97,7 @@
   /* ---------- Grille ---------- */
   main{max-width:1240px;margin:14px auto 10px;padding:0 16px 10px;position:relative;z-index:1}
   .section-title{color:#fff;font-size:24px;font-weight:900;margin:22px 4px 14px;text-shadow:0 2px 8px rgba(0,60,70,.35);display:flex;align-items:center;gap:10px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
   .tile{
     position:relative; background:var(--card); border-radius:20px; overflow:hidden;
     text-decoration:none; color:var(--ink); display:flex; flex-direction:column;
@@ -97,24 +107,24 @@
   .tile:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 18px 34px rgba(0,60,70,.35);z-index:2}
   .tile.big{grid-column:span 2;grid-row:span 2}
   .thumb{
-    position:relative; aspect-ratio:1/0.78; display:flex; align-items:center; justify-content:center;
+    position:relative; aspect-ratio:16/10; display:flex; align-items:center; justify-content:center;
     overflow:hidden;
   }
   .tile.big .thumb{aspect-ratio:auto;flex:1}
-  .thumb .emoji{font-size:74px;filter:drop-shadow(0 8px 12px rgba(0,0,0,.35));transition:transform .25s}
-  .tile.big .thumb .emoji{font-size:130px}
+  .thumb .emoji{font-size:64px;filter:drop-shadow(0 8px 12px rgba(0,0,0,.35));transition:transform .25s}
+  .tile.big .thumb .emoji{font-size:120px}
   .tile:hover .thumb .emoji{transform:scale(1.18) rotate(-4deg)}
-  .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .thumb .deco{position:absolute;font-size:26px;opacity:.5}
+  .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
   .badge{
     position:absolute;top:10px;left:10px;z-index:3;background:var(--pink);color:#fff;
     font-size:11px;font-weight:900;padding:4px 10px;border-radius:999px;letter-spacing:.6px;
     text-transform:uppercase;box-shadow:0 3px 8px rgba(0,0,0,.3);
   }
   .badge.hot{background:#ff7847}.badge.new{background:#22c55e}
+  .badge.real{background:linear-gradient(135deg,#7c5cff,#a855f7)}
   .fav{
     position:absolute;top:8px;right:8px;z-index:4;width:36px;height:36px;border-radius:50%;
-    border:none;background:rgba(255,255,255,.9);font-size:17px;cursor:pointer;line-height:1;
+    border:none;background:rgba(255,255,255,.92);font-size:17px;cursor:pointer;line-height:1;
     display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,.25);
     transition:transform .15s;
   }
@@ -132,17 +142,19 @@
   .tile-info{padding:11px 13px 13px}
   .tile-info h3{font-size:16.5px;font-weight:800;line-height:1.25}
   .tile.big .tile-info h3{font-size:21px}
-  .tile-info p{font-size:12.5px;color:#5b7a82;margin-top:3px;line-height:1.4}
-  .meta{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:#7b9aa1;font-weight:700}
+  .tile-info p{font-size:12.5px;color:#5b7a82;margin-top:3px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .meta{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:#7b9aa1;font-weight:700;flex-wrap:wrap}
   .meta .stars{color:#f5a623;letter-spacing:1px}
+  .meta .real-tag{background:#ede9fe;color:#6d28d9;padding:2px 8px;border-radius:999px;font-size:11px}
   .empty{display:none;text-align:center;color:#fff;font-size:19px;font-weight:700;padding:50px 20px;text-shadow:0 2px 8px rgba(0,60,70,.4)}
   footer{
     max-width:1240px;margin:30px auto 0;padding:24px 16px 36px;color:#eafffb;text-align:center;
     font-size:14px;line-height:1.7;position:relative;z-index:1;
   }
   footer b{font-size:17px}
+  footer a{color:#fff}
   @media (max-width:560px){
-    .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+    .grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px}
     .logo{font-size:24px}
     .btn-random{padding:11px 14px;font-size:14px}
   }
@@ -153,19 +165,22 @@
 <header>
   <div class="header-in">
     <a class="logo" href="index.html"><span class="pad">🎮</span> Zed<span>Jeux</span></a>
-    <div class="search"><input id="search" type="search" placeholder="Rechercher un jeu…" autocomplete="off"></div>
+    <div class="search"><input id="search" type="search" placeholder="Rechercher un jeu (moto, kart, subway…)" autocomplete="off"></div>
     <button class="btn-random" id="randomBtn">🎲 Jeu au hasard</button>
   </div>
 </header>
 
+<div class="banner"><div>⭐ NOUVEAU : de <b>VRAIS jeux</b> jouables direct sur le site — Moto X3M, Smash Karts, Subway Runner, Friday Night Funkin'… Clique et joue ! ⭐</div></div>
+
 <nav class="cats" id="cats"></nav>
 
 <section class="hero" id="hero">
-  <a class="hero-card" href="games/cosmic-summoner.html">
+  <a class="hero-card" href="jouer.html?jeu=bus-and-subway-runner">
+    <img class="bg" src="https://imgs.crazygames.com/busandsubwayrunner.png?metadata=none&quality=85&width=1280&fit=crop" alt="Bus & Subway Runner" onerror="this.remove()">
     <div class="hero-txt">
-      <span class="tag">⭐ Jeu à la une</span>
-      <h2>Cosmic Summoner</h2>
-      <p>Invoque des monstres cosmiques, collectionne les cartes les plus rares et complète ton Monstridex. Arriveras-tu à obtenir un Full Art légendaire ?</p>
+      <span class="tag">🚇 Style Subway Surfers</span>
+      <h2>Bus &amp; Subway Runner</h2>
+      <p>Cours sur les rails du métro, esquive les trains qui arrivent en face, saute de wagon en wagon et ramasse un max de pièces. Le runner culte, jouable tout de suite !</p>
       <span class="play">▶ JOUER</span>
     </div>
   </a>
@@ -179,29 +194,41 @@
 
 <footer>
   <b>🎮 ZedJeux</b><br>
-  Des mini-jeux gratuits, sans téléchargement, à jouer partout : ordinateur, tablette et téléphone.<br>
+  Des jeux gratuits, sans téléchargement, à jouer partout : ordinateur, tablette et téléphone.<br>
+  Les jeux ⭐ sont fournis via <a href="https://www.crazygames.com" target="_blank" rel="noopener">CrazyGames</a> — les 🏠 sont faits maison !<br>
   Clique sur le ❤️ d'un jeu pour l'ajouter à tes favoris !
 </footer>
 
+<script src="assets/catalogue.js"></script>
 <script>
-const GAMES = [
-  { id:'cosmic',  name:'Cosmic Summoner', href:'games/cosmic-summoner.html', cat:'Cartes', emoji:'🌌', img:'images/Voltara.jpg', desc:'Invoque et collectionne des monstres cosmiques rares !', grad:'linear-gradient(135deg,#312e81,#7c3aed)', badge:'hot', badgeTxt:'Populaire', big:true, rating:5, plays:'12 k' },
+/* ----- Jeux faits maison (déjà présents avant) ----- */
+const HOME_GAMES = [
+  { id:'cosmic',  name:'Cosmic Summoner', href:'games/cosmic-summoner.html', cat:'Cartes', emoji:'🌌', img:'images/Voltara.jpg', desc:'Invoque et collectionne des monstres cosmiques rares !', grad:'linear-gradient(135deg,#312e81,#7c3aed)', badge:'hot', badgeTxt:'Fait maison', big:true, rating:5, plays:'12 k' },
   { id:'snake',   name:'Snake', href:'games/snake.html', cat:'Classiques', emoji:'🐍', desc:'Mange les pommes et deviens le plus long serpent !', grad:'linear-gradient(135deg,#16a34a,#84cc16)', rating:5, plays:'98 k' },
-  { id:'2048',    name:'2048', href:'games/2048.html', cat:'Réflexion', emoji:'🔢', desc:'Fusionne les tuiles pour atteindre le fameux 2048.', grad:'linear-gradient(135deg,#f59e0b,#ef4444)', badge:'hot', badgeTxt:'Populaire', rating:5, plays:'87 k' },
+  { id:'2048',    name:'2048', href:'games/2048.html', cat:'Réflexion', emoji:'🔢', desc:'Fusionne les tuiles pour atteindre le fameux 2048.', grad:'linear-gradient(135deg,#f59e0b,#ef4444)', rating:5, plays:'87 k' },
   { id:'flappy',  name:'Flappy Oiseau', href:'games/flappy.html', cat:'Arcade', emoji:'🐤', desc:'Vole entre les tuyaux sans te cogner. Addictif !', grad:'linear-gradient(135deg,#38bdf8,#2563eb)', rating:4, plays:'76 k' },
   { id:'tetris',  name:'Tetris', href:'games/tetris.html', cat:'Classiques', emoji:'🟦', desc:'Empile les blocs et complète les lignes.', grad:'linear-gradient(135deg,#6366f1,#06b6d4)', rating:5, plays:'91 k' },
   { id:'demineur',name:'Démineur', href:'games/demineur.html', cat:'Réflexion', emoji:'💣', desc:'Trouve les mines sans exploser. À tes risques !', grad:'linear-gradient(135deg,#64748b,#1e293b)', rating:4, plays:'41 k' },
   { id:'memory',  name:'Memory', href:'games/memory.html', cat:'Réflexion', emoji:'🃏', desc:'Retrouve toutes les paires de cartes le plus vite possible.', grad:'linear-gradient(135deg,#ec4899,#a855f7)', rating:4, plays:'38 k' },
   { id:'cassebriques', name:'Casse-Briques', href:'games/casse-briques.html', cat:'Arcade', emoji:'🧱', desc:'Rebondis, vise, et détruis toutes les briques !', grad:'linear-gradient(135deg,#f97316,#dc2626)', rating:4, plays:'55 k' },
-  { id:'dino',    name:'Dino Run', href:'games/dino.html', cat:'Arcade', emoji:'🦖', desc:'Saute par-dessus les cactus et cours le plus loin possible.', grad:'linear-gradient(135deg,#eab308,#65a30d)', badge:'new', badgeTxt:'Nouveau', rating:4, plays:'29 k' },
+  { id:'dino',    name:'Dino Run', href:'games/dino.html', cat:'Arcade', emoji:'🦖', desc:'Saute par-dessus les cactus et cours le plus loin possible.', grad:'linear-gradient(135deg,#eab308,#65a30d)', rating:4, plays:'29 k' },
   { id:'morpion', name:'Morpion', href:'games/morpion.html', cat:'Plateau', emoji:'⭕', desc:'Aligne 3 symboles contre l’ordinateur ou un ami.', grad:'linear-gradient(135deg,#06b6d4,#0e7490)', rating:4, plays:'44 k' },
   { id:'p4',      name:'Puissance 4', href:'games/puissance4.html', cat:'Plateau', emoji:'🔴', desc:'Aligne 4 jetons avant ton adversaire !', grad:'linear-gradient(135deg,#2563eb,#1e3a8a)', rating:5, plays:'49 k' },
   { id:'simon',   name:'Simon', href:'games/simon.html', cat:'Réflexion', emoji:'🎵', desc:'Mémorise et répète la séquence de couleurs et de sons.', grad:'linear-gradient(135deg,#db2777,#f59e0b)', rating:4, plays:'22 k' },
-  { id:'cibles',  name:'Vise les Cibles', href:'games/cibles.html', cat:'Action', emoji:'🎯', desc:'30 secondes pour cliquer un max de cibles. Teste tes réflexes !', grad:'linear-gradient(135deg,#dc2626,#7f1d1d)', badge:'new', badgeTxt:'Nouveau', rating:4, plays:'18 k' },
+  { id:'cibles',  name:'Vise les Cibles', href:'games/cibles.html', cat:'Action', emoji:'🎯', desc:'30 secondes pour cliquer un max de cibles. Teste tes réflexes !', grad:'linear-gradient(135deg,#dc2626,#7f1d1d)', rating:4, plays:'18 k' },
   { id:'pong',    name:'Pong', href:'games/pong.html', cat:'Classiques', emoji:'🏓', desc:'Le tout premier jeu vidéo, contre l’ordinateur.', grad:'linear-gradient(135deg,#334155,#0f172a)', rating:4, plays:'33 k' },
-  { id:'fruits',  name:'Attrape-Fruits', href:'games/fruits.html', cat:'Arcade', emoji:'🍎', desc:'Attrape les fruits dans ton panier, évite les bombes !', grad:'linear-gradient(135deg,#f43f5e,#fb923c)', badge:'new', badgeTxt:'Nouveau', rating:4, plays:'15 k' },
+  { id:'fruits',  name:'Attrape-Fruits', href:'games/fruits.html', cat:'Arcade', emoji:'🍎', desc:'Attrape les fruits dans ton panier, évite les bombes !', grad:'linear-gradient(135deg,#f43f5e,#fb923c)', rating:4, plays:'15 k' },
 ];
-const CATS = ['Tous','❤️ Favoris','Arcade','Réflexion','Classiques','Action','Plateau','Cartes'];
+
+/* ----- Les vrais jeux d'abord, puis les faits maison ----- */
+const REAL = (window.REAL_GAMES || []).map(g => ({
+  id: 'cg-' + g.slug, real: true, name: g.name, cat: g.cat, emoji: g.emoji,
+  href: 'jouer.html?jeu=' + g.slug, img: g.cover || '', grad: g.grad,
+  desc: g.desc, rating: g.rating, plays: g.plays, badge: g.badge, badgeTxt: g.badgeTxt
+}));
+const GAMES = [...REAL, ...HOME_GAMES];
+
+const CATS = ['Tous','⭐ Vrais jeux','❤️ Favoris','Course','Action','Arcade','Sport','Réflexion','Classiques','Plateau','Cartes','🏠 Faits maison'];
 
 let favs = new Set(JSON.parse(localStorage.getItem('zedjeux-favs')||'[]'));
 let curCat = 'Tous', query = '';
@@ -218,32 +245,42 @@ CATS.forEach(c=>{
 });
 
 function stars(n){ return '★★★★★'.slice(0,n)+'☆☆☆☆☆'.slice(0,5-n); }
+function inCat(g){
+  if(curCat==='Tous') return true;
+  if(curCat==='⭐ Vrais jeux') return !!g.real;
+  if(curCat==='🏠 Faits maison') return !g.real;
+  if(curCat==='❤️ Favoris') return favs.has(g.id);
+  return g.cat===curCat;
+}
 
 function render(){
-  const list = GAMES.filter(g=>{
-    const okCat = curCat==='Tous' || (curCat==='❤️ Favoris' ? favs.has(g.id) : g.cat===curCat);
-    const okQ = (g.name+' '+g.desc+' '+g.cat).toLowerCase().includes(query);
-    return okCat && okQ;
-  });
-  title.textContent = curCat==='Tous' && !query ? '🔥 Tous les jeux' :
-    (curCat==='❤️ Favoris' ? '❤️ Tes jeux favoris' : (query ? '🔍 Résultats pour « '+query+' »' : '🎮 Jeux '+curCat));
+  const list = GAMES.filter(g => inCat(g) && (g.name+' '+g.desc+' '+g.cat).toLowerCase().includes(query));
+  title.textContent = query ? '🔍 Résultats pour « '+query+' »' :
+    curCat==='Tous' ? '🔥 Tous les jeux ('+GAMES.length+')' :
+    curCat==='❤️ Favoris' ? '❤️ Tes jeux favoris' :
+    curCat==='⭐ Vrais jeux' ? '⭐ Les vrais jeux' :
+    curCat==='🏠 Faits maison' ? '🏠 Mini-jeux faits maison' : '🎮 Jeux '+curCat;
   hero.style.display = (curCat==='Tous' && !query) ? '' : 'none';
   grid.innerHTML='';
   list.forEach(g=>{
     const a=document.createElement('a');
     a.className='tile'+(g.big&&curCat==='Tous'&&!query?' big':'');
     a.href=g.href;
+    const badgeHtml = g.real
+      ? `<span class="badge real">⭐ ${g.badgeTxt||'Vrai jeu'}</span>`
+      : (g.badge?`<span class="badge ${g.badge}">${g.badgeTxt||''}</span>`:'');
     a.innerHTML=`
       <div class="thumb" style="background:${g.grad}">
-        ${g.img?`<img src="${g.img}" alt="${g.name}" loading="lazy">`:`<span class="emoji">${g.emoji}</span><span class="deco" style="top:12px;left:14px">✨</span><span class="deco" style="bottom:10px;right:14px">⭐</span>`}
-        ${g.badge?`<span class="badge ${g.badge}">${g.badgeTxt}</span>`:''}
+        <span class="emoji">${g.emoji}</span>
+        ${g.img?`<img src="${g.img}" alt="${g.name}" loading="lazy" onerror="this.remove()">`:''}
+        ${badgeHtml}
         <div class="play-overlay"><span>▶ JOUER</span></div>
       </div>
       <button class="fav ${favs.has(g.id)?'on':''}" title="Ajouter aux favoris">${favs.has(g.id)?'❤️':'🤍'}</button>
       <div class="tile-info">
         <h3>${g.emoji} ${g.name}</h3>
         <p>${g.desc}</p>
-        <div class="meta"><span class="stars">${stars(g.rating)}</span><span>•</span><span>▶ ${g.plays} parties</span><span>•</span><span>${g.cat}</span></div>
+        <div class="meta"><span class="stars">${stars(g.rating)}</span><span>▶ ${g.plays}</span>${g.real?'<span class="real-tag">⭐ Vrai jeu</span>':'<span>'+g.cat+'</span>'}</div>
       </div>`;
     a.querySelector('.fav').addEventListener('click',e=>{
       e.preventDefault(); e.stopPropagation();
@@ -254,9 +291,9 @@ function render(){
     grid.appendChild(a);
   });
   empty.style.display = list.length? 'none':'block';
-  if(curCat==='❤️ Favoris' && !list.length)
-    empty.textContent='💔 Tu n’as pas encore de favoris. Clique sur le 🤍 d’un jeu pour l’ajouter ici !';
-  else empty.textContent='😢 Aucun jeu trouvé… essaie un autre mot !';
+  empty.textContent = (curCat==='❤️ Favoris' && !list.length)
+    ? '💔 Tu n’as pas encore de favoris. Clique sur le 🤍 d’un jeu pour l’ajouter ici !'
+    : '😢 Aucun jeu trouvé… essaie un autre mot !';
 }
 
 document.getElementById('search').addEventListener('input',e=>{query=e.target.value.trim().toLowerCase();render();});
