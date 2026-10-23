@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon profil — ZedJeux</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230097a7'><path d='M7.5 6h9a5.5 5.5 0 0 1 5.4 6.6l-.7 3A3 3 0 0 1 18.3 18h-.5a3 3 0 0 1-2.2-1L14 15.5H10L8.4 17a3 3 0 0 1-2.2 1h-.5a3 3 0 0 1-2.9-2.4l-.7-3A5.5 5.5 0 0 1 7.5 6Z'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/main.css">
+<style>
+  .profile-head{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+  .profile-head .big-av{width:92px;height:92px;border-radius:50%;background:#eef6f8;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:48px}
+  .profile-head h1{font-size:27px;font-weight:800}
+  .profile-head .since{color:var(--muted);font-size:13.5px;margin-top:3px;font-weight:600}
+  .stats-row{display:flex;gap:12px;flex-wrap:wrap;margin-left:auto}
+  .stat-box{background:#f7fafb;border:1px solid var(--line);border-radius:13px;padding:12px 18px;text-align:center;min-width:104px}
+  .stat-box b{font-size:22px;display:block}
+  .stat-box small{color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+  .avatar-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .avatar-row button{width:44px;height:44px;border-radius:12px;border:2px solid var(--line);background:#fff;font-size:22px;cursor:pointer}
+  .avatar-row button.on{border-color:var(--teal);background:#e8f6f8}
+  .hist-item{display:flex;align-items:center;gap:13px;padding:9px 4px;border-bottom:1px solid #eef3f5;text-decoration:none;color:var(--ink)}
+  .hist-item .th{width:88px;aspect-ratio:16/10;border-radius:8px;overflow:hidden;position:relative;flex:none;background:#dfeef2}
+  .hist-item .th img{width:100%;height:100%;object-fit:cover;display:block;position:relative}
+  .hist-item .th span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:24px}
+  .hist-item b{font-size:14.5px}
+  .hist-item small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px;font-weight:600}
+  .hist-item .go{margin-left:auto;font-weight:800;color:var(--teal-dark);font-size:13px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;margin-top:22px}
+  @media (max-width:900px){.grid2{grid-template-columns:1fr}}
+  .tile .favb{color:#b9ccd4;font-size:17px}.tile .favb.on{color:#e11d63}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="in">
+    <a class="logo" href="index.html">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="#0097a7"><path d="M7.5 6h9a5.5 5.5 0 0 1 5.4 6.6l-.7 3A3 3 0 0 1 18.3 18h-.5a3 3 0 0 1-2.2-1L14 15.5H10L8.4 17a3 3 0 0 1-2.2 1h-.5a3 3 0 0 1-2.9-2.4l-.7-3A5.5 5.5 0 0 1 7.5 6Z"/><path d="M7 10v4M5 12h4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><circle cx="16.2" cy="10.6" r="1.1" fill="#fff"/><circle cx="18.4" cy="12.8" r="1.1" fill="#fff"/></svg>
+      Zed<em>Jeux</em>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html">Accueil</a>
+      <a href="index.html#nouveautes">Nouveautés</a>
+      <a href="index.html#tous">Tous les jeux</a>
+      <a href="index.html#maison">Faits maison</a>
+      <a href="infos.html">Infos</a>
+    </nav>
+    <div class="header-search" style="margin-left:auto"></div>
+    <div id="authSlot"></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="breadcrumb"><a href="index.html">Accueil</a> › Mon profil</nav>
+
+  <div id="needLogin" class="card" hidden>
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:8px">Tu n’es pas connecté</h1>
+    <p style="color:var(--muted);line-height:1.6;margin-bottom:16px">Connecte-toi ou crée un compte gratuit pour voir ton profil, tes favoris et ton historique de jeux. Le compte reste sur cet appareil, aucun e-mail demandé.</p>
+    <button class="btn" id="loginCta">Se connecter / S’inscrire</button>
+  </div>
+
+  <div id="profile" hidden>
+    <div class="card profile-head">
+      <div class="big-av" id="bigAv">🦊</div>
+      <div>
+        <h1 id="pseudoBig"></h1>
+        <div class="since" id="sinceTxt"></div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><b id="stGames">0</b><small>Jeux joués</small></div>
+        <div class="stat-box"><b id="stPlays">0</b><small>Parties</small></div>
+        <div class="stat-box"><b id="stFavs">0</b><small>Favoris</small></div>
+        <div class="stat-box"><b id="stCmt">0</b><small>Commentaires</small></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <section class="blk" id="favoris">
+          <div class="blk-head"><h2>Mes favoris</h2></div>
+          <div class="game-grid" id="favGrid" style="grid-template-columns:repeat(auto-fill,minmax(170px,1fr))"></div>
+          <p class="empty-note" id="favEmpty" hidden>Aucun favori pour l’instant. Clique sur le cœur d’un jeu pour l’ajouter ici.</p>
+        </section>
+
+        <section class="blk" id="historique">
+          <div class="blk-head"><h2>Dernièrement joués</h2></div>
+          <div class="card" style="padding:8px 16px" id="histList"></div>
+          <p class="empty-note" id="histEmpty" hidden>Rien pour l’instant — lance un jeu et il apparaîtra ici.</p>
+        </section>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:22px">
+          <h2 style="font-size:17px;font-weight:800">Changer d’avatar</h2>
+          <div class="avatar-row" id="avatarRow"></div>
+        </div>
+        <div class="card">
+          <h2 style="font-size:17px;font-weight:800;margin-bottom:8px">Mon compte</h2>
+          <p style="color:var(--muted);font-size:13.5px;line-height:1.6;margin-bottom:16px">Ton compte, tes favoris, ton historique et tes commentaires sont enregistrés dans ce navigateur uniquement. Si tu effaces les données du site, le compte disparaît avec.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn light" id="logoutBtn">Se déconnecter</button>
+            <button class="btn danger" id="deleteBtn">Supprimer mon compte</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="in">
+    <div><div class="brand">Zed<em>Jeux</em></div><p>Des jeux gratuits à jouer dans le navigateur, sans rien installer.</p></div>
+    <div><h4>Catégories</h4><a href="index.html?cat=Course">Jeux de course</a><a href="index.html?cat=Action">Jeux d’action</a><a href="index.html?cat=Arcade">Jeux d’arcade</a><a href="index.html?cat=Sport">Jeux de sport</a></div>
+    <div><h4>Jeux populaires</h4><a href="jouer.html?jeu=moto-x3m">Moto X3M</a><a href="jouer.html?jeu=bus-and-subway-runner">Bus &amp; Subway Runner</a><a href="jouer.html?jeu=smash-karts">Smash Karts</a><a href="jouer.html?jeu=uno-online">Uno Online</a></div>
+    <div><h4>ZedJeux</h4><a href="infos.html#apropos">À propos</a><a href="infos.html#confidentialite">Confidentialité</a><a href="infos.html#conditions">Conditions</a><a href="infos.html#contact">Contact</a></div>
+  </div>
+  <div class="footer-bottom">© 2026 ZedJeux</div>
+</footer>
+
+<script src="assets/catalogue.js"></script>
+<script src="assets/compte.js"></script>
+<script>
+ZJ.mountChrome();
+const ALL = [
+  ...(window.REAL_GAMES || []).map(g => ({ id:'cg-'+g.slug, name:g.name, cat:g.cat, emoji:g.emoji, img:g.cover||'', href:'jouer.html?jeu='+g.slug, rating:g.rating, plays:g.plays, grad:g.grad })),
+  { id:'cosmic', name:'Cosmic Summoner', cat:'Cartes', emoji:'🌌', img:'images/Voltara.jpg', href:'games/cosmic-summoner.html', rating:5, plays:'12 k', grad:'linear-gradient(135deg,#312e81,#7c3aed)' },
+  { id:'snake', name:'Snake', cat:'Classiques', emoji:'🐍', img:'', href:'games/snake.html', rating:5, plays:'98 k', grad:'linear-gradient(135deg,#16a34a,#84cc16)' },
+  { id:'2048', name:'2048', cat:'Réflexion', emoji:'🔢', img:'', href:'games/2048.html', rating:5, plays:'87 k', grad:'linear-gradient(135deg,#f59e0b,#ef4444)' },
+  { id:'tetris', name:'Tetris', cat:'Classiques', emoji:'🟦', img:'', href:'games/tetris.html', rating:5, plays:'91 k', grad:'linear-gradient(135deg,#6366f1,#06b6d4)' },
+  { id:'flappy', name:'Flappy Oiseau', cat:'Arcade', emoji:'🐤', img:'', href:'games/flappy.html', rating:4, plays:'76 k', grad:'linear-gradient(135deg,#38bdf8,#2563eb)' },
+  { id:'cassebriques', name:'Casse-Briques', cat:'Arcade', emoji:'🧱', img:'', href:'games/casse-briques.html', rating:4, plays:'55 k', grad:'linear-gradient(135deg,#f97316,#dc2626)' },
+  { id:'p4', name:'Puissance 4', cat:'Plateau', emoji:'🔴', img:'', href:'games/puissance4.html', rating:5, plays:'49 k', grad:'linear-gradient(135deg,#2563eb,#1e3a8a)' },
+  { id:'demineur', name:'Démineur', cat:'Réflexion', emoji:'💣', img:'', href:'games/demineur.html', rating:4, plays:'41 k', grad:'linear-gradient(135deg,#64748b,#1e293b)' },
+  { id:'memory', name:'Memory', cat:'Réflexion', emoji:'🃏', img:'', href:'games/memory.html', rating:4, plays:'38 k', grad:'linear-gradient(135deg,#ec4899,#a855f7)' },
+  { id:'pong', name:'Pong', cat:'Classiques', emoji:'🏓', img:'', href:'games/pong.html', rating:4, plays:'33 k', grad:'linear-gradient(135deg,#334155,#0f172a)' },
+  { id:'dino', name:'Dino Run', cat:'Arcade', emoji:'🦖', img:'', href:'games/dino.html', rating:4, plays:'29 k', grad:'linear-gradient(135deg,#eab308,#65a30d)' },
+  { id:'morpion', name:'Morpion', cat:'Plateau', emoji:'⭕', img:'', href:'games/morpion.html', rating:4, plays:'44 k', grad:'linear-gradient(135deg,#06b6d4,#0e7490)' },
+  { id:'simon', name:'Simon', cat:'Réflexion', emoji:'🎵', img:'', href:'games/simon.html', rating:4, plays:'22 k', grad:'linear-gradient(135deg,#db2777,#f59e0b)' },
+  { id:'cibles', name:'Vise les Cibles', cat:'Action', emoji:'🎯', img:'', href:'games/cibles.html', rating:4, plays:'18 k', grad:'linear-gradient(135deg,#dc2626,#7f1d1d)' },
+  { id:'fruits', name:'Attrape-Fruits', cat:'Arcade', emoji:'🍎', img:'', href:'games/fruits.html', rating:4, plays:'15 k', grad:'linear-gradient(135deg,#f43f5e,#fb923c)' },
+];
+const byId = id => ALL.find(g => g.id === id);
+
+function fmtDate(ts){
+  const d = new Date(ts);
+  return d.toLocaleDateString('fr-FR', { day:'numeric', month:'short' }) + ' à ' + d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+}
+function tile(g){
+  return `<a class="tile" href="${g.href}">
+    <div class="cover"><div class="fb" style="background:${g.grad}">${g.emoji}</div>
+    ${g.img?`<img src="${g.img}" alt="${g.name}" loading="lazy" onerror="this.remove()">`:''}
+    <button class="favb on" data-fav="${g.id}" title="Retirer des favoris">♥</button></div>
+    <div class="meta"><h3>${g.name}</h3><div class="sub"><span class="st">★</span> ${g.rating}/5 · ${g.cat}</div></div></a>`;
+}
+
+function render(){
+  const u = ZJ.currentUser();
+  document.getElementById('needLogin').hidden = !!u;
+  document.getElementById('profile').hidden = !u;
+  if (!u) return;
+  document.getElementById('bigAv').textContent = u.avatar;
+  document.getElementById('pseudoBig').textContent = u.pseudo;
+  document.getElementById('sinceTxt').textContent = 'Membre depuis le ' + new Date(u.created).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+  const s = ZJ.stats();
+  document.getElementById('stGames').textContent = s.jeuxJoues;
+  document.getElementById('stPlays').textContent = s.parties;
+  document.getElementById('stFavs').textContent = s.favoris;
+  document.getElementById('stCmt').textContent = s.commentaires;
+
+  const favs = [...ZJ.getFavs()].map(byId).filter(Boolean);
+  document.getElementById('favGrid').innerHTML = favs.map(tile).join('');
+  document.getElementById('favEmpty').hidden = favs.length > 0;
+  document.querySelectorAll('[data-fav]').forEach(b => b.onclick = e => { e.preventDefault(); ZJ.toggleFav(b.dataset.fav); render(); });
+
+  const hist = ZJ.getHistory();
+  document.getElementById('histEmpty').hidden = hist.length > 0;
+  document.getElementById('histList').style.display = hist.length ? '' : 'none';
+  document.getElementById('histList').innerHTML = hist.slice(0, 15).map(h => {
+    const g = byId(h.id); if (!g) return '';
+    return `<a class="hist-item" href="${g.href}">
+      <div class="th"><span>${g.emoji}</span>${g.img?`<img src="${g.img}" alt="" loading="lazy" onerror="this.remove()">`:''}</div>
+      <div><b>${g.name}</b><small>${h.plays} partie${h.plays>1?'s':''} · dernière le ${fmtDate(h.ts)}</small></div>
+      <span class="go">Rejouer →</span></a>`;
+  }).join('');
+
+  document.getElementById('avatarRow').innerHTML = ZJ.AVATARS.map(a =>
+    `<button data-av="${a}" class="${a === u.avatar ? 'on' : ''}">${a}</button>`).join('');
+  document.querySelectorAll('#avatarRow button').forEach(b => b.onclick = () => { ZJ.updateUser({ avatar: b.dataset.av }); ZJ.refreshAuthUI(); render(); });
+}
+
+document.getElementById('loginCta').onclick = () => ZJ.requireLogin();
+document.getElementById('logoutBtn').onclick = () => { ZJ.logout(); ZJ.refreshAuthUI(); render(); };
+document.getElementById('deleteBtn').onclick = () => {
+  if (confirm('Supprimer définitivement ton compte sur cet appareil ? Tes favoris et ton historique seront effacés.')) {
+    ZJ.deleteAccount(); ZJ.refreshAuthUI(); render();
+  }
+};
+document.addEventListener('zj:auth', render);
+render();
+</script>
+</body>
+</html>

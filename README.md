@@ -4,7 +4,7 @@ Un site de jeux gratuits façon [Poki](https://poki.com), 100 % HTML/CSS/JS — 
 
 ## ⭐ Les vrais jeux (intégrés via CrazyGames)
 
-30 jeux populaires jouables directement sur le site via le programme d'intégration officiel de [CrazyGames](https://www.crazygames.com) (page lecteur : `jouer.html?jeu=<slug>`, catalogue : `assets/catalogue.js`) :
+54 jeux populaires jouables directement sur le site via le programme d'intégration officiel de [CrazyGames](https://www.crazygames.com) (page lecteur : `jouer.html?jeu=<slug>`, catalogue : `assets/catalogue.js`) :
 
 🚇 Bus & Subway Runner (style Subway Surfers) · 🏍️ Moto X3M + Pool Party · 🏎️ Smash Karts · 🚗 PolyTrack · 🎤 Friday Night Funkin' · 🛷 Snow Rider 3D · 🔫 SkillWarz · 🧱 BloxdHop.io · 🎱 8 Ball Pool · 🃏 Uno Online · 🏀 Basketball Superstars · 🐍 Snake Clash.io · 🏹 Ragdoll Archers · 🎲 Ludo King · 🀄 Mahjong Solitaire · et bien plus !
 
@@ -40,12 +40,20 @@ Un site de jeux gratuits façon [Poki](https://poki.com), 100 % HTML/CSS/JS — 
 ## 📁 Structure
 
 ```
-index.html            → page d'accueil (portail)
-jouer.html            → lecteur des vrais jeux (?jeu=<slug>) avec plein écran
+index.html            → page d'accueil (tendances, nouveautés, grille, recherche)
+jouer.html            → lecteur des vrais jeux (?jeu=<slug>) : plein écran, votes, commentaires
+profil.html           → profil du compte : favoris, historique, statistiques, avatar
+infos.html            → à propos, FAQ (dont Subway Surfers), confidentialité, conditions, contact
 assets/catalogue.js   → catalogue des vrais jeux (CrazyGames)
+assets/compte.js      → comptes locaux (inscription / connexion, favoris, historique, votes, commentaires)
+assets/main.css       → style principal du site
 games/                → un fichier HTML par mini-jeu fait maison
-assets/game.css       → style commun des pages de jeux
+assets/game.css       → style des pages des mini-jeux faits maison
 images/               → illustrations des monstres de Cosmic Summoner
 ```
+
+## 👤 Comptes
+
+Les comptes sont **100 % locaux** : tout est stocké dans le navigateur (localStorage), sans serveur ni e-mail. Le compte ne fonctionne donc que sur l'appareil / le navigateur où il a été créé. Voir `infos.html#compte` pour le détail.
 
 Ouvre simplement `index.html` dans un navigateur, ou sers le dossier avec `python3 -m http.server`.

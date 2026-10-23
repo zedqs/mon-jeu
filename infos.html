@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infos — À propos, confidentialité, conditions | ZedJeux</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230097a7'><path d='M7.5 6h9a5.5 5.5 0 0 1 5.4 6.6l-.7 3A3 3 0 0 1 18.3 18h-.5a3 3 0 0 1-2.2-1L14 15.5H10L8.4 17a3 3 0 0 1-2.2 1h-.5a3 3 0 0 1-2.9-2.4l-.7-3A5.5 5.5 0 0 1 7.5 6Z'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/main.css">
+<style>
+  .infos-layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px;align-items:start}
+  .toc{position:sticky;top:86px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}
+  .toc a{display:block;padding:9px 12px;border-radius:9px;text-decoration:none;color:var(--ink);font-weight:600;font-size:14px}
+  .toc a:hover{background:#eef6f8}
+  .txt-card{padding:30px 34px;margin-bottom:22px}
+  .txt-card h1{font-size:24px;font-weight:800;margin-bottom:14px}
+  .txt-card h2{font-size:18px;font-weight:800;margin:22px 0 8px}
+  .txt-card h2:first-child{margin-top:0}
+  .txt-card p,.txt-card li{line-height:1.7;color:#3c4f5a;font-size:14.5px}
+  .txt-card p{margin-bottom:10px}
+  .txt-card ul{margin:0 0 12px 20px}
+  .txt-card li{margin-bottom:5px}
+  details{border:1px solid var(--line);border-radius:11px;padding:13px 16px;margin-bottom:10px;background:#fbfdfd}
+  summary{font-weight:700;cursor:pointer;font-size:14.5px}
+  details p{margin-top:8px}
+  @media (max-width:820px){.infos-layout{grid-template-columns:1fr}.toc{position:static;display:flex;flex-wrap:wrap}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="in">
+    <a class="logo" href="index.html">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="#0097a7"><path d="M7.5 6h9a5.5 5.5 0 0 1 5.4 6.6l-.7 3A3 3 0 0 1 18.3 18h-.5a3 3 0 0 1-2.2-1L14 15.5H10L8.4 17a3 3 0 0 1-2.2 1h-.5a3 3 0 0 1-2.9-2.4l-.7-3A5.5 5.5 0 0 1 7.5 6Z"/><path d="M7 10v4M5 12h4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><circle cx="16.2" cy="10.6" r="1.1" fill="#fff"/><circle cx="18.4" cy="12.8" r="1.1" fill="#fff"/></svg>
+      Zed<em>Jeux</em>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html">Accueil</a>
+      <a href="index.html#nouveautes">Nouveautés</a>
+      <a href="index.html#tous">Tous les jeux</a>
+      <a href="index.html#maison">Faits maison</a>
+      <a href="infos.html">Infos</a>
+    </nav>
+    <div class="header-search" style="margin-left:auto"></div>
+    <div id="authSlot"></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="breadcrumb"><a href="index.html">Accueil</a> › Informations</nav>
+
+  <div class="infos-layout">
+    <aside class="toc">
+      <a href="#apropos">À propos</a>
+      <a href="#faq">Questions fréquentes</a>
+      <a href="#compte">Le compte ZedJeux</a>
+      <a href="#confidentialite">Confidentialité</a>
+      <a href="#conditions">Conditions d’utilisation</a>
+      <a href="#contact">Contact</a>
+    </aside>
+
+    <div>
+      <article class="card txt-card" id="apropos">
+        <h1>À propos de ZedJeux</h1>
+        <p>ZedJeux est un petit site de jeux gratuits, fait pour pouvoir lancer une partie en quelques secondes, sans rien installer et sans créer de compte si on n’en a pas envie. Il fonctionne sur ordinateur, tablette et téléphone, directement dans le navigateur.</p>
+        <p>Le catalogue mélange deux sortes de jeux :</p>
+        <ul>
+          <li><b>Des jeux de studios et d’éditeurs connus</b>, intégrés légalement via le programme officiel de CrazyGames (Moto X3M, Smash Karts, Friday Night Funkin’, etc.). Ils sont chargés depuis les serveurs de leurs créateurs et restent leur propriété.</li>
+          <li><b>Des mini-jeux faits maison</b>, codés spécialement pour ce site : Snake, 2048, Tetris, Démineur… et Cosmic Summoner, notre jeu de collection de monstres.</li>
+        </ul>
+        <p>Le catalogue grandit régulièrement. Si un jeu ne fonctionne plus ou si tu veux en suggérer un, passe par la section Contact plus bas.</p>
+      </article>
+
+      <article class="card txt-card" id="faq">
+        <h1>Questions fréquentes</h1>
+
+        <details>
+          <summary>Pourquoi il n’y a pas Subway Surfers ?</summary>
+          <p>Parce que Subway Surfers appartient à SYBO, qui a signé un contrat d’exclusivité avec Poki pour la version navigateur. Concrètement, seuls Poki (et les boutiques mobiles) ont le droit de le proposer. Nous avons vérifié chez les distributeurs qui autorisent l’intégration de jeux (CrazyGames, GameDistribution) : le jeu n’y figure pas, et c’est normal. Les sites qui l’affichent quand même piquent les fichiers chez Poki sans autorisation — ça peut cesser de fonctionner du jour au lendemain, et ce n’est pas ce qu’on veut faire ici.</p>
+          <p>À la place, on propose <a href="jouer.html?jeu=bus-and-subway-runner">Bus &amp; Subway Runner</a> et <a href="jouer.html?jeu=om-nom-run">Om Nom Run</a> : le même principe (trois voies, obstacles à esquiver sur des rails) dans des versions que nous avons le droit d’intégrer. Si SYBO ouvre un jour son jeu à l’intégration, on l’ajoutera dans la foulée.</p>
+        </details>
+
+        <details>
+          <summary>Les jeux sont vraiment gratuits ?</summary>
+          <p>Oui. Les jeux intégrés sont financés par leurs propres créateurs (souvent une courte pub avant la partie), et les mini-jeux faits maison n’ont ni pub ni achats. Il n’y a rien à payer sur ZedJeux.</p>
+        </details>
+
+        <details>
+          <summary>Un jeu ne se charge pas, que faire ?</summary>
+          <p>Commence par le bouton « Recharger » sous le jeu. Si ça persiste, vérifie que ton bloqueur de publicité ne bloque pas le lecteur du jeu, et sache que certains réseaux (collège, lycée, entreprise) filtrent les sites de jeux — sur ce type de connexion, on n’y peut malheureusement rien. Dans ce cas, le lien « l’ouvrir sur CrazyGames » sur la page du jeu peut parfois passer.</p>
+        </details>
+
+        <details>
+          <summary>Mes scores et ma progression sont-ils sauvegardés ?</summary>
+          <p>Ça dépend des jeux. Nos mini-jeux faits maison enregistrent tes records dans ton navigateur. Les jeux intégrés gèrent leur propre sauvegarde, le plus souvent en local aussi. Dans les deux cas, effacer les données du navigateur réinitialise tout — c’est le revers d’un site sans serveur.</p>
+        </details>
+
+        <details>
+          <summary>Le site marche sur téléphone ?</summary>
+          <p>Oui, la mise en page s’adapte et la plupart des jeux gèrent le tactile. Quelques titres pensés pour le clavier (les jeux de tir, par exemple) restent plus agréables à l’ordinateur.</p>
+        </details>
+      </article>
+
+      <article class="card txt-card" id="compte">
+        <h1>Le compte ZedJeux</h1>
+        <p>Créer un compte est facultatif. Il sert à :</p>
+        <ul>
+          <li>retrouver tes jeux <b>favoris</b> au même endroit ;</li>
+          <li>reprendre tes parties depuis l’<b>historique</b> ;</li>
+          <li><b>voter</b> pour les jeux et publier des <b>commentaires</b> sous ton pseudo et ton avatar.</li>
+        </ul>
+        <p>Techniquement, le compte est <b>100&nbsp;% local</b> : pseudo, mot de passe (stocké chiffré), favoris et historique sont enregistrés dans le navigateur de <i>ton</i> appareil, et nulle part ailleurs. Conséquences à connaître :</p>
+        <ul>
+          <li>le compte n’existe que sur cet appareil et ce navigateur (pas de synchronisation entre ton téléphone et ton ordinateur) ;</li>
+          <li>si tu oublies ton mot de passe, on ne peut pas le récupérer — il faudra recréer un compte ;</li>
+          <li>les commentaires que tu publies sont visibles sur cet appareil ; ce n’est pas un forum public partagé entre tous les visiteurs.</li>
+        </ul>
+        <p>C’est un choix assumé : ZedJeux est un site statique sans serveur, donc sans base de données d’utilisateurs, sans e-mails et sans risque de fuite de tes informations. Tu peux supprimer ton compte à tout moment depuis <a href="profil.html">ton profil</a> : tout est effacé immédiatement.</p>
+      </article>
+
+      <article class="card txt-card" id="confidentialite">
+        <h1>Confidentialité</h1>
+        <h2>Ce que le site enregistre sur ton appareil</h2>
+        <p>ZedJeux utilise le stockage local du navigateur (<i>localStorage</i>) pour : ton compte éventuel, tes favoris, ton historique de jeux, tes votes et commentaires, ainsi que les records des mini-jeux faits maison. Ces données restent sur ton appareil et ne sont jamais transmises à un serveur ZedJeux — il n’y en a pas.</p>
+        <h2>Services tiers</h2>
+        <ul>
+          <li><b>Jeux intégrés (CrazyGames)</b> : quand tu lances un de ces jeux, il est chargé depuis les serveurs de CrazyGames, qui peut déposer ses propres cookies et afficher de la publicité selon <a href="https://www.crazygames.com/privacy-policy" target="_blank" rel="noopener">sa politique de confidentialité</a>.</li>
+          <li><b>Google AdSense</b> : le site peut afficher des annonces Google, qui utilisent des cookies pour personnaliser la publicité. Tu peux gérer ce choix sur <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">les paramètres publicitaires Google</a>.</li>
+          <li><b>Polices Google Fonts</b> : le chargement de la police Rubik passe par les serveurs de Google.</li>
+        </ul>
+        <h2>Supprimer tes données</h2>
+        <p>Depuis ton profil (« Supprimer mon compte ») pour le compte, ou en vidant les données du site dans les réglages de ton navigateur pour tout le reste. L’effet est immédiat et définitif.</p>
+      </article>
+
+      <article class="card txt-card" id="conditions">
+        <h1>Conditions d’utilisation</h1>
+        <p>En utilisant ZedJeux, tu acceptes ce qui suit :</p>
+        <ul>
+          <li>Le site est fourni gratuitement, « en l’état », sans garantie de disponibilité permanente.</li>
+          <li>Les jeux intégrés appartiennent à leurs créateurs et éditeurs respectifs ; ils sont proposés via les programmes d’intégration officiels de leurs plateformes. Les mini-jeux « faits maison » et le reste du contenu du site (textes, illustrations des monstres) appartiennent à ZedJeux.</li>
+          <li>Reste correct dans les commentaires : pas d’insultes, pas de spam, pas de données personnelles (les tiennes ou celles des autres).</li>
+          <li>Les comptes étant locaux à ton navigateur, ZedJeux ne peut ni récupérer un mot de passe perdu, ni restaurer des données effacées.</li>
+          <li>Si tu es ayant droit d’un jeu présent sur le site et que tu souhaites son retrait malgré son intégration via une plateforme partenaire, contacte-nous : on le retirera rapidement.</li>
+        </ul>
+      </article>
+
+      <article class="card txt-card" id="contact">
+        <h1>Contact</h1>
+        <p>Un jeu cassé, une suggestion de titre à ajouter, un bug sur le site ? Le plus simple est d’ouvrir une <i>issue</i> sur le dépôt GitHub du projet : <a href="https://github.com/zedqs/mon-jeu/issues" target="_blank" rel="noopener">github.com/zedqs/mon-jeu/issues</a>.</p>
+        <p>Précise si possible le jeu concerné, ton appareil (téléphone, PC…) et ton navigateur : ça fait gagner beaucoup de temps pour corriger.</p>
+      </article>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="in">
+    <div><div class="brand">Zed<em>Jeux</em></div><p>Des jeux gratuits à jouer dans le navigateur, sans rien installer.</p></div>
+    <div><h4>Catégories</h4><a href="index.html?cat=Course">Jeux de course</a><a href="index.html?cat=Action">Jeux d’action</a><a href="index.html?cat=Arcade">Jeux d’arcade</a><a href="index.html?cat=Sport">Jeux de sport</a></div>
+    <div><h4>Jeux populaires</h4><a href="jouer.html?jeu=moto-x3m">Moto X3M</a><a href="jouer.html?jeu=bus-and-subway-runner">Bus &amp; Subway Runner</a><a href="jouer.html?jeu=smash-karts">Smash Karts</a><a href="jouer.html?jeu=uno-online">Uno Online</a></div>
+    <div><h4>ZedJeux</h4><a href="#apropos">À propos</a><a href="#compte">Le compte</a><a href="#confidentialite">Confidentialité</a><a href="#conditions">Conditions</a><a href="profil.html">Mon profil</a></div>
+  </div>
+  <div class="footer-bottom">© 2026 ZedJeux</div>
+</footer>
+
+<script src="assets/compte.js"></script>
+<script>ZJ.mountChrome();</script>
+</body>
+</html>
