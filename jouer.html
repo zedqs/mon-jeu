@@ -7,8 +7,9 @@
 <meta name="description" content="Joue gratuitement dans ton navigateur sur ZedJeux.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230097a7'><path d='M7.5 6h9a5.5 5.5 0 0 1 5.4 6.6l-.7 3A3 3 0 0 1 18.3 18h-.5a3 3 0 0 1-2.2-1L14 15.5H10L8.4 17a3 3 0 0 1-2.2 1h-.5a3 3 0 0 1-2.9-2.4l-.7-3A5.5 5.5 0 0 1 7.5 6Z'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://html5.gamedistribution.com">
 <link rel="preconnect" href="https://html5.gamemonetize.co">
+<link rel="preconnect" href="https://play.wgplayground.com">
+<link rel="preconnect" href="https://static.wgplayground.com">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/main.css">
 <style>
@@ -125,7 +126,7 @@
           <div class="fact"><small>Plateformes</small><b>Navigateur, mobile</b></div>
         </div>
         <div class="howto"><b>Comment jouer :</b> <span id="infoControls"></span></div>
-        <p class="cmt-note">Le jeu ne se charge pas ? Essaie le bouton « Recharger » ci-dessus. Certains réseaux (école, entreprise) filtrent les jeux, et les bloqueurs de publicité peuvent parfois gêner le lecteur.</p>
+        <p class="cmt-note">Le jeu ne démarre pas ? Certains lecteurs partenaires affichent d’abord un bouton « Play game », parfois après une courte publicité : clique-le, le jeu reste dans cette page. Essaie aussi le bouton « Recharger » ci-dessus. Certains réseaux (école, entreprise) filtrent les jeux, et les bloqueurs de publicité peuvent parfois gêner le lecteur.</p>
       </div>
 
       <div class="card info-card">
@@ -163,16 +164,15 @@
       <a href="index.html?cat=Course">Jeux de course</a>
       <a href="index.html?cat=Action">Jeux d’action</a>
       <a href="index.html?cat=Arcade">Jeux d’arcade</a>
-      <a href="index.html?cat=Sport">Jeux de sport</a>
       <a href="index.html?cat=Réflexion">Réflexion &amp; puzzle</a>
     </div>
     <div>
       <h4>Jeux populaires</h4>
-      <a href="jouer.html?jeu=moto-x3m-spooky-land">Moto X3M Spooky Land</a>
-      <a href="jouer.html?jeu=tank-stars">Tank Stars</a>
-      <a href="jouer.html?jeu=worldguessr">WorldGuessr</a>
-      <a href="jouer.html?jeu=cursed-treasure">Cursed Treasure 1.5</a>
-      <a href="jouer.html?jeu=wacky-strike">Wacky Strike</a>
+      <a href="jouer.html?jeu=nitro-racing-gear">Nitro Racing Gear</a>
+      <a href="jouer.html?jeu=stunt-cars-pro">Stunt Cars Pro</a>
+      <a href="jouer.html?jeu=hazmob-io">Hazmob.io</a>
+      <a href="jouer.html?jeu=drift-boss">Drift Boss</a>
+      <a href="jouer.html?jeu=sink-hole">Sinkhole City</a>
     </div>
     <div>
       <h4>ZedJeux</h4>
@@ -231,31 +231,62 @@ if (!game) {
 
   ZJ.recordPlay(gameId);
 
-  /* --- Chargement du jeu --- */
+  /* --- Chargement du jeu ---
+     L'iframe est sandboxée SANS allow-top-navigation ni allow-popups :
+     le jeu (et ses publicités) ne peut donc ni rediriger la page
+     ZedJeux ni ouvrir un nouvel onglet. allow-scripts et
+     allow-same-origin restent indispensables aux jeux HTML5
+     (moteurs de jeu, sauvegardes locales du jeu lui-même). */
   const loadScreen = document.getElementById('loadScreen');
+  const playBtn = document.getElementById('playBtn');
+  const spin = document.getElementById('spin');
+  const loadHint = document.getElementById('loadHint');
+  const isWG = game.embed.includes('play.wgplayground.com');
+  if (isWG) loadHint.textContent = 'Après ton clic, le lecteur affichera un bouton « Play game » (courte publicité possible) : clique-le aussi, tout se joue ici.';
+  let loadingTimer = null;
+  let loadSeq = 0;
   function loadGame() {
-    document.getElementById('playBtn').style.display = 'none';
-    document.getElementById('spin').style.display = 'block';
-    document.getElementById('loadHint').textContent = 'Chargement en cours, encore quelques secondes…';
+    loadSeq++;
+    const seq = loadSeq;
+    clearTimeout(loadingTimer);
+    playBtn.style.display = 'none';
+    spin.style.display = 'block';
+    loadHint.textContent = isWG
+      ? 'Chargement du lecteur… puis clique sur « Play game ».'
+      : 'Chargement en cours, encore quelques secondes…';
     if (iframe) iframe.remove();
     iframe = document.createElement('iframe');
-    // Le distributeur demande l'URL exacte de la page qui intègre le jeu
-    iframe.src = game.embed.includes('gamedistribution')
-      ? game.embed + '?gd_sdk_referrer_url=' + encodeURIComponent(location.origin + location.pathname + '?jeu=' + game.slug)
-      : game.embed;
+    iframe.src = game.embed;
     iframe.setAttribute('scrolling', 'no');
+    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-orientation-lock allow-presentation');
     iframe.title = game.name;
-    iframe.allow = 'autoplay; fullscreen; gamepad; keyboard; xr-spatial-tracking; clipboard-write; web-share; accelerometer; gyroscope';
+    iframe.allow = 'autoplay; fullscreen; gamepad; xr-spatial-tracking; clipboard-write; web-share; accelerometer; gyroscope; pointer-lock';
     iframe.allowFullscreen = true;
-    iframe.addEventListener('load', () => setTimeout(() => loadScreen.style.display = 'none', 700));
+    iframe.addEventListener('load', () => {
+      if (seq !== loadSeq) return;
+      clearTimeout(loadingTimer);
+      setTimeout(() => {
+        if (seq !== loadSeq) return;
+        loadScreen.style.display = 'none';
+        try { iframe.focus(); iframe.contentWindow.focus(); } catch {}
+      }, 900);
+    });
     wrap.appendChild(iframe);
-    setTimeout(() => loadScreen.style.display = 'none', 7000);
+    loadingTimer = setTimeout(() => {
+      if (seq !== loadSeq || loadScreen.style.display === 'none') return;
+      spin.style.display = 'none';
+      playBtn.textContent = 'Réessayer';
+      playBtn.style.display = '';
+      loadHint.textContent = 'Le jeu met trop longtemps à répondre. Vérifie ta connexion, puis réessaie — ou choisis un autre jeu à droite.';
+    }, 20000);
   }
-  document.getElementById('playBtn').onclick = loadGame;
-  document.getElementById('reloadBtn').onclick = () => { loadScreen.style.display = ''; loadGame(); };
+  playBtn.onclick = loadGame;
+  document.getElementById('reloadBtn').onclick = () => { loadScreen.style.display = 'flex'; loadGame(); };
   document.getElementById('fsBtn').onclick = () => {
     if (!iframe) loadGame();
-    (wrap.requestFullscreen ? wrap.requestFullscreen() : iframe.requestFullscreen()).catch(() => {});
+    const req = wrap.requestFullscreen || wrap.webkitRequestFullscreen;
+    if (req) { try { const p = req.call(wrap); if (p && p.catch) p.catch(() => {}); } catch {} }
+    else if (iframe && iframe.requestFullscreen) iframe.requestFullscreen().catch(() => {});
   };
   document.getElementById('shareBtn').onclick = async e => {
     try { await navigator.clipboard.writeText(location.href); e.target.textContent = 'Lien copié !'; }
@@ -328,7 +359,7 @@ if (!game) {
       <div class="th"><span>${g.emoji}</span>${g.cover ? `<img src="${g.cover}" alt="${g.name}" loading="lazy" onerror="this.remove()">` : ''}</div>
       <div><b>${g.name}</b><small>★ ${g.rating}/5 · ${g.plays} parties</small></div>
     </a>`).join('');
-  const top = ['moto-x3m-spooky-land','tank-stars','worldguessr','cursed-treasure','wacky-strike','car-eats-car-underwater','sink-hole']
+  const top = ['nitro-racing-gear','stunt-cars-pro','hazmob-io','drift-boss','flow-board-parkour-runner','warfare-1942-online-shooter','sink-hole']
     .map(s => REAL_GAMES.find(g => g.slug === s)).filter(Boolean);
   document.getElementById('topList').innerHTML = top.map((g, i) => `
     <a class="top-item" href="jouer.html?jeu=${g.slug}"><span class="rank">${i + 1}</span><b>${g.name}</b></a>`).join('');
