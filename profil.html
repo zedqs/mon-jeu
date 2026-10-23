@@ -113,7 +113,7 @@
   <div class="in">
     <div><div class="brand">Zed<em>Jeux</em></div><p>Des jeux gratuits à jouer dans le navigateur, sans rien installer.</p></div>
     <div><h4>Catégories</h4><a href="index.html?cat=Course">Jeux de course</a><a href="index.html?cat=Action">Jeux d’action</a><a href="index.html?cat=Arcade">Jeux d’arcade</a><a href="index.html?cat=Sport">Jeux de sport</a></div>
-    <div><h4>Jeux populaires</h4><a href="jouer.html?jeu=moto-x3m">Moto X3M</a><a href="jouer.html?jeu=bus-and-subway-runner">Bus &amp; Subway Runner</a><a href="jouer.html?jeu=smash-karts">Smash Karts</a><a href="jouer.html?jeu=uno-online">Uno Online</a></div>
+    <div><h4>Jeux populaires</h4><a href="jouer.html?jeu=moto-x3m-spooky-land">Moto X3M Spooky Land</a><a href="jouer.html?jeu=tank-stars">Tank Stars</a><a href="jouer.html?jeu=worldguessr">WorldGuessr</a><a href="jouer.html?jeu=cursed-treasure">Cursed Treasure 1.5</a></div>
     <div><h4>ZedJeux</h4><a href="infos.html#apropos">À propos</a><a href="infos.html#confidentialite">Confidentialité</a><a href="infos.html#conditions">Conditions</a><a href="infos.html#contact">Contact</a></div>
   </div>
   <div class="footer-bottom">© 2026 ZedJeux</div>
@@ -124,7 +124,7 @@
 <script>
 ZJ.mountChrome();
 const ALL = [
-  ...(window.REAL_GAMES || []).map(g => ({ id:'cg-'+g.slug, name:g.name, cat:g.cat, emoji:g.emoji, img:g.cover||'', href:'jouer.html?jeu='+g.slug, rating:g.rating, plays:g.plays, grad:g.grad })),
+  ...(window.REAL_GAMES || []).map(g => ({ id:'zj-'+g.slug, name:g.name, cat:g.cat, emoji:g.emoji, img:g.cover||'', href:'jouer.html?jeu='+g.slug, rating:g.rating, plays:g.plays, grad:g.grad })),
   { id:'cosmic', name:'Cosmic Summoner', cat:'Cartes', emoji:'🌌', img:'images/Voltara.jpg', href:'games/cosmic-summoner.html', rating:5, plays:'12 k', grad:'linear-gradient(135deg,#312e81,#7c3aed)' },
   { id:'snake', name:'Snake', cat:'Classiques', emoji:'🐍', img:'', href:'games/snake.html', rating:5, plays:'98 k', grad:'linear-gradient(135deg,#16a34a,#84cc16)' },
   { id:'2048', name:'2048', cat:'Réflexion', emoji:'🔢', img:'', href:'games/2048.html', rating:5, plays:'87 k', grad:'linear-gradient(135deg,#f59e0b,#ef4444)' },

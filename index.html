@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-adsense-account" content="ca-pub-8649470289187025">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8649470289187025" crossorigin="anonymous"></script>
-<title>ZedJeux — Jeux gratuits en ligne : Moto X3M, Smash Karts, Subway Runner…</title>
-<meta name="description" content="Plus de 60 jeux gratuits à jouer dans ton navigateur : course, action, arcade, sport, réflexion. Sans téléchargement, sur ordinateur et mobile.">
+<title>ZedJeux — Jeux gratuits en ligne : Moto X3M, Tank Stars, WorldGuessr…</title>
+<meta name="description" content="Plus de 50 jeux gratuits à jouer dans ton navigateur : course, action, arcade, réflexion. Sans téléchargement, sur ordinateur et mobile.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230097a7'><path d='M7.5 6h9a5.5 5.5 0 0 1 5.4 6.6l-.7 3A3 3 0 0 1 18.3 18h-.5a3 3 0 0 1-2.2-1L14 15.5H10L8.4 17a3 3 0 0 1-2.2 1h-.5a3 3 0 0 1-2.9-2.4l-.7-3A5.5 5.5 0 0 1 7.5 6Z'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -41,14 +41,14 @@
 <div class="wrap">
   <div class="cats-bar" id="catsBar"></div>
 
-  <a class="hero" id="hero" href="jouer.html?jeu=moto-x3m">
+  <a class="hero" id="hero" href="jouer.html?jeu=moto-x3m-spooky-land">
     <div class="txt">
       <span class="kicker">Jeu de la semaine</span>
-      <h1>Moto X3M</h1>
-      <p>22 parcours de moto-cross remplis de rampes, de loopings et de pièges. Boucle tes saltos pour gagner des secondes et décrocher les 3 étoiles sur chaque niveau.</p>
+      <h1>Moto X3M Spooky Land</h1>
+      <p>Le jeu de moto culte, en version Halloween : 22 parcours remplis de rampes, de loopings et de pièges. Boucle tes saltos pour gagner des secondes et décrocher les 3 étoiles.</p>
       <span class="playbtn">Jouer maintenant</span>
     </div>
-    <div class="vis"><img src="https://imgs.crazygames.com/games/moto-x3m/cover_16x9-1700625476572.png?metadata=none&quality=85&width=1100&fit=crop" alt="Moto X3M" onerror="this.remove()"></div>
+    <div class="vis"><img src="https://img.gamedistribution.com/b8a342904608470a9f3382337aca3558-1280x720.jpeg" alt="Moto X3M Spooky Land" onerror="this.onerror=null;this.src='https://img.gamedistribution.com/b8a342904608470a9f3382337aca3558-512x384.jpeg'"></div>
   </a>
 
   <section class="blk" id="secHistory" hidden>
@@ -103,12 +103,12 @@
     </div>
     <div>
       <h4>Jeux populaires</h4>
-      <a href="jouer.html?jeu=moto-x3m">Moto X3M</a>
-      <a href="jouer.html?jeu=bus-and-subway-runner">Bus &amp; Subway Runner</a>
-      <a href="jouer.html?jeu=smash-karts">Smash Karts</a>
-      <a href="jouer.html?jeu=friday-night-funkin">Friday Night Funkin’</a>
-      <a href="jouer.html?jeu=snow-rider-3d">Snow Rider 3D</a>
-      <a href="jouer.html?jeu=uno-online">Uno Online</a>
+      <a href="jouer.html?jeu=moto-x3m-spooky-land">Moto X3M Spooky Land</a>
+      <a href="jouer.html?jeu=tank-stars">Tank Stars</a>
+      <a href="jouer.html?jeu=worldguessr">WorldGuessr</a>
+      <a href="jouer.html?jeu=cursed-treasure">Cursed Treasure 1.5</a>
+      <a href="jouer.html?jeu=wacky-strike">Wacky Strike</a>
+      <a href="jouer.html?jeu=sink-hole">Sink Hole</a>
     </div>
     <div>
       <h4>ZedJeux</h4>
@@ -120,7 +120,7 @@
       <a href="profil.html">Mon profil</a>
     </div>
   </div>
-  <div class="footer-bottom">© 2026 ZedJeux — Les jeux intégrés restent la propriété de leurs créateurs respectifs (via CrazyGames). Les comptes et scores sont stockés localement dans ton navigateur.</div>
+  <div class="footer-bottom">© 2026 ZedJeux — Les jeux intégrés restent la propriété de leurs créateurs respectifs. Les comptes et scores sont stockés localement dans ton navigateur.</div>
 </footer>
 
 <script src="assets/catalogue.js"></script>
@@ -147,15 +147,15 @@ const HOME_GAMES = [
   { id:'fruits', name:'Attrape-Fruits', href:'games/fruits.html', cat:'Arcade', emoji:'🍎', grad:'linear-gradient(135deg,#f43f5e,#fb923c)', rating:4, plays:'15 k', desc:'Attrape les fruits, évite les bombes.' },
 ];
 const REAL = (window.REAL_GAMES || []).map(g => ({
-  id: 'cg-' + g.slug, slug: g.slug, real: true, name: g.name, cat: g.cat, emoji: g.emoji,
+  id: 'zj-' + g.slug, slug: g.slug, real: true, name: g.name, cat: g.cat, emoji: g.emoji,
   href: 'jouer.html?jeu=' + g.slug, img: g.cover || '', grad: g.grad, desc: g.desc,
   rating: g.rating, plays: g.plays, fresh: !!g.fresh
 }));
 const ALL = [...REAL, ...HOME_GAMES];
 const byId = id => ALL.find(g => g.id === id);
-const popOrder = ['bus-and-subway-runner','moto-x3m','smash-karts','friday-night-funkin','snow-rider-3d','polytrack','uno-online','8-ball-pool-billiards-multiplayer','jetpack-joyride-pcp','bubble-trouble-cpy','bloxdhop-io','snake-clash-io'];
+const popOrder = ['moto-x3m-spooky-land','tank-stars','worldguessr','sink-hole','vex-x3m-3','cursed-treasure','wacky-strike','car-eats-car-underwater','muscle-rush-3d','battalion-commander-2','nitro-racing-gear','storm-dash'];
 
-const CATS = ['Tous','Favoris','Course','Action','Arcade','Sport','Réflexion','Plateau','Cartes','Classiques','Faits maison'];
+const CATS = ['Tous','Favoris', ...['Course','Action','Arcade','Sport','Réflexion','Plateau','Cartes','Classiques'].filter(c => ALL.some(g => g.cat === c)), 'Faits maison'];
 let curCat = new URLSearchParams(location.search).get('cat') || 'Tous';
 if (!CATS.includes(curCat)) curCat = 'Tous';
 let query = (new URLSearchParams(location.search).get('q') || '').trim().toLowerCase(), sort = 'pop';

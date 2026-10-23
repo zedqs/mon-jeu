@@ -1,59 +1,36 @@
 # 🎮 ZedJeux
 
-Un site de jeux gratuits façon [Poki](https://poki.com), 100 % HTML/CSS/JS — aucun téléchargement, tout se joue dans le navigateur (ordinateur, tablette et téléphone).
+Un site de jeux gratuits façon portail, 100 % HTML/CSS/JS — aucun téléchargement, tout se joue dans le navigateur (ordinateur, tablette et téléphone).
 
-## ⭐ Les vrais jeux (intégrés via CrazyGames)
+## ⭐ Les jeux intégrés (37)
 
-54 jeux populaires jouables directement sur le site via le programme d'intégration officiel de [CrazyGames](https://www.crazygames.com) (page lecteur : `jouer.html?jeu=<slug>`, catalogue : `assets/catalogue.js`) :
+Des jeux de studios connus, intégrés légalement via les flux officiels de partenaires de distribution destinés aux éditeurs de sites (ils sont conçus pour être joués dans une page tierce). Page lecteur : `jouer.html?jeu=<slug>`, catalogue : `assets/catalogue.js`.
 
-🚇 Bus & Subway Runner (style Subway Surfers) · 🏍️ Moto X3M + Pool Party · 🏎️ Smash Karts · 🚗 PolyTrack · 🎤 Friday Night Funkin' · 🛷 Snow Rider 3D · 🔫 SkillWarz · 🧱 BloxdHop.io · 🎱 8 Ball Pool · 🃏 Uno Online · 🏀 Basketball Superstars · 🐍 Snake Clash.io · 🏹 Ragdoll Archers · 🎲 Ludo King · 🀄 Mahjong Solitaire · et bien plus !
+🏍️ Moto X3M Spooky Land · 🪖 Tank Stars · 🌍 WorldGuessr · 💎 Cursed Treasure 1.5 · 🎯 Wacky Strike · 🚙 Car Eats Car · 🕳️ Sink Hole · 🏍️ Vex X3M 3 · 🎖️ Battalion Commander · 🌀 Zuma (Zumble Ocean, Zumbo Mania) · 🏎️ Nitro Racing Gear · 💪 Muscle Rush 3D · et bien plus !
 
-> ℹ️ Subway Surfers officiel est une exclusivité Poki : il ne peut pas être intégré légalement. *Bus & Subway Runner* est le même type de jeu (runner sur rails de métro), intégrable librement.
+> ℹ️ Subway Surfers officiel est une exclusivité Poki (contrat SYBO) : il ne peut pas être intégré légalement, vérifié chez les distributeurs qui autorisent l'intégration. Voir la FAQ dans `infos.html`.
 
 ## 🏠 Les mini-jeux faits maison (15)
 
-| Jeu | Catégorie |
-|---|---|
-| 🌌 Cosmic Summoner — invoque et collectionne des monstres | Cartes |
-| 🐍 Snake | Classiques |
-| 🔢 2048 | Réflexion |
-| 🐤 Flappy Oiseau | Arcade |
-| 🟦 Tetris | Classiques |
-| 💣 Démineur (3 difficultés) | Réflexion |
-| 🃏 Memory (3 niveaux) | Réflexion |
-| 🧱 Casse-Briques (niveaux progressifs) | Arcade |
-| 🦖 Dino Run | Arcade |
-| ⭕ Morpion (IA facile / imbattable / 2 joueurs) | Plateau |
-| 🔴 Puissance 4 (IA / 2 joueurs) | Plateau |
-| 🎵 Simon (avec sons) | Réflexion |
-| 🎯 Vise les Cibles (30 secondes chrono) | Action |
-| 🏓 Pong | Classiques |
-| 🍎 Attrape-Fruits | Arcade |
+Codés à la main pour ce site, un fichier par jeu dans `games/` : Cosmic Summoner (collection de monstres), Snake, 2048, Tetris, Flappy, Démineur, Memory, Casse-Briques, Dino Run, Morpion, Puissance 4, Simon, Vise les Cibles, Pong, Attrape-Fruits. Records sauvegardés dans le navigateur, contrôles tactiles.
 
-## ✨ Fonctionnalités
+## 👤 Comptes
 
-- Page d'accueil style portail : recherche, catégories, jeu à la une, bouton « jeu au hasard »
-- ❤️ Favoris sauvegardés dans le navigateur
-- 🏆 Records (meilleurs scores) sauvegardés pour chaque jeu
-- 📱 Contrôles tactiles sur mobile
+Inscription / connexion avec pseudo, mot de passe chiffré (SHA-256) et avatar. Les comptes sont **100 % locaux** (localStorage, aucun serveur) : ils ne fonctionnent que sur l'appareil / le navigateur où ils ont été créés. Ils donnent accès aux favoris personnels, à l'historique, aux votes 👍/👎 et aux commentaires. Voir `infos.html#compte`.
 
 ## 📁 Structure
 
 ```
-index.html            → page d'accueil (tendances, nouveautés, grille, recherche)
-jouer.html            → lecteur des vrais jeux (?jeu=<slug>) : plein écran, votes, commentaires
-profil.html           → profil du compte : favoris, historique, statistiques, avatar
-infos.html            → à propos, FAQ (dont Subway Surfers), confidentialité, conditions, contact
-assets/catalogue.js   → catalogue des vrais jeux (CrazyGames)
-assets/compte.js      → comptes locaux (inscription / connexion, favoris, historique, votes, commentaires)
+index.html            → accueil (populaires, nouveautés, grille filtrable, recherche)
+jouer.html            → lecteur des jeux intégrés : plein écran, votes, commentaires, similaires
+profil.html           → profil du compte : stats, favoris, historique, avatar
+infos.html            → à propos, FAQ, confidentialité, conditions, contact
+assets/catalogue.js   → catalogue des jeux intégrés
+assets/compte.js      → comptes locaux, favoris, historique, votes, commentaires
 assets/main.css       → style principal du site
-games/                → un fichier HTML par mini-jeu fait maison
 assets/game.css       → style des pages des mini-jeux faits maison
+games/                → un fichier HTML par mini-jeu fait maison
 images/               → illustrations des monstres de Cosmic Summoner
 ```
-
-## 👤 Comptes
-
-Les comptes sont **100 % locaux** : tout est stocké dans le navigateur (localStorage), sans serveur ni e-mail. Le compte ne fonctionne donc que sur l'appareil / le navigateur où il a été créé. Voir `infos.html#compte` pour le détail.
 
 Ouvre simplement `index.html` dans un navigateur, ou sers le dossier avec `python3 -m http.server`.

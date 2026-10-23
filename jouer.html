@@ -7,6 +7,8 @@
 <meta name="description" content="Joue gratuitement dans ton navigateur sur ZedJeux.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230097a7'><path d='M7.5 6h9a5.5 5.5 0 0 1 5.4 6.6l-.7 3A3 3 0 0 1 18.3 18h-.5a3 3 0 0 1-2.2-1L14 15.5H10L8.4 17a3 3 0 0 1-2.2 1h-.5a3 3 0 0 1-2.9-2.4l-.7-3A5.5 5.5 0 0 1 7.5 6Z'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://html5.gamedistribution.com">
+<link rel="preconnect" href="https://html5.gamemonetize.co">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/main.css">
 <style>
@@ -123,7 +125,7 @@
           <div class="fact"><small>Plateformes</small><b>Navigateur, mobile</b></div>
         </div>
         <div class="howto"><b>Comment jouer :</b> <span id="infoControls"></span></div>
-        <p class="cmt-note">Le jeu ne se charge pas ? Certains réseaux (école, entreprise) bloquent les sites de jeux. Tu peux aussi <a id="extLink" href="#" target="_blank" rel="noopener">l’ouvrir sur CrazyGames</a>.</p>
+        <p class="cmt-note">Le jeu ne se charge pas ? Essaie le bouton « Recharger » ci-dessus. Certains réseaux (école, entreprise) filtrent les jeux, et les bloqueurs de publicité peuvent parfois gêner le lecteur.</p>
       </div>
 
       <div class="card info-card">
@@ -166,11 +168,11 @@
     </div>
     <div>
       <h4>Jeux populaires</h4>
-      <a href="jouer.html?jeu=moto-x3m">Moto X3M</a>
-      <a href="jouer.html?jeu=bus-and-subway-runner">Bus &amp; Subway Runner</a>
-      <a href="jouer.html?jeu=smash-karts">Smash Karts</a>
-      <a href="jouer.html?jeu=friday-night-funkin">Friday Night Funkin’</a>
-      <a href="jouer.html?jeu=uno-online">Uno Online</a>
+      <a href="jouer.html?jeu=moto-x3m-spooky-land">Moto X3M Spooky Land</a>
+      <a href="jouer.html?jeu=tank-stars">Tank Stars</a>
+      <a href="jouer.html?jeu=worldguessr">WorldGuessr</a>
+      <a href="jouer.html?jeu=cursed-treasure">Cursed Treasure 1.5</a>
+      <a href="jouer.html?jeu=wacky-strike">Wacky Strike</a>
     </div>
     <div>
       <h4>ZedJeux</h4>
@@ -181,7 +183,7 @@
       <a href="profil.html">Mon profil</a>
     </div>
   </div>
-  <div class="footer-bottom">© 2026 ZedJeux — Jeux intégrés via CrazyGames, propriété de leurs créateurs respectifs.</div>
+  <div class="footer-bottom">© 2026 ZedJeux — Les jeux intégrés restent la propriété de leurs créateurs respectifs.</div>
 </footer>
 
 <script src="assets/catalogue.js"></script>
@@ -212,21 +214,20 @@ if (!game) {
   document.getElementById('topList').innerHTML = top.map((g, i) => `
     <a class="top-item" href="jouer.html?jeu=${g.slug}"><span class="rank">${i + 1}</span><b>${g.name}</b></a>`).join('');
 } else {
-  const gameId = 'cg-' + game.slug;
+  const gameId = 'zj-' + game.slug;
   document.title = game.name + ' — Jouer gratuitement | ZedJeux';
   document.querySelector('meta[name="description"]').content = 'Joue à ' + game.name + ' gratuitement dans ton navigateur : ' + game.desc;
   document.getElementById('breadcrumb').innerHTML =
     `<a href="index.html">Accueil</a> › <a href="index.html?cat=${encodeURIComponent(game.cat)}">${game.cat}</a> › ${game.name}`;
   document.getElementById('loadName').textContent = game.name;
   document.getElementById('loadDesc').textContent = game.desc;
-  if (game.cover) document.getElementById('loadScreen').style.backgroundImage = `url("${game.cover.replace('width=546','width=1100')}")`;
+  if (game.cover) document.getElementById('loadScreen').style.backgroundImage = `url("${game.cover}")`;
   document.getElementById('infoTitle').textContent = 'À propos de ' + game.name;
   document.getElementById('infoDesc').textContent = game.desc;
   document.getElementById('infoControls').textContent = game.controls;
   document.getElementById('factCat').textContent = game.cat;
   document.getElementById('factRating').textContent = game.rating + '/5';
   document.getElementById('factPlays').textContent = game.plays;
-  document.getElementById('extLink').href = 'https://www.crazygames.com/game/' + game.slug;
 
   ZJ.recordPlay(gameId);
 
@@ -238,7 +239,11 @@ if (!game) {
     document.getElementById('loadHint').textContent = 'Chargement en cours, encore quelques secondes…';
     if (iframe) iframe.remove();
     iframe = document.createElement('iframe');
-    iframe.src = 'https://www.crazygames.com/embed/' + game.slug;
+    // Le distributeur demande l'URL exacte de la page qui intègre le jeu
+    iframe.src = game.embed.includes('gamedistribution')
+      ? game.embed + '?gd_sdk_referrer_url=' + encodeURIComponent(location.origin + location.pathname + '?jeu=' + game.slug)
+      : game.embed;
+    iframe.setAttribute('scrolling', 'no');
     iframe.title = game.name;
     iframe.allow = 'autoplay; fullscreen; gamepad; keyboard; xr-spatial-tracking; clipboard-write; web-share; accelerometer; gyroscope';
     iframe.allowFullscreen = true;
@@ -323,7 +328,7 @@ if (!game) {
       <div class="th"><span>${g.emoji}</span>${g.cover ? `<img src="${g.cover}" alt="${g.name}" loading="lazy" onerror="this.remove()">` : ''}</div>
       <div><b>${g.name}</b><small>★ ${g.rating}/5 · ${g.plays} parties</small></div>
     </a>`).join('');
-  const top = ['moto-x3m','bus-and-subway-runner','friday-night-funkin','smash-karts','snow-rider-3d','polytrack','uno-online']
+  const top = ['moto-x3m-spooky-land','tank-stars','worldguessr','cursed-treasure','wacky-strike','car-eats-car-underwater','sink-hole']
     .map(s => REAL_GAMES.find(g => g.slug === s)).filter(Boolean);
   document.getElementById('topList').innerHTML = top.map((g, i) => `
     <a class="top-item" href="jouer.html?jeu=${g.slug}"><span class="rank">${i + 1}</span><b>${g.name}</b></a>`).join('');
